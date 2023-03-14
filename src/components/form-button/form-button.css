@@ -1,0 +1,169 @@
+.form-button{
+    text-align: center;
+    font-family: calibri;
+
+    box-sizing: border-box;
+
+    font-style: normal;
+
+    cursor: pointer;
+}
+
+.form-button[type=submit]{
+    margin-top: 14px;
+    margin-bottom: 14px;
+    height: 40px;
+    width: 250px;
+
+    background: #308552;
+    border: none;
+    border-radius: 5px;
+
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+
+    color: #FFFFFF;
+}
+
+.form-button[type=submit-small]{
+    margin-top: 14px;
+    height: 30px;
+    width: 200px;
+
+    background: #308552;
+    border: none;
+    border-radius: 5px;
+
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+
+    color: #FFFFFF;
+}
+
+.form-button[type=secondary]{
+    margin-top: 14px;
+    margin-bottom: 14px;
+    height: 30px;
+    width: 200px;
+
+    background: #FFFFFF;
+    border: 1px solid #308552;
+    border-radius: 3px;
+
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    
+    color: #308552;
+}
+
+.form-button[type=secondary-big]{
+    margin-top: 35px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+    height: 40px;
+    width: 250px;
+
+    background: #FFFFFF;
+    border: 1px solid #308552;
+    border-radius: 5px;
+
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    
+    color: #308552;
+}
+
+.form-button[type=google]{
+    margin-top: 14px;
+    height: 30px;
+    width: 200px;
+
+    background: #FFFFFF;
+    border: 1px solid #929292;
+    border-radius: 3px;
+
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    
+    color: #929292;
+
+    background-image: url(./google.png);
+    background-repeat: no-repeat;
+    background-position: 11px;
+}
+
+.form-button[type=facebook]{
+    margin-top: 14px;
+    height: 30px;
+    width: 200px;
+
+    background: #FFFFFF;
+    border: 1px solid #395185;
+    border-radius: 3px;
+
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    
+    color: #395185;
+
+    background-image: url(./facebook.png);
+    background-repeat: no-repeat;
+    background-position: 13px;
+}
+
+.form-button[type=small-submit]{
+    width: 80px;
+    height: 20px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+
+    background: #308552;
+    border: none;
+    border-radius: 3px;
+    
+    color: white;
+}
+
+.form-button[type=hold]{
+    width: 33px;
+    height: 29px;
+    background-image: url(./hold-icon.png);
+    border: none;
+    margin-right: 2px;
+}
+
+.form-button[type=confirm]{
+    width: 33px;
+    height: 29px;
+    background-image: url(./confirm-icon.png);
+    border: none;
+    margin-right: 2px;
+}
+
+.form-button[type=disconnect]{
+    width: 33px;
+    height: 29px;
+    background-image: url(./disconnect-icon.png);
+    border: none;
+    margin-right: 2px;
+}
+
+.form-button[type=open]{
+    width: 33px;
+    height: 29px;
+    background-image: url(./open-icon.png);
+    border: none;
+    margin-right: 2px;
+}
+
+.form-button:disabled{
+    background-color: #929292;
+    cursor: not-allowed;
+}
