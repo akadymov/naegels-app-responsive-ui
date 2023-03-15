@@ -34,6 +34,7 @@
 
 .nav-menu.desktop:hover{
   width: 15vw;
+  min-width: 250px;
   text-align: left;
   padding-left: 47px;
 }
