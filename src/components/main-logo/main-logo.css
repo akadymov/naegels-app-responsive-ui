@@ -34,8 +34,14 @@
 }
 
 .main-logo-text.mobile{
-    font-size: 40px;
+    font-size: 30px;
     margin: 1vh;
+}
+
+.main-logo-text.mobile.landscape{
+    max-width: 150px;
+    overflow-wrap: normal;
+    text-align: right;
 }
 
 .main-logo-text.tablet{

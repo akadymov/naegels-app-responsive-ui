@@ -20,6 +20,11 @@ export default class Login extends React.Component{
                 {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: ""},
                 {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: ""}
             ],
+            submitButtonList: [
+                {type:"Submit", text:"Submit", onSubmit: this.SendLoginRequest},
+                {type:"secondary", text:"Register new player", onSubmit: () => this.props.history.push('/register/')},
+                {type:"secondary", text:"Forgot password", onSubmit: () => this.props.history.push('/forgot-password/')}
+            ],
             email:'',
             password:'',
             repeatPassword:'',
@@ -104,7 +109,14 @@ export default class Login extends React.Component{
         return (
 
 
-            <FormContainer onKeyPress={this.handleKeyPress}>
+            <FormContainer 
+                title="Login"
+                onKeyPress={this.handleKeyPress}
+                textFieldsList={this.state.textFieldsList}
+                submitButtonList={this.state.submitButtonList}
+                onSubmit={this.SendLoginRequest}
+                submitText="Login"
+            >
             {this.props.match.params.reason==='expired' ? <p className="errorDiv"><b>You have to sign in to access application</b></p> : ''}
             {this.state.textFieldsList.map(field => {
                         return <FormInputField

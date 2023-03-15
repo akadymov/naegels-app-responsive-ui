@@ -119,7 +119,7 @@
     background-image: url(./user-outlined-error.png);
 }
 
-.form-input-field.error::-webkit-input-placeholder{
+.input-field.error::-webkit-input-placeholder{
     color: #FF0000;
 }
 
@@ -135,7 +135,7 @@
     right: 25px;
 }
 
-.form-input-field[type=submit]{
+.input-field[type=submit]{
     height: 40px;
     margin-top: 35px;
 

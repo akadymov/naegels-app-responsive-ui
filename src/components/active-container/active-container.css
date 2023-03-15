@@ -1,7 +1,7 @@
 .active-container{
-    width: 100%;
     position: absolute;
     background: white;
+    text-align: center;
 }
 
 .active-container.mobile.portrait{

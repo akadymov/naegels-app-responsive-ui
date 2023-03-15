@@ -1,12 +1,9 @@
 .form-button{
     text-align: center;
-    font-family: calibri;
-
-    box-sizing: border-box;
-
-    font-style: normal;
-
+    font-family: arial;
     cursor: pointer;
+    display: block;
+    margin: auto;
 }
 
 .form-button[type=submit]{
