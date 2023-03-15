@@ -12,7 +12,8 @@ export default class NavMenu extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            menuExpanded: false
+            menuExpanded: false,
+            hoveredItem: null
         }
     }
 
@@ -24,51 +25,57 @@ export default class NavMenu extends React.Component{
         this.setState({ menuExpanded: false})
     }
 
-    render() {
+    hoverItem = (e) => {
+        this.setState({ hoveredItem: e.target.id })
+    }
 
-        console.log(this.state.onMouseOver)
+    unhoverItems = () => {
+        this.setState({ hoveredItem: null })
+    }
+
+    render() {
 
         const ScreenSizeClassPostfix = this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")
         const ScreenOrientationClassPostfix = this.props.isPortrait ? "portrait" : "landscape"
 
         return(
-            <div className={`nav-menu ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} onMouseOver={this.expandMenu} onMouseLeave={this.wrapMenu}>
-                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                    <div className="menu-item-icon-container"><FeedbackRoundedIcon fontSize="large"/></div>
+            <div className={`nav-menu ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} onMouseOver={this.expandMenu} onMouseLeave={this.wrapMenu}> // FIXME: when hovering element above function is not triggered
+                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="feedback" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
+                    <div className="menu-item-icon-container"><FeedbackRoundedIcon fontSize="large" color={this.state.hoveredItem === 'feedback' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className="menu-item-title">FEEDBACK</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'feedback' ? 'action' : ''}`}>FEEDBACK</p></div>   
                     :
                         ''
                     }
                 </div>
-                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                    <div className="menu-item-icon-container"><EmojiEventsRoundedIcon fontSize="large"/></div>
+                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="leaderboard" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
+                    <div className="menu-item-icon-container"><EmojiEventsRoundedIcon fontSize="large" color={this.state.hoveredItem === 'leaderboard' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className="menu-item-title">LEADERBOARD</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'leaderboard' ? 'action' : ''}`}>LEADERBOARD</p></div>   
                     :
                         ''
                     }
                 </div>
-                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                    <div className="menu-item-icon-container"><HomeRoundedIcon fontSize="large"/></div>
+                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="lobby" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
+                    <div className="menu-item-icon-container"><HomeRoundedIcon fontSize="large" color={this.state.hoveredItem === 'lobby' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className="menu-item-title">LOBBY</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'lobby' ? 'action' : ''}`}>LOBBY</p></div>   
                     :
                         ''
                     }
                 </div>
-                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                    <div className="menu-item-icon-container"><InfoRoundedIcon fontSize="large"/></div>
+                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="about" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
+                    <div className="menu-item-icon-container"><InfoRoundedIcon fontSize="large" color={this.state.hoveredItem === 'about' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className="menu-item-title">ABOUT</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'about' ? 'action' : ''}`}>ABOUT</p></div>   
                     :
                         ''
                     }
                 </div>
-                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                    <div className="menu-item-icon-container"><LogoutRoundedIcon fontSize="large"/></div>
+                <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="signout" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
+                    <div className="menu-item-icon-container"><LogoutRoundedIcon fontSize="large" color={this.state.hoveredItem === 'signout' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className="menu-item-title">SIGN OUT</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'signout' ? 'action' : ''}`}>SIGN OUT</p></div>   
                     :
                         ''
                     }

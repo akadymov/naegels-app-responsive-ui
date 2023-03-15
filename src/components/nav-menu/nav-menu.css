@@ -48,6 +48,7 @@
 
 .menu-item-container{
     text-align: inherit;
+    z-index: 10;
 }
 
 .menu-item-container.mobile.portrait{
@@ -84,10 +85,17 @@
     height: 100%;
     display: inline-block;
     width: 50px;
+    z-index: 9;
 }
 
-.MuiSvgIcon-root{
+.MuiSvgIcon-root.MuiSvgIcon-colorPrimary{
     color: white;
+    z-index: 100;
+}
+
+.MuiSvgIcon-root.MuiSvgIcon-colorAction{
+    color: lightcoral;
+    z-index: 100;
 }
 
 .menu-item-title-container{
@@ -103,4 +111,8 @@
     font-family: Arial;
     font-weight: bold;
     font-size: 20px;
+}
+
+.menu-item-title.action{
+    color: lightcoral
 }
