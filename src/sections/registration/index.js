@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import Registration from './registration';
 
-export default MainLogo;
+export default Registration;

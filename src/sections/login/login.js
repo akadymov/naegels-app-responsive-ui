@@ -2,8 +2,6 @@ import React from 'react';
 import NaegelsApi from '../../services/naegels-api-service';
 import Cookies from 'universal-cookie';
 import FormContainer from '../../components/form-container';
-import FormInputField from '../../components/form-input-field';
-import FormButton from '../../components/form-button';
 
 export default class Login extends React.Component{
 
@@ -107,8 +105,6 @@ export default class Login extends React.Component{
         this.CheckIfAlreadyLoggedIn();
 
         return (
-
-
             <FormContainer 
                 title="Login"
                 onKeyPress={this.handleKeyPress}
@@ -117,23 +113,6 @@ export default class Login extends React.Component{
                 onSubmit={this.SendLoginRequest}
                 submitText="Login"
             >
-            {this.props.match.params.reason==='expired' ? <p className="errorDiv"><b>You have to sign in to access application</b></p> : ''}
-            {this.state.textFieldsList.map(field => {
-                        return <FormInputField
-                            type={field.type}
-                            id={field.name}
-                            name={field.name}
-                            placeholder={field.placeholder}
-                            onChange={field.onChange}
-                            errorMessage={field.errorMessage}
-                            onClick={this.clearErrorMessage}
-                        ></FormInputField>
-                })}
-                <FormButton type="Submit" value="Submit" onClick={this.SendLoginRequest}></FormButton>
-                <FormButton type="google" value="Sign in"></FormButton>
-                <FormButton type="facebook" value="Sign in"></FormButton>
-                <FormButton type="secondary" value="Register new player" onClick={() => this.props.history.push('/register/')}></FormButton>
-                <FormButton type="secondary" value="Forgot password"></FormButton>
             </FormContainer>
         )
     }

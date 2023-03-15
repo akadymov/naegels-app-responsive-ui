@@ -6,8 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 // Local components
 import MainLogo from '../main-logo';
 import Login from '../../sections/login';
-/*import Registration from '../../sections/registration';
-import ForgotPassword from '../../sections/forgot-password';
+import Registration from '../../sections/registration';
+/*import ForgotPassword from '../../sections/forgot-password';
 import RestorePassword from '../../sections/restore-password';
 import Lobby from '../../sections/lobby';
 import Room from '../../sections/room';
@@ -32,10 +32,10 @@ export default class ActiveContainer extends React.Component{
                     isPortrait = {this.props.isPortrait}
                 ></MainLogo>
                 <Switch>
+                    <Route path="/register" component={Registration}></Route>
                     <Route path="/signin/:reason" component={Login}></Route>
                     <Route path="/" component={Login}></Route>
                     {/*<Route path="/signout" component={Login}></Route>
-                    <Route path="/register" component={Registration}></Route>
                     <Route path="/forgot-password" component={ForgotPassword}></Route>
                     <Route path="/restore-password" component={RestorePassword}></Route>
                     <Route exact path="/lobby" component={Lobby}></Route>
