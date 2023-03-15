@@ -1,42 +1,36 @@
 import React from 'react';
-
+import { useMediaQuery } from 'react-responsive'
 import './main-container.css'
-/*import Menu from '../nav-menu'*/
-import { Switch, Route } from 'react-router-dom';
-import Login from '../../sections/login';
-/*import Registration from '../../sections/registration';
-import ForgotPassword from '../../sections/forgot-password';
-import RestorePassword from '../../sections/restore-password';
-import Lobby from '../../sections/lobby';
-import Room from '../../sections/room';
-import Game from '../../sections/game';
-import LeaderBoard from '../../sections/leaderboard';
-import About from '../../sections/about';
-import Feedback from '../../sections/feedback';*/
-
+import NavMenu from '../nav-menu'
+/*import ActiveContainer from '../active-container'*/
 
 const MainContainer = () => {
+    var isMobile = false
+    var isDesktop = false
+    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+    const isMobileWidth = useMediaQuery({query: '(max-width: 480px)'})
+    const isDesktopWidth = useMediaQuery({query: '(min-width: 1024px)'})
+    const isMobileHeight = useMediaQuery({query: '(max-height: 480px)'})
+    const isDesktopHeight = useMediaQuery({query: '(min-height: 768px)'})
+    if(isPortrait){
+        var isMobile = isMobileWidth
+        var isDesktop = isDesktopWidth
+    } else {
+        var isMobile = isMobileHeight
+        var isDesktop = isDesktopHeight
+    }
+    var isTablet = !isMobile & !isDesktop
     return (
-        <div>
-            <div className="main-container content">
-                {/*<Menu></Menu> --!>*/}
-                <Switch>
-                    <Route path="/signin/:reason" component={Login}></Route>
-                    <Route path="/" component={Login}></Route>
-                    {/*<Route path="/signout" component={Login}></Route>
-                    <Route path="/register" component={Registration}></Route>
-                    <Route path="/forgot-password" component={ForgotPassword}></Route>
-                    <Route path="/restore-password" component={RestorePassword}></Route>
-                    <Route exact path="/lobby" component={Lobby}></Route>
-                    <Route path="/lobby/room/:roomId" component={Room}></Route>
-                    <Route path="/game/:gameId" component={Game}></Route>
-                    <Route path="/leaderboard" component={LeaderBoard}></Route>
-                    <Route path="/about" component={About}></Route>
-                    <Route path="/feedback" component={Feedback}></Route>*/}
-                </Switch>
+        <div>   
+            <NavMenu 
+                isMobile = {isMobile}
+                isDesktop = {isDesktop}
+                isTablet = {isTablet}
+                isPortrait = {isPortrait}
+            ></NavMenu>
+            <div className={`main-container ${ isMobile ? "mobile" : (isDesktop ? "desktop" : "tablet")} ${ isPortrait ? "portrait" : "landscape"}`}>
+                {/*<ActiveContainer></ActiveContainer>*/}
             </div>
-            <div className="main-container background-color"></div>
-            <div className="main-container background-image"></div>
         </div>
     )
 }

@@ -1,0 +1,39 @@
+.nav-menu{
+    position: absolute;
+    background-color: black;
+}
+
+.nav-menu.mobile.portrait{
+    bottom: 0;
+    width: 100vw;
+    height: 8vh;
+    min-height: 60px;
+}
+
+.nav-menu.mobile.landscape{
+    left:0;
+    width: 8vw;
+    height: 100vh;
+    min-width: 60px;
+}
+
+.nav-menu.desktop{
+    left:0;
+    width: 8vw;
+    height: 100vh;
+    min-width: 60px;
+}
+
+.nav-menu.tablet.portrait{
+    bottom: 0;
+    width: 100vw;
+    height: 8vh;
+    min-height: 60px;
+}
+
+.nav-menu.tablet.landscape{
+    left:0;
+    width: 8vw;
+    height: 100vh;
+    min-width: 60px;
+}
