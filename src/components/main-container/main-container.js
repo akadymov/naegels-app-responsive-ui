@@ -1,8 +1,10 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive'
 import './main-container.css'
-import NavMenu from '../nav-menu'
-/*import ActiveContainer from '../active-container'*/
+import { useMediaQuery } from 'react-responsive';
+
+// Local components
+import NavMenu from '../nav-menu';
+import ActiveContainer from '../active-container';
 
 const MainContainer = () => {
     var isMobile = false
@@ -29,7 +31,12 @@ const MainContainer = () => {
                 isPortrait = {isPortrait}
             ></NavMenu>
             <div className={`main-container ${ isMobile ? "mobile" : (isDesktop ? "desktop" : "tablet")} ${ isPortrait ? "portrait" : "landscape"}`}>
-                {/*<ActiveContainer></ActiveContainer>*/}
+                <ActiveContainer
+                    isMobile = {isMobile}
+                    isDesktop = {isDesktop}
+                    isTablet = {isTablet}
+                    isPortrait = {isPortrait}
+                ></ActiveContainer>
             </div>
         </div>
     )

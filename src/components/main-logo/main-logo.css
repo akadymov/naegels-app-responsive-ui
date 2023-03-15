@@ -1,14 +1,44 @@
-.main-logo{
+.main-logo-container.desktop{
     position: absolute;
-    left: 5%;
-    margin-top: 2%;
+    right: 10px;
+    top: -13vh
+}
 
-    font-family: calibri;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 36px;
-    line-height: 43px;
+.main-logo-container.mobile.portrait{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background-color: lightgray;
+}
 
-    color: #FFFFFF;
-    z-index: -1;
+.main-logo-container.mobile.landscape{
+    position: absolute;
+    right: 5px;
+}
+
+.main-logo-container.tablet.portrait{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background-color: lightgray;
+}
+
+.main-logo-text{
+    color: black;
+    font-family: Arial;
+    font-weight: bold;
+}
+
+.main-logo-text.desktop{
+    font-size: 44px
+}
+
+.main-logo-text.mobile{
+    font-size: 40px;
+    margin: 1vh;
+}
+
+.main-logo-text.tablet{
+    font-size: 44px;
+    margin: 1vh;
 }

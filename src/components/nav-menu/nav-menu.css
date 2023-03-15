@@ -2,6 +2,7 @@
     position: absolute;
     background-color: black;
     text-align: center;
+    z-index: 1;
 }
 
 .nav-menu.mobile.portrait{
@@ -15,7 +16,7 @@
     left:0;
     width: 8vw;
     height: 100vh;
-    min-width: 60px;
+    min-width: 50px;
 }
 
 .nav-menu.desktop{
@@ -29,7 +30,7 @@
     bottom: 0;
     width: 100vw;
     height: 8vh;
-    min-height: 60px;
+    min-height: 50px;
 }
 
 .nav-menu.desktop:hover{
@@ -54,7 +55,7 @@
 .menu-item-container.mobile.portrait{
     display: inline-block;
     width: 20vw;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .menu-item-container.mobile.landscape{
@@ -94,7 +95,7 @@
 }
 
 .MuiSvgIcon-root.MuiSvgIcon-colorAction{
-    color: lightcoral;
+    color: rgb(108, 244, 108);
     z-index: 100;
 }
 
@@ -119,7 +120,7 @@
 }
 
 .menu-item-title.action{
-    color: lightcoral
+    color: rgb(108, 244, 108)
 }
 
 .menu-item-title.disabled{
