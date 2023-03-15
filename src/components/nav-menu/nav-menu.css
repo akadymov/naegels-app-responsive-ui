@@ -37,3 +37,14 @@
     height: 100vh;
     min-width: 60px;
 }
+
+.menu-item-container.mobile.portrait{
+    display: inline-block;
+    width: 20vw;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.MuiSvgIcon-root{
+    color: rgb(193, 192, 192);
+}
