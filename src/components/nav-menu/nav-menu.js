@@ -39,7 +39,7 @@ export default class NavMenu extends React.Component{
         const ScreenOrientationClassPostfix = this.props.isPortrait ? "portrait" : "landscape"
 
         return(
-            <div className={`nav-menu ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} onMouseOver={this.expandMenu} onMouseLeave={this.wrapMenu}> // FIXME: when hovering element above function is not triggered
+            <div className={`nav-menu ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} onMouseOver={this.expandMenu} onMouseLeave={this.wrapMenu}> {/* FIXME: when hovering element above function is not triggered*/}
                 <div className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} id="feedback" onMouseEnter={this.hoverItem} onMouseLeave={this.unhoverItems}>
                     <div className="menu-item-icon-container"><FeedbackRoundedIcon fontSize="large" color={this.state.hoveredItem === 'feedback' ? 'action' : 'primary'}/></div>
                     {this.state.menuExpanded ? 
