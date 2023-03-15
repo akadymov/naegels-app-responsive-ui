@@ -32,8 +32,8 @@ body {
 }
 
 .main-container.desktop {
-    width: 92vw;
-    margin-left: 8vw;
-    height: 100vh;
-    min-height: 800px;
+  width: 92vw;
+  margin-left: 8vw;
+  height: 100vh;
+  min-height: 800px;
 }

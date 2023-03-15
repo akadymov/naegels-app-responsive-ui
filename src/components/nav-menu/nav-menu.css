@@ -1,6 +1,7 @@
 .nav-menu{
     position: absolute;
     background-color: black;
+    text-align: center;
 }
 
 .nav-menu.mobile.portrait{
@@ -31,6 +32,12 @@
     min-height: 60px;
 }
 
+.nav-menu.desktop:hover{
+  width: 15vw;
+  text-align: left;
+  padding-left: 47px;
+}
+
 .nav-menu.tablet.landscape{
     left:0;
     width: 8vw;
@@ -39,7 +46,7 @@
 }
 
 .menu-item-container{
-    text-align: center;
+    text-align: inherit;
 }
 
 .menu-item-container.mobile.portrait{
@@ -60,15 +67,39 @@
 }
 
 .menu-item-container.tablet.landscape{
-    height: 70px;
+    height: 90px;
     margin-top: 20px;
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .menu-item-container.desktop{
+    padding-top: 20px;
     height: 70px;
-    margin-top: 20px;
+}
+
+.menu-item-icon-container{
+    vertical-align: top;
+    height: 100%;
+    display: inline-block;
+    width: 50px;
 }
 
 .MuiSvgIcon-root{
-    color: rgb(230, 227, 227);
+    color: white;
+}
+
+.menu-item-title-container{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.menu-item-title{
+    margin-top: 7px;
+    vertical-align: top;
+    text-align: left;
+    color: white;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 20px;
 }
