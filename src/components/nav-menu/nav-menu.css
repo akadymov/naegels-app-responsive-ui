@@ -98,6 +98,11 @@
     z-index: 100;
 }
 
+.MuiSvgIcon-root.MuiSvgIcon-colorDisabled{
+    color: gray;
+    z-index: 100;
+}
+
 .menu-item-title-container{
     display: inline-block;
     margin-left: 10px;
@@ -115,4 +120,8 @@
 
 .menu-item-title.action{
     color: lightcoral
+}
+
+.menu-item-title.disabled{
+    color: gray
 }
