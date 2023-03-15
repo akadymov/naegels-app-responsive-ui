@@ -38,11 +38,19 @@
     min-width: 60px;
 }
 
+.menu-item-container{
+    text-align: center;
+}
+
 .menu-item-container.mobile.portrait{
     display: inline-block;
     width: 20vw;
-    text-align: center;
     margin-top: 10px;
+}
+
+.menu-item-container.mobile.landscape{
+    height: 15vh;
+    margin-top: 5vh;
 }
 
 .MuiSvgIcon-root{
