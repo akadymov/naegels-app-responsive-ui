@@ -16,18 +16,14 @@ export default class Login extends React.Component{
         this.state = {
             title: 'Login',
             textFieldsList: [
-                {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
+                {id:"username", name:"username", type: "text", text: this.props.match.params.username ? this.props.match.params.username : '', placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
                 {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage}
             ],
             submitButtonList: [
                 {type:"Submit", text:"Submit", onSubmit: this.SendLoginRequest},
                 {type:"secondary", text:"Register new player", onSubmit: () => this.props.history.push('/register/')},
                 {type:"secondary", text:"Forgot password", onSubmit: () => this.props.history.push('/forgot-password/')}
-            ],
-            email:'',
-            password:'',
-            repeatPassword:'',
-            username:''
+            ]
         }
     };
     

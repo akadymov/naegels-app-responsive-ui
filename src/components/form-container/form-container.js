@@ -11,7 +11,6 @@ export default class FormContainer extends React.Component{
     }
 
     render() {
-        console.log(this.props)
         return(
             <div class="form-container" onKeyPress={this.props.onKeyPress}>
                 <div class="form-title">{this.props.title}</div>
