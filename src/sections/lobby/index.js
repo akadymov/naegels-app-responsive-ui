@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import Lobby from './lobby';
 
-export default MainLogo;
+export default Lobby;

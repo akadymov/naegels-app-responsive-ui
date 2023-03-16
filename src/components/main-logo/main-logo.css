@@ -1,50 +1,67 @@
+.main-logo-container{
+    position: relative;
+}
+
 .main-logo-container.desktop{
-    position: absolute;
-    right: 10px;
-    top: -13vh
+    top: -10vh;
+    min-width: 270px;
+    min-height: 10vh;
+    right: 0;
+}
+
+.main-logo-container.tablet.portrait{
+    top: 0;
+    min-height: 8vh;
+    width: 100vw;
+    background-color: lightgray;
 }
 
 .main-logo-container.mobile.portrait{
-    position: absolute;
-    width: 100%;
-    text-align: center;
+    top: 0;
+    min-height: 10vh;
+    min-width: 200px;
     background-color: lightgray;
 }
 
 .main-logo-container.mobile.landscape{
-    position: absolute;
-    right: 5px;
-}
-
-.main-logo-container.tablet.portrait{
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    background-color: lightgray;
+    top: 0;
+    right: 10px;
+    min-height: 10vh;
+    min-width: 200px;
 }
 
 .main-logo-text{
+    position: absolute;
+    top: 50%;
+    margin: 0;
     color: black;
     font-family: Mukta;
     font-weight: bold;
 }
 
 .main-logo-text.desktop{
-    font-size: 44px
+    font-size: 44px;
+    right: 0;
+    transform: translate(0, -50%);
+}
+
+.main-logo-text.tablet.portrait{
+    font-size: 44px;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .main-logo-text.mobile{
     font-size: 30px;
-    margin: 1vh;
+    right: 0;
+    max-width: 200px;
+}
+
+.main-logo-text.mobile.portrait{
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .main-logo-text.mobile.landscape{
-    max-width: 150px;
-    overflow-wrap: normal;
-    text-align: right;
-}
-
-.main-logo-text.tablet{
-    font-size: 44px;
-    margin: 1vh;
+    transform: translate(0, -50%);
 }

@@ -1,6 +1,10 @@
 import React from 'react';
+
+//Local services
 import NaegelsApi from '../../services/naegels-api-service';
 import Cookies from 'universal-cookie';
+
+//Local components
 import FormContainer from '../../components/form-container';
 
 export default class RegistrationSucceed extends React.Component{
