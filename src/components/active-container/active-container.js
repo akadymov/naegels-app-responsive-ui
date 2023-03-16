@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom';
 import MainLogo from '../main-logo';
 import Login from '../../sections/login';
 import Registration from '../../sections/registration';
+import RegistrationSucceed from '../../sections/registration-succeed'
 /*import ForgotPassword from '../../sections/forgot-password';
 import RestorePassword from '../../sections/restore-password';
 import Lobby from '../../sections/lobby';
@@ -32,6 +33,7 @@ export default class ActiveContainer extends React.Component{
                     isPortrait = {this.props.isPortrait}
                 ></MainLogo>
                 <Switch>
+                    <Route path="/registration-succeed/:username" component={RegistrationSucceed}></Route>
                     <Route path="/register" component={Registration}></Route>
                     <Route path="/signin/:reason" component={Login}></Route>
                     <Route path="/" component={Login}></Route>

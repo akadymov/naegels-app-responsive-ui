@@ -3,37 +3,17 @@ import NaegelsApi from '../../services/naegels-api-service';
 import Cookies from 'universal-cookie';
 import FormContainer from '../../components/form-container';
 
-export default class Registration extends React.Component{
+export default class RegistrationSucceed extends React.Component{
 
     constructor(props) {
         super(props);
-        this.SendRegRequest = this.SendRegRequest.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleRepeatPasswordChange = this.handleRepeatPasswordChange.bind(this);
-        this.handleErrorResponse = this.handleErrorResponse.bind(this);
-        this.clearErrorMessage = this.clearErrorMessage.bind(this);
         this.state = {
-            title: 'Register new player',
-            email:'',
-            password:'',
-            repeatPassword:'',
-            username:'',
-            preferredLang: '',
-            textFieldsList: [
-                {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: ""},
-                {id:"email", name:"email", type: "text", placeholder: "Email      ", onChange: this.handleEmailChange, errorMessage: "", value: ""},
-                {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: ""},
-                {id:"repeatPassword", name:"repeatPassword", type: "password", placeholder: "Repeat password   ", onChange: this.handleRepeatPasswordChange, errorMessage: "", value: ""}
-            ],
+            infoMessage: 'User ' + this.props.match.params.username + ' was successfully registered.',
+            title: 'Successful registration',
+            textFieldsList: [],
             submitButtonList: [
-                {type:"Submit", text:"Submit", onSubmit: this.SendRegRequest},
-                {type:"secondary", text:"Login", onSubmit: () => this.props.history.push('/signin')}
-            ],
-            languages: [
-                {type:"radio", id:"preferred-lang-en", name:"preferred-lang", lang:"en", errorMessage:""},
-                {type:"radio", id:"preferred-lang-ru", name:"preferred-lang", lang:"ru", errorMessage:""}
+                {type:"Submit", text:"Login", onSubmit: () => this.props.history.push('/signin')},
+                {type:"secondary", text:"Register another user", onSubmit: () => this.props.history.push('/register')}
             ]
       };
     }
@@ -120,6 +100,7 @@ export default class Registration extends React.Component{
                 textFieldsList={this.state.textFieldsList}
                 submitButtonList={this.state.submitButtonList}
                 onSubmit={this.SendLoginRequest}
+                infoMessage={this.state.infoMessage}
             >
             </FormContainer>
         )

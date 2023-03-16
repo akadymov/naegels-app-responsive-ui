@@ -14,6 +14,7 @@ export default class Login extends React.Component{
         this.clearErrorMessage = this.clearErrorMessage.bind(this);
         this.CheckIfAlreadyLoggedIn = this.CheckIfAlreadyLoggedIn.bind(this);
         this.state = {
+            title: 'Login',
             textFieldsList: [
                 {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: ""},
                 {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: ""}
@@ -106,12 +107,11 @@ export default class Login extends React.Component{
 
         return (
             <FormContainer 
-                title="Login"
+                title={this.state.title}
                 onKeyPress={this.handleKeyPress}
                 textFieldsList={this.state.textFieldsList}
                 submitButtonList={this.state.submitButtonList}
                 onSubmit={this.SendLoginRequest}
-                submitText="Login"
             >
             </FormContainer>
         )
