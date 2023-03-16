@@ -4,18 +4,6 @@ import './form-container.css';
 import FormInputField from '../form-input-field';
 import FormButton from '../form-button';
 
-/*
-                title="Login"
-                onKeyPress={this.handleKeyPress}
-                textFieldsList={this.state.textFieldsList}
-                onSubmit={this.SendLoginRequest}
-                submitText="Login"
-                textFieldsList: [
-                    {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: ""},
-                    {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: ""}
-                ]
-*/
-
 
 export default class FormContainer extends React.Component{
     constructor(props) {
@@ -40,7 +28,7 @@ export default class FormContainer extends React.Component{
                         placeholder={field.placeholder}
                         onChange={field.onChange}
                         errorMessage={field.errorMessage}
-                        onClick={this.clearErrorMessage}
+                        onClick={field.onClick}
                     ></FormInputField>
                 })}
                 {this.props.submitButtonList.map(button => {

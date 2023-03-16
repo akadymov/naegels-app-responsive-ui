@@ -22,10 +22,10 @@ export default class Registration extends React.Component{
             username:'',
             preferredLang: '',
             textFieldsList: [
-                {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: ""},
-                {id:"email", name:"email", type: "text", placeholder: "Email      ", onChange: this.handleEmailChange, errorMessage: "", value: ""},
-                {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: ""},
-                {id:"repeatPassword", name:"repeatPassword", type: "password", placeholder: "Repeat password   ", onChange: this.handleRepeatPasswordChange, errorMessage: "", value: ""}
+                {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
+                {id:"email", name:"email", type: "text", placeholder: "Email      ", onChange: this.handleEmailChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
+                {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
+                {id:"repeatPassword", name:"repeatPassword", type: "password", placeholder: "Repeat password   ", onChange: this.handleRepeatPasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage}
             ],
             submitButtonList: [
                 {type:"Submit", text:"Submit", onSubmit: this.SendRegRequest},
