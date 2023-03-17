@@ -31,7 +31,7 @@ export default class NaegelsModal extends React.Component{
                                 switch(control.type){
                                     case 'input':
                                         return (
-                                            <div className="modal-control-container">
+                                            <div className="modal-control-container" key={control.id}>
                                             <TextField
                                                 id={control.id}
                                                 key={control.id}
@@ -43,7 +43,7 @@ export default class NaegelsModal extends React.Component{
                                         )
                                     case 'button':
                                         return(
-                                            <div className="modal-control-container">
+                                            <div className="modal-control-container" key={control.id}>
                                             <FormButton
                                                 id={control.id}
                                                 key={control.id}
@@ -54,6 +54,8 @@ export default class NaegelsModal extends React.Component{
                                             ></FormButton>
                                             </div>
                                         )
+                                    default:
+                                        return('')
                                 }
                             })}
                         </div>
