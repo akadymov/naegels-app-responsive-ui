@@ -5,6 +5,37 @@
     margin: 10px 2vw 5px 2vw;
 }
 
-.controls-container.desktop{
+.section-header-container.tablet.portrait{
+    position: absolute;
+    background-color: white;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    min-height: 40px;
+    width: 96vw;
+    margin: 10px 2vw 5px 2vw;
+}
+
+.section-header-container.mobile{
+    position: absolute;
+    background-color: white;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+}
+
+.section-header-container.mobile.portrait{
+    width: 100vw;
+    margin: 1vh;
+}
+
+.section-header-container.mobile.landscape{
+    width: 91vw;
+    margin: 1vh;
+}
+
+.controls-container{
     float: right;
+    overflow-x: scroll;
+    white-space: nowrap;
 }
