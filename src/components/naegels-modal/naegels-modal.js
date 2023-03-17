@@ -32,13 +32,16 @@ export default class NaegelsModal extends React.Component{
                                     case 'input':
                                         return (
                                             <div className="modal-control-container" key={control.id}>
-                                            <TextField
-                                                id={control.id}
-                                                key={control.id}
-                                                label={control.label}
-                                                variant={control.variant}
-                                                onChange={control.onChange}
-                                            ></TextField>
+                                                <ThemeProvider theme={defaultTheme}>
+                                                    <TextField
+                                                        id={control.id}
+                                                        key={control.id}
+                                                        label={control.label}
+                                                        variant={control.variant}
+                                                        onChange={control.onChange}
+                                                        type={control.type}
+                                                    ></TextField>
+                                                </ThemeProvider>
                                             </div>
                                         )
                                     case 'button':

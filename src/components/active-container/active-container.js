@@ -10,8 +10,8 @@ import Registration from '../../sections/registration';
 import RegistrationSucceed from '../../sections/registration-succeed'
 import Lobby from '../../sections/lobby';
 /*import ForgotPassword from '../../sections/forgot-password';
-import RestorePassword from '../../sections/restore-password';
 import Room from '../../sections/room';
+import RestorePassword from '../../sections/restore-password';
 import Game from '../../sections/game';
 import LeaderBoard from '../../sections/leaderboard';
 import About from '../../sections/about';
@@ -38,16 +38,27 @@ export default class ActiveContainer extends React.Component{
                                 isTablet = {this.props.isTablet}
                                 isPortrait = {this.props.isPortrait}
                             />
-                        }>
+                        }
+                    >
                     </Route>
                     <Route path="/registration-succeed/:username" component={RegistrationSucceed}></Route>
                     <Route path="/register" component={Registration}></Route>
-                    <Route path="/signin/:reason" component={Login}></Route>
+                    <Route path="/signout" component={Login}></Route>
+                    <Route 
+                        path="/signin/:username" 
+                        component={
+                            () => <Login  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isTablet = {this.props.isTablet}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
                     <Route path="/" component={Login}></Route>
-                    {/*<Route path="/signout" component={Login}></Route>
-                    <Route path="/forgot-password" component={ForgotPassword}></Route>
+                    {/*<Route path="/forgot-password" component={ForgotPassword}></Route>
+                    <Route path="/room/:roomId" component={Room}></Route>
                     <Route path="/restore-password" component={RestorePassword}></Route>
-                    <Route path="/lobby/room/:roomId" component={Room}></Route>
                     <Route path="/game/:gameId" component={Game}></Route>
                     <Route path="/leaderboard" component={LeaderBoard}></Route>
                     <Route path="/about" component={About}></Route>

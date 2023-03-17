@@ -56,6 +56,12 @@ export default class NaegelsApi {
     };
 
     login = async (username, password) => {
+        if(!username){
+            username = ''
+        }
+        if(!password){
+            password = ''
+        }
         const data = {
             username: username,
             password: password

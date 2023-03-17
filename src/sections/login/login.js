@@ -16,13 +16,53 @@ export default class Login extends React.Component{
         this.state = {
             title: 'Login',
             textFieldsList: [
-                {id:"username", name:"username", type: "text", text: this.props.match.params.username ? this.props.match.params.username : '', placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
-                {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage}
+                {
+                    id:"username", 
+                    label:"username", 
+                    variant:"outlined", 
+                    type: "text", 
+                    width: "220px",
+                    // text: props.match.params.username ? props.match.params.username : '', 
+                    text: '',
+                    onChange: this.handleUsernameChange, errorMessage: "", value: "", 
+                    onClick: this.clearErrorMessage
+                },
+                {
+                    id:"password", 
+                    label:"password", 
+                    variant:"outlined", 
+                    type: "password", 
+                    width: "220px",
+                    onChange: this.handlePasswordChange, 
+                    errorMessage: "", 
+                    value: "", 
+                    onClick: this.clearErrorMessage
+                }
             ],
             submitButtonList: [
-                {type:"Submit", text:"Submit", onSubmit: this.SendLoginRequest},
-                {type:"secondary", text:"Register new player", onSubmit: () => this.props.history.push('/register/')},
-                {type:"secondary", text:"Forgot password", onSubmit: () => this.props.history.push('/forgot-password/')}
+                {
+                    id:"login_button", 
+                    type:"contained", 
+                    text:"Submit", 
+                    width: "220px",
+                    onSubmit: this.SendLoginRequest
+                },
+                {
+                    id:"register_button", 
+                    type:"outlined", 
+                    text:"Register new player", 
+                    width: "220px",
+                    size: "small",
+                    onSubmit: () => window.location.replace('/register/')
+                },
+                {
+                    id:"forgot_button", 
+                    type:"outlined", 
+                    text:"Forgot password", 
+                    width: "220px",
+                    size: "small",
+                    onSubmit: () => window.location.replace('/forgot-password/')
+                }
             ]
         }
     };
@@ -43,6 +83,7 @@ export default class Login extends React.Component{
     }
 
     SendLoginRequest = () => {
+        console.log('logging in')
         this.NaegelsApi.login(
             this.state.username, 
             this.state.password
@@ -74,7 +115,7 @@ export default class Login extends React.Component{
             f.errorMessage="";
         })
         body.errors.forEach(er => {
-            var elementsIndex = this.state.textFieldsList.findIndex(element => element.name === er.field )
+            var elementsIndex = this.state.textFieldsList.findIndex(element => element.id === er.field )
             textFieldsListUpdated[elementsIndex] = {...textFieldsListUpdated[elementsIndex], errorMessage: er.message}
         });
         this.setState({textFieldsList: textFieldsListUpdated});
@@ -94,8 +135,10 @@ export default class Login extends React.Component{
       };
 
     render() {
+
+        
       
-        if(this.props.location.pathname === '/signout') {
+        if(window.location.pathname === '/signout') {
             this.SignOut();
         }
       

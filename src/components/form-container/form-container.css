@@ -1,11 +1,10 @@
 .form-container{
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 10px;
     padding: 20px;
-    border: lightgray solid;
 }
 
 .form-title{
@@ -19,4 +18,8 @@
 
 .form-message{
     color: black
+}
+
+.form-element-container{
+    margin: 10px;
 }

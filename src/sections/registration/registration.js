@@ -22,14 +22,64 @@ export default class Registration extends React.Component{
             username:'',
             preferredLang: '',
             textFieldsList: [
-                {id:"username", name:"username", type: "text", placeholder: "Username      ", onChange: this.handleUsernameChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
-                {id:"email", name:"email", type: "text", placeholder: "Email      ", onChange: this.handleEmailChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
-                {id:"password", name:"password", type: "password", placeholder: "Password      ", onChange: this.handlePasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage},
-                {id:"repeatPassword", name:"repeatPassword", type: "password", placeholder: "Repeat password   ", onChange: this.handleRepeatPasswordChange, errorMessage: "", value: "", onClick: this.clearErrorMessage}
+                {
+                    id:"username", 
+                    label:"username", 
+                    type: "text", 
+                    width: "300px",
+                    placeholder: "Username      ", 
+                    onChange: this.handleUsernameChange, 
+                    errorMessage: "", 
+                    value: "", 
+                    onClick: this.clearErrorMessage
+                },
+                {
+                    id:"email", 
+                    label:"email", 
+                    type: "text", 
+                    width: "300px",
+                    onChange: this.handleEmailChange, 
+                    errorMessage: "", 
+                    value: "", 
+                    onClick: this.clearErrorMessage
+                },
+                {
+                    id:"password", 
+                    label:"password", 
+                    type: "password", 
+                    width: "300px",
+                    onChange: this.handlePasswordChange, 
+                    errorMessage: "", 
+                    value: "", 
+                    onClick: this.clearErrorMessage
+                },
+                {
+                    id:"repeatPassword",
+                    label:"repeat password", 
+                    type: "password", 
+                    width: "300px",
+                    onChange: this.handleRepeatPasswordChange, 
+                    errorMessage: "", 
+                    value: "", 
+                    onClick: this.clearErrorMessage
+                }
             ],
             submitButtonList: [
-                {type:"Submit", text:"Submit", onSubmit: this.SendRegRequest},
-                {type:"secondary", text:"Login", onSubmit: () => this.props.history.push('/signin')}
+                {
+                    id:"register_button", 
+                    width: "300px",
+                    type:"contained", 
+                    text:"Submit", 
+                    onSubmit: this.SendRegRequest
+                },
+                {
+                    id:"login_button",
+                    width: "300px",
+                    type:"outlined",
+                    size: "small",
+                    text:"Login", 
+                    onSubmit: () => window.location.replace('/signin')
+                }
             ],
             languages: [
                 {type:"radio", id:"preferred-lang-en", name:"preferred-lang", lang:"en", errorMessage:""},
@@ -97,7 +147,7 @@ export default class Registration extends React.Component{
             f.errorMessage="";
         })
         body.errors.forEach(er => {
-            var elementsIndex = this.state.textFieldsList.findIndex(element => element.name === er.field )
+            var elementsIndex = this.state.textFieldsList.findIndex(element => element.id === er.field )
             textFieldsListUpdated[elementsIndex] = {...textFieldsListUpdated[elementsIndex], errorMessage: er.message}
         });
         this.setState({textFieldsList: textFieldsListUpdated});

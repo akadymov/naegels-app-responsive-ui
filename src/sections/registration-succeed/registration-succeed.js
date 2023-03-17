@@ -16,8 +16,21 @@ export default class RegistrationSucceed extends React.Component{
             title: 'Successful registration',
             textFieldsList: [],
             submitButtonList: [
-                {type:"Submit", text:"Login", onSubmit: () => this.props.history.push('/signin/' + this.props.match.params.username)},
-                {type:"secondary", text:"Register another user", onSubmit: () => this.props.history.push('/register')}
+                {
+                    id:"login_button",
+                    type:"contained", 
+                    width:"220px",
+                    text:"Login", 
+                    onSubmit: () => window.location.replace('/signin/' + this.props.match.params.username)
+                },
+                {
+                    id:"register_button",
+                    type:"outlined",
+                    width:"220px",
+                    size: "small",
+                    text:"Register another user", 
+                    onSubmit: () => window.location.replace('/register')
+                }
             ]
       };
     }

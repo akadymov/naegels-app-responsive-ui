@@ -146,7 +146,7 @@ export default class RegistrationSucceed extends React.Component{
                 console.log('connect_to_room')
                 setTimeout(function(){
                     console.log('Connected successfuly')
-                    window.location.replace('/lobby/room/' + roomId)
+                    window.location.replace('/room/' + roomId)
                 }, 1000)
             } else {
                 this.setState({popupError: body.errors[0].message})
@@ -156,7 +156,7 @@ export default class RegistrationSucceed extends React.Component{
 
     openRoom = (e) => {
         const roomId = e.target.id
-        window.location.replace('/lobby/room/' + roomId)
+        window.location.replace('/room/' + roomId)
     };
 
     handleCreateRoomError=(body) => {
@@ -185,7 +185,7 @@ export default class RegistrationSucceed extends React.Component{
             } else {
                 lobbySocket.emit('create_room', body.roomId, body.roomName, body.host, body.created)
                 console.log('create_room')
-                window.location.replace('/lobby/room/' + body.roomId);
+                window.location.replace('/room/' + body.roomId);
             }
         })*/
     };

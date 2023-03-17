@@ -21,6 +21,8 @@ export default class FormButton extends React.Component{
                         variant={this.props.variant}
                         disabled={this.props.disabled}
                         onClick={this.props.onSubmit}
+                        sx={{width:this.props.width}}
+                        size={this.props.size}
                     >{this.props.text}</Button>
                 </ThemeProvider>
             </div>

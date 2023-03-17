@@ -8,10 +8,6 @@ import HomeRoundedIcon from '@mui/icons-material/Home';
 import InfoRoundedIcon from '@mui/icons-material/Info';
 import LogoutRoundedIcon from '@mui/icons-material/Logout';
 import LoginRoundedIcon from '@mui/icons-material/Login';
-import { ThemeProvider } from '@mui/material/styles';
-
-// Local components
-import defaultTheme from '../../themes/default';
 
 // Integration modules
 import Cookies from 'universal-cookie';
@@ -54,13 +50,21 @@ export default class NavMenu extends React.Component{
         this.setState({ hoveredItem: null })
     }
 
+    handleNavItemClick = (e) => {
+        window.location.replace(e.path)
+    }
+
+    signOut = () => {
+        this.Cookies.remove('idToken', {path:'/'})
+        window.location.reload()
+    }
+
     componentDidMount() {
         this.CheckIfAlreadyLoggedIn()
     }
 
     render() {
-
-        console.log(window.location)
+        
         const ScreenSizeClassPostfix = this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")
         const ScreenOrientationClassPostfix = this.props.isPortrait ? "portrait" : "landscape"
 
@@ -71,6 +75,8 @@ export default class NavMenu extends React.Component{
                     id="feedback" 
                     onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
+                    path="/feedback/"
+                    onClick={this.handleNavItemClick}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <FeedbackRoundedIcon 
@@ -90,8 +96,10 @@ export default class NavMenu extends React.Component{
                     className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
                     id="leaderboard" 
                     onMouseEnter={this.hoverItem} 
-                    onMouseLeave={this.unhoverItems
-                }>
+                    onMouseLeave={this.unhoverItems}
+                    path="/leaderboard/"
+                    onClick={this.handleNavItemClick}
+                >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <EmojiEventsRoundedIcon 
                             fontSize="large" 
@@ -110,8 +118,10 @@ export default class NavMenu extends React.Component{
                     className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
                     id="lobby" 
                     onMouseEnter={this.hoverItem} 
-                    onMouseLeave={this.unhoverItems
-                }>
+                    onMouseLeave={this.unhoverItems}
+                    path="/lobby/"
+                    onClick={this.handleNavItemClick}
+                >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <HomeRoundedIcon 
                             fontSize="large" 
@@ -130,6 +140,8 @@ export default class NavMenu extends React.Component{
                     className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
                     id="about" onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
+                    path="/about/"
+                    onClick={this.handleNavItemClick}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <InfoRoundedIcon 
@@ -148,6 +160,7 @@ export default class NavMenu extends React.Component{
                     id={this.state.loggedIn ? "signout" : "signin"} 
                     onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
+                    onClick={this.signOut}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         {this.state.loggedIn ?
