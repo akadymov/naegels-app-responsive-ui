@@ -3,10 +3,6 @@ import React from 'react';
 import './main-logo.css'
 
 export default class MainLogo extends React.Component{
-
-    constructor(props) {
-        super(props);
-    }
     
     render() {
         return (

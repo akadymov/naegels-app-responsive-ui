@@ -10,23 +10,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import { styled, ThemeProvider } from '@mui/material/styles';
 
-
-const StyledTableRow = styled(TableRow)(() => ({
-    // every 1 out of 2 row color
-    '&:nth-of-type(odd)': {
-        backgroundColor: 'rgb(237, 240, 239)',
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-    // on hover color
-    "&:hover": {
-        backgroundColor: 'lightGreen'
-    }
-}));
+// local components
+import defaultTheme from '../../themes/default'
 
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -40,9 +27,23 @@ const StyledTableCell = styled(TableCell)(() => ({
 }));
 
 
+
 export default class NaegelsTableContainer extends React.Component{
     constructor(props) {
         super(props);
+        this.state = {
+            selected: -1
+        }
+    }
+
+
+
+    handleClick = (event, roomId) => {
+        if (this.state.selected === roomId) {
+            this.setState({ selected: -1 })
+        } else{
+            this.setState({ selected: roomId })
+        }
     }
 
     render() {
@@ -52,23 +53,30 @@ export default class NaegelsTableContainer extends React.Component{
                     <TableHead>
                         <TableRow>
                             {this.props.headers.map(header => {
-                                return <StyledTableCell align="right">{header}</StyledTableCell>
+                                return <StyledTableCell key={header} align="right">{header}</StyledTableCell>
                             })}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {this.props.rows.map(row => (
-                        <StyledTableRow
-                            key={row.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            {
-                                row.valuesArray.map(value => (
-                                    <StyledTableCell align="right">{value}</StyledTableCell>
-                                ))
-                            }
-                        </StyledTableRow>
-                    ))}
+                    {this.props.rows.map(row => {
+                        return (
+                            <ThemeProvider key={row.id} theme={defaultTheme}>
+                                <TableRow
+                                    key={row.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    onClick={(event) => this.handleClick(event, row.id)}
+                                    selected={row.id === this.state.selected}
+                                    hover
+                                >
+                                    {
+                                        row.valuesArray.map(value => (
+                                            <StyledTableCell key={`row ${row.id} column ${row.valuesArray.indexOf(value)}`} align="right">{value}</StyledTableCell>
+                                        ))
+                                    }
+                                </TableRow>
+                            </ThemeProvider>
+                        )
+                    })}
                     </TableBody>
                 </Table>
             </TableContainer>

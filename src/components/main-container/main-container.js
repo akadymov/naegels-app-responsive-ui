@@ -15,11 +15,11 @@ const MainContainer = () => {
     const isMobileHeight = useMediaQuery({query: '(max-height: 480px)'})
     const isDesktopHeight = useMediaQuery({query: '(min-height: 768px)'})
     if(isPortrait){
-        var isMobile = isMobileWidth
-        var isDesktop = isDesktopWidth
+        isMobile = isMobileWidth
+        isDesktop = isDesktopWidth
     } else {
-        var isMobile = isMobileHeight
-        var isDesktop = isDesktopHeight
+        isMobile = isMobileHeight
+        isDesktop = isDesktopHeight
     }
     var isTablet = !isMobile & !isDesktop
     return (

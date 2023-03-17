@@ -5,3 +5,7 @@
     left: 50%;
     margin: 0;
 }
+
+.Mui-selected{
+    background-color: green;
+}

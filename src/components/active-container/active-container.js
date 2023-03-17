@@ -18,10 +18,6 @@ import About from '../../sections/about';
 import Feedback from '../../sections/feedback';*/
 
 export default class ActiveContainer extends React.Component{
-
-    constructor(props) {
-        super(props);
-    }
     
     render() {
         return (

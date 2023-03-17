@@ -105,7 +105,7 @@ export default class RegistrationSucceed extends React.Component{
         })
     };
     
-    componentWillMount = () => {
+    componentDidMount = () => {
         this.GetRoomsList();
     };
 
