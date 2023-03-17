@@ -9,16 +9,54 @@ import { roomSocket, lobbySocket } from '../../services/socket';
 
 //Local components
 import NaegelsTableContainer from '../../components/naegels-table-container';
+import SectionHeader from '../../components/section-header';
+import NaegelsModal from '../../components/naegels-modal';
 
 
 export default class RegistrationSucceed extends React.Component{
 
     constructor(props) {
         super(props);
-        this.GetRoomsList = this.GetRoomsList.bind(this);
         this.state = {
-            headers: ['Room', 'Host', 'Created', 'Players', 'Status'],
+            roomsHeaders: ['Room', 'Host', 'Created', 'Players', 'Status'],
             rooms: [],
+            selectedRoomId: -1,
+            headerControls: [
+                {
+                    id: 'create_room',
+                    type: 'button',
+                    text: 'Create',
+                    variant: 'contained',
+                    disabled: false,
+                    onSubmit: this.createRoomPopup
+                },
+                {
+                    id: 'connect_to_room',
+                    type: 'button',
+                    text: 'Connect',
+                    variant: 'contained',
+                    disabled: true
+                }
+            ],
+            modalOpen: false,
+            modalControls: [
+                {
+                    id: "new_room_name_input",
+                    type: "input",
+                    variant: "outlined",
+                    value: "",
+                    label: "room name",
+                    onChange: this.handleNewRoomNameChange
+                },
+                {
+                    id: "create_room_confirm_button",
+                    type: "button",
+                    variant: "contained",
+                    text: "Create room",
+                    disabled: true,
+                    onSubmit: this.createNewRoom
+                }
+            ],
             newRoomName: '',
             newRoomError:'',
             popupError:'',
@@ -55,9 +93,51 @@ export default class RegistrationSucceed extends React.Component{
         });
     };
 
-    connectRoom = (e) => {
-        // debugger;
-        const roomId = e.target.id
+    updateControls = () => {
+        var newHeaderControls = [
+            {
+                id: 'create_room',
+                type: 'button',
+                text: 'Create',
+                variant: 'contained',
+                disabled: false,
+                onSubmit: this.createRoomPopup
+            },
+            {
+                id: 'connect_to_room',
+                type: 'button',
+                text: 'Connect',
+                variant: 'contained',
+                disabled: this.state.selectedRoomId === -1,
+                onSubmit: this.connectRoom
+            }
+        ]
+        var newModalControls = [
+            {
+                id: "new_room_name_input",
+                type: "input",
+                value: this.state.newRoomName,
+                label: "room name",
+                onChange: this.handleNewRoomNameChange
+            },
+            {
+                id: "create_room_confirm_button",
+                type: "button",
+                variant: "contained",
+                text: "Create room",
+                disabled: this.state.newRoomName === '',
+                onSubmit: this.createNewRoom
+            }
+        ]
+        this.setState({ 
+            headerControls: newHeaderControls,
+            modalControls: newModalControls
+        })
+    }
+
+    connectRoom = (roomId) => {
+        roomId = this.state.selectedRoomId
+        console.log('Connecting to room #' & roomId)
         this.NaegelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(!body.errors){
@@ -65,6 +145,7 @@ export default class RegistrationSucceed extends React.Component{
                 lobbySocket.emit('increase_room_players', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
                 console.log('connect_to_room')
                 setTimeout(function(){
+                    console.log('Connected successfuly')
                     window.location.replace('/lobby/room/' + roomId)
                 }, 1000)
             } else {
@@ -78,10 +159,6 @@ export default class RegistrationSucceed extends React.Component{
         window.location.replace('/lobby/room/' + roomId)
     };
 
-    handleNewRoomNameChange = (e) => {
-        this.setState({ newRoomName: e.target.value })
-    };
-
     handleCreateRoomError=(body) => {
         this.setState({newRoomError: body.errors[0].message});
     };
@@ -92,8 +169,16 @@ export default class RegistrationSucceed extends React.Component{
         }
     };
 
+    createRoomPopup = () => {
+        this.setState({ 
+            newRoomName: '',
+            modalOpen: true
+        })
+    }
+
     createNewRoom = () => {
-        this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
+        console.log('creating new room "' + this.state.newRoomName + '"')
+        /*this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
         .then((body) => {
             if(body.errors) {
                 this.handleCreateRoomError(body)
@@ -102,8 +187,37 @@ export default class RegistrationSucceed extends React.Component{
                 console.log('create_room')
                 window.location.replace('/lobby/room/' + body.roomId);
             }
-        })
+        })*/
     };
+
+    selectRoom = (event, roomId) => {
+        var selectedRoomIndex = this.state.rooms.findIndex(room => room.roomId === roomId)
+        if(selectedRoomIndex < 0){
+            this.setState({ selectedRoomId: -1 }, () => {
+                this.updateControls();
+            })
+        } else {
+            this.setState({ selectedRoomId: roomId }, () => {
+                this.updateControls();
+            })
+        }
+    }
+
+    handleNewRoomNameChange = (e) => {
+        this.setState({ newRoomName: e.target.value }, () => {
+            this.updateControls();
+        })
+    }
+
+    closeModal = () => {
+        console.log('closing modal')
+        this.setState({ 
+            modalOpen: false,
+            newRoomName: ''
+        }, () => {
+            this.updateControls();
+        })
+    }
     
     componentDidMount = () => {
         this.GetRoomsList();
@@ -115,10 +229,29 @@ export default class RegistrationSucceed extends React.Component{
 
         return(
             <div className={`lobby-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                <NaegelsTableContainer
-                    headers={this.state.headers}
-                    rows={this.state.rooms}
-                ></NaegelsTableContainer>
+                <SectionHeader
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
+                    controls={this.state.headerControls}
+                ></SectionHeader>
+                <div className={`lobby-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                    <NaegelsTableContainer
+                        headers={this.state.roomsHeaders}
+                        rows={this.state.rooms}
+                        onClick={this.selectRoom}
+                        selected={this.state.selectedRoomId}
+                    ></NaegelsTableContainer>
+                </div>
+                <NaegelsModal
+                    open={this.state.modalOpen}
+                    header="New room"
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
+                    controls={this.state.modalControls}
+                    closeModal={this.closeModal}
+                ></NaegelsModal>
             </div>
         )
     }

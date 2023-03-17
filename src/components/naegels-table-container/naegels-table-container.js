@@ -29,22 +29,6 @@ const StyledTableCell = styled(TableCell)(() => ({
 
 
 export default class NaegelsTableContainer extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: -1
-        }
-    }
-
-
-
-    handleClick = (event, roomId) => {
-        if (this.state.selected === roomId) {
-            this.setState({ selected: -1 })
-        } else{
-            this.setState({ selected: roomId })
-        }
-    }
 
     render() {
         return(
@@ -64,8 +48,8 @@ export default class NaegelsTableContainer extends React.Component{
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={(event) => this.handleClick(event, row.id)}
-                                    selected={row.id === this.state.selected}
+                                    onClick={(event) => this.props.onClick(event, row.id)}
+                                    selected={row.id === this.props.selected}
                                     hover
                                 >
                                     {

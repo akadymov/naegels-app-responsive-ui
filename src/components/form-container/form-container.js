@@ -2,7 +2,7 @@ import React from 'react';
 
 import './form-container.css';
 import FormInputField from '../form-input-field';
-import FormButton from '../form-button';
+import FormButton from '../native-form-button';
 
 
 export default class FormContainer extends React.Component{

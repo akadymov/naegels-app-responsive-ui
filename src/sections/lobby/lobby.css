@@ -1,7 +1,12 @@
+.lobby-table-container.desktop{
+    position: relative;
+}
+
 .lobby-container.desktop{
     position: absolute;
-    top: 30px;
+    top: 0;
     transform: translate(-50%, 0%);
     left: 50%;
     width: 80vw;
 }
+

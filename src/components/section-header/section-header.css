@@ -1,0 +1,10 @@
+.section-header-container.desktop{
+    min-height: 40px;
+    right: 0px;
+    width: 76vw;
+    margin: 10px 2vw 5px 2vw;
+}
+
+.controls-container.desktop{
+    float: right;
+}
