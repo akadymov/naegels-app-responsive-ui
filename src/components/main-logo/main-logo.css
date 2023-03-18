@@ -24,7 +24,7 @@
 }
 
 .main-logo-container.mobile.landscape{
-    top: 0;
+    top: 10px;
     right: 10px;
     min-height: 10vh;
     min-width: 200px;

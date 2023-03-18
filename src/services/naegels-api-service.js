@@ -194,5 +194,15 @@ export default class NaegelsApi {
         return res
     };
 
+    getInfo = async () => {
+        const res = await this.apiCall('/info', 'GET')
+        return res
+    }
+
+    getRules = async () => {
+        const res = await this.apiCall('/rules', 'GET')
+        return res
+    }
+
 };
 

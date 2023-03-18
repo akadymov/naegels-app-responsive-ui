@@ -49,7 +49,7 @@
 
 .menu-item-container{
     text-align: inherit;
-    z-index: 300;
+    z-index: 1200;
 }
 
 .menu-item-container.mobile.portrait{
@@ -187,8 +187,4 @@
 
 .menu-item-title.action{
     color: darkviolet;
-}
-
-.avatar-container{
-    
 }

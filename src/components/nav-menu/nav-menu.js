@@ -12,7 +12,6 @@ import Avatar from '@mui/material/Avatar';
 
 // Integration modules
 import Cookies from 'universal-cookie';
-import NaegelsApi from '../../services/naegels-api-service';
 
 
 export default class NavMenu extends React.Component{
@@ -26,7 +25,6 @@ export default class NavMenu extends React.Component{
         }
     }
     Cookies = new Cookies();
-    NaegelsApi = new NaegelsApi();
 
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
@@ -53,13 +51,13 @@ export default class NavMenu extends React.Component{
         this.setState({ hoveredItem: null })
     }
 
-    handleNavItemClick = (e) => {
-        window.location.replace(e.path)
+    handleNavItemClick = (pathname) => {
+        window.location.replace(pathname)
     }
 
     signOut = () => {
         this.Cookies.remove('idToken', {path:'/'})
-        window.location.reload()
+        window.location.replace('/signin')
     }
 
     stringToColor(string) {
@@ -108,19 +106,18 @@ export default class NavMenu extends React.Component{
                         id="profile"
                         onMouseEnter={this.hoverItem} 
                         onMouseLeave={this.unhoverItems}
-                        path="/profile/"
-                        onClick={this.handleNavItemClick}
+                        onClick={() => {this.handleNavItemClick('/profile')}}
                     >
                         <div className={`menu-item-icon-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                             <Avatar 
                                 {...this.stringAvatar(this.Cookies.get('username').toUpperCase())}
                                 src={`/img/profile-pics/${this.Cookies.get('username')}.png`}
-                                sx={{ width: 35, height: 35 , outline: this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : 'none'}}
+                                sx={{ width: 35, height: 35 , outline: this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : (window.location.pathname.startsWith('/profile') ? '1px solid darkViolet' : 'none')}}
                             ></Avatar>
                         </div>
                         {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">
-                            <p className={`menu-item-title ${this.state.hoveredItem === 'profile' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'')}`}>PROFILE</p>
+                            <p className={`menu-item-title ${this.state.hoveredItem === 'profile' ? 'secondary' : (window.location.pathname.startsWith('/profile') ? 'action' :'')}`}>PROFILE</p>
                         </div>   
                     :
                         ''
@@ -132,18 +129,17 @@ export default class NavMenu extends React.Component{
                         id="feedback" 
                         onMouseEnter={this.hoverItem} 
                         onMouseLeave={this.unhoverItems}
-                        path="/feedback/"
-                        onClick={this.handleNavItemClick}
+                        onClick={() => {this.handleNavItemClick('/feedback')}}
                     >
                         <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                             <FeedbackRoundedIcon 
                                 fontSize="large" 
-                                color={this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'primary')}
+                                color={this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname.startsWith('/feedback') ? 'action' :'primary')}
                             />
                         </div>
                         {this.state.menuExpanded ? 
                             <div className="menu-item-title-container">
-                                <p className={`menu-item-title ${this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'')}`}>FEEDBACK</p>
+                                <p className={`menu-item-title ${this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname.startsWith('/feedback') ? 'action' :'')}`}>FEEDBACK</p>
                             </div>   
                         :
                             ''
@@ -155,18 +151,17 @@ export default class NavMenu extends React.Component{
                     id="leaderboard" 
                     onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
-                    path="/leaderboard/"
-                    onClick={this.handleNavItemClick}
+                    onClick={() => {this.handleNavItemClick('/leaderboard')}}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <EmojiEventsRoundedIcon 
                             fontSize="large" 
-                            color={this.state.hoveredItem === 'leaderboard' ? 'secondary' : (window.location.pathname === '/leaderboard/' ? 'action' :'primary')}
+                            color={this.state.hoveredItem === 'leaderboard' ? 'secondary' : (window.location.pathname.startsWith('/leaderboard') ? 'action' :'primary')}
                         />
                     </div>
                     {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">
-                            <p className={`menu-item-title ${this.state.hoveredItem === 'leaderboard' ? 'secondary' : (window.location.pathname === '/leaderboard/' ? 'action' :'')}`}>LEADERBOARD</p>
+                            <p className={`menu-item-title ${this.state.hoveredItem === 'leaderboard' ? 'secondary' : (window.location.pathname.startsWith('/leaderboard') ? 'action' :'')}`}>LEADERBOARD</p>
                         </div>   
                     :
                         ''
@@ -177,8 +172,7 @@ export default class NavMenu extends React.Component{
                     id="lobby" 
                     onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
-                    path="/lobby/"
-                    onClick={this.handleNavItemClick}
+                    onClick={() => {this.handleNavItemClick('/lobby')}}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <HomeRoundedIcon 
@@ -198,17 +192,16 @@ export default class NavMenu extends React.Component{
                     className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
                     id="about" onMouseEnter={this.hoverItem} 
                     onMouseLeave={this.unhoverItems}
-                    path="/about/"
-                    onClick={this.handleNavItemClick}
+                    onClick={() => {this.handleNavItemClick('/about')}}
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <InfoRoundedIcon 
                             fontSize="large" 
-                            color={this.state.hoveredItem === 'about' ? 'secondary' : (window.location.pathname === '/about/' ? 'action' :'primary')}
+                            color={this.state.hoveredItem === 'about' ? 'secondary' : (window.location.pathname.startsWith('/about') ? 'action' :'primary')}
                         />
                     </div>
                     {this.state.menuExpanded ? 
-                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'about' ? 'secondary' : (window.location.pathname === '/about/' ? 'action' :'')}`}>ABOUT</p></div>   
+                        <div className="menu-item-title-container"><p className={`menu-item-title ${this.state.hoveredItem === 'about' ? 'secondary' : (window.location.pathname.startsWith('/about') ? 'action' :'')}`}>ABOUT</p></div>   
                     :
                         ''
                     }

@@ -112,6 +112,9 @@ export default class RegistrationSucceed extends React.Component{
 
         return (
             <FormContainer 
+                isMobile = {this.props.isMobile}
+                isDesktop = {this.props.isDesktop}
+                isPortrait = {this.props.isPortrait}
                 title={this.state.title}
                 onKeyPress={this.handleKeyPress}
                 textFieldsList={this.state.textFieldsList}

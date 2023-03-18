@@ -1,10 +1,27 @@
 .form-container{
     position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    padding: 20px;
+    overflow: auto;
+}
+
+.form-container.desktop{
+    top: -10vh;
+    height: 76vh;
+    margin: 2vh;
+}
+
+.form-container.tablet.portrait{
+    height: 80vh;
+    margin: 2vh;
+}
+
+.form-container.mobile.portrait{
+    height: 78vh;
+    margin: 2vh;
+}
+
+.form-container.mobile.landscape{
+    height: 90vh;
+    margin: 2vh;
 }
 
 .form-title{
