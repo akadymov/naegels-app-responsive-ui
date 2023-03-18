@@ -54,6 +54,7 @@ export default class Room extends React.Component{
                     text: 'Disconnect',
                     variant: 'contained',
                     disabled: true,
+                    size: 'small',
                     width: '130px',
                     onSubmit: this.disconnectRoom
                 },
@@ -63,6 +64,7 @@ export default class Room extends React.Component{
                     text: 'Ready',
                     variant: 'contained',
                     disabled: true,
+                    size: 'small',
                     width: '130px',
                     onSubmit: this.confirmReady
                 },
@@ -142,6 +144,7 @@ export default class Room extends React.Component{
                 type: 'button',
                 text: 'Disconnect',
                 variant: 'contained',
+                size: 'small',
                 disabled: this.state.selectedPlayerId === -1 || this.state.roomDetails.host === this.state.selectedPlayerUsername || !(this.state.youAreHost || this.state.selectedPlayerUsername === this.Cookies.get('username')) ,
                 width: '130px',
                 onSubmit: this.disconnectRoom
@@ -151,29 +154,34 @@ export default class Room extends React.Component{
                 type: 'button',
                 text: this.state.selectedPlayerReady === 1 ? 'Not ready' : 'Ready',
                 variant: 'contained',
+                size: 'small',
                 disabled: this.state.selectedPlayerId === -1 || this.state.selectedPlayerUsername === this.state.roomDetails.host || (!this.state.youAreHost && this.state.selectedPlayerUsername !== this.Cookies.get('username')),
                 width: '130px',
                 onSubmit: this.state.selectedPlayerReady === 1 ? this.resetReady : this.confirmReady
-            },
-            {
+            }
+        ]
+        if(this.state.youAreHost){
+            newHeaderControls.push({
                 id: 'start_game',
                 type: 'button',
                 text: 'Start',
                 variant: 'contained',
+                size: 'small',
                 disabled: !this.state.youAreHost,
                 width: '130px',
                 onSubmit: this.startGame
-            },
-            {
+            })
+            newHeaderControls.push({
                 id: 'close_room',
                 type: 'button',
                 text: 'Close',
                 variant: 'contained',
+                size: 'small',
                 disabled: !this.state.youAreHost,
                 width: '130px',
                 onSubmit: this.closeRoom
-            }
-        ]
+            })
+        }
         this.setState({ headerControls: newHeaderControls })
     }
 

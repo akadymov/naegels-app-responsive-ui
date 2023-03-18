@@ -36,7 +36,23 @@
 }
 
 .controls-container{
-    float: right;
-    overflow-x: scroll;
+    overflow: scroll;
     white-space: nowrap;
+    text-align: right;
+}
+
+.controls-container.desktop{
+    width: 76vw
+}
+
+.controls-container.tablet.portrait{
+    width: 96vw
+}
+
+.controls-container.mobile.portrait{
+    width: 100vw
+}
+
+.controls-container.mobile.landscape{
+    width: 91vw
 }

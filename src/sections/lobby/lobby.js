@@ -28,6 +28,7 @@ export default class Lobby extends React.Component{
                     text: 'Create',
                     variant: 'contained',
                     disabled: false,
+                    size: 'small',
                     onSubmit: this.createRoomPopup
                 },
                 {
@@ -35,6 +36,7 @@ export default class Lobby extends React.Component{
                     type: 'button',
                     text: 'Connect',
                     variant: 'contained',
+                    size: 'small',
                     disabled: true
                 }
             ],
@@ -102,6 +104,7 @@ export default class Lobby extends React.Component{
                 text: 'Create',
                 variant: 'contained',
                 disabled: false,
+                size: 'small',
                 onSubmit: this.createRoomPopup
             },
             {
@@ -109,6 +112,7 @@ export default class Lobby extends React.Component{
                 type: 'button',
                 text: 'Connect',
                 variant: 'contained',
+                size: 'small',
                 disabled: this.state.selectedRoomId === -1,
                 onSubmit: this.connectRoom
             }
