@@ -31,6 +31,7 @@ const StyledTableCell = styled(TableCell)(() => ({
 export default class NaegelsTableContainer extends React.Component{
 
     render() {
+
         return(
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,7 +45,7 @@ export default class NaegelsTableContainer extends React.Component{
                     <TableBody>
                     {this.props.rows.map(row => {
                         return (
-                            <ThemeProvider key={row.id} theme={defaultTheme}>
+                            <ThemeProvider key={`theme-provider-${row.id}`} theme={defaultTheme}>
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

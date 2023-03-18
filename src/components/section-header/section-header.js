@@ -24,6 +24,7 @@ export default class SectionHeader extends React.Component{
                                 text={control.text}
                                 disabled={control.disabled}
                                 onSubmit={control.onSubmit}
+                                width={control.width}
                             ></FormButton>
                         )
                     })}

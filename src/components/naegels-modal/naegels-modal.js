@@ -40,6 +40,7 @@ export default class NaegelsModal extends React.Component{
                                                         variant={control.variant}
                                                         onChange={control.onChange}
                                                         type={control.type}
+                                                        width={control.width}
                                                     ></TextField>
                                                 </ThemeProvider>
                                             </div>
@@ -54,6 +55,7 @@ export default class NaegelsModal extends React.Component{
                                                 variant={control.variant}
                                                 disabled={control.disabled}
                                                 text={control.text}
+                                                width={control.width}
                                             ></FormButton>
                                             </div>
                                         )

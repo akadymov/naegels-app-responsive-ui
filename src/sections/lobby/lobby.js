@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './lobby.css'
+import './lobby.css';
 
 //Local services
 import NaegelsApi from '../../services/naegels-api-service';
@@ -178,6 +178,7 @@ export default class RegistrationSucceed extends React.Component{
 
     createNewRoom = () => {
         console.log('creating new room "' + this.state.newRoomName + '"')
+        this.closeModal()
         /*this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
         .then((body) => {
             if(body.errors) {

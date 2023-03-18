@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import Room from './room.js';
 
-export default MainLogo;
+export default Room;
