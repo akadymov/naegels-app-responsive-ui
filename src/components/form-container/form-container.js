@@ -33,7 +33,8 @@ export default class FormContainer extends React.Component{
                                     onClick={field.onClick}
                                     error={field.errorMessage !== ''}
                                     helperText={field.errorMessage}
-                                    type={field.type}x  
+                                    type={field.type}
+                                    defaultValue={field.text}
                                     sx={{width: field.width}}
                                 ></TextField>
                             </ThemeProvider>

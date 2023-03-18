@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './active-container.css'
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 
 // Local components
 import MainLogo from '../main-logo';
@@ -10,6 +10,7 @@ import Registration from '../../sections/registration';
 import RegistrationSucceed from '../../sections/registration-succeed'
 import Lobby from '../../sections/lobby';
 import Room from '../../sections/room';
+import UserInfo from '../user-info';
 /*import ForgotPassword from '../../sections/forgot-password';
 import RestorePassword from '../../sections/restore-password';
 import Game from '../../sections/game';
@@ -20,22 +21,24 @@ import Feedback from '../../sections/feedback';*/
 export default class ActiveContainer extends React.Component{
     
     render() {
+
+        const RoomWithRouter = withRouter(Room)
+        const LoginWithRouter = withRouter(Login)
+
         return (
             <div className={`active-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                 <MainLogo
                     isMobile = {this.props.isMobile}
                     isDesktop = {this.props.isDesktop}
-                    isTablet = {this.props.isTablet}
                     isPortrait = {this.props.isPortrait}
                 ></MainLogo>
                 <Switch>
                     <Route 
                         path="/room/:roomId" 
                         component={
-                            () => <Room  
+                            () => <RoomWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
-                                isTablet = {this.props.isTablet}
                                 isPortrait = {this.props.isPortrait}
                             />
                         }
@@ -46,7 +49,6 @@ export default class ActiveContainer extends React.Component{
                             () => <Lobby  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
-                                isTablet = {this.props.isTablet}
                                 isPortrait = {this.props.isPortrait}
                             />
                         }
@@ -58,10 +60,9 @@ export default class ActiveContainer extends React.Component{
                     <Route 
                         path="/signin/:username" 
                         component={
-                            () => <Login  
+                            () => <LoginWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
-                                isTablet = {this.props.isTablet}
                                 isPortrait = {this.props.isPortrait}
                             />
                         }

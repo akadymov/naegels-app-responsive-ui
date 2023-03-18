@@ -13,7 +13,7 @@ import SectionHeader from '../../components/section-header';
 import NaegelsModal from '../../components/naegels-modal';
 
 
-export default class RegistrationSucceed extends React.Component{
+export default class Room extends React.Component{
 
     constructor(props) {
         super(props)
@@ -178,7 +178,7 @@ export default class RegistrationSucceed extends React.Component{
     }
 
     GetRoomDetails = () => {
-        this.NaegelsApi.getRoom(17)
+        this.NaegelsApi.getRoom(this.props.match.params.roomId)
         .then((body) => {
             if(body.errors) {
                 console.log('Something went wrong! Cannot get rooms list!')

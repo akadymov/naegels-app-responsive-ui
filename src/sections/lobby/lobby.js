@@ -13,7 +13,7 @@ import SectionHeader from '../../components/section-header';
 import NaegelsModal from '../../components/naegels-modal';
 
 
-export default class RegistrationSucceed extends React.Component{
+export default class Lobby extends React.Component{
 
     constructor(props) {
         super(props);
@@ -45,6 +45,7 @@ export default class RegistrationSucceed extends React.Component{
                     type: "input",
                     variant: "outlined",
                     value: "",
+                    errorMessage: "",
                     label: "room name",
                     onChange: this.handleNewRoomNameChange
                 },
@@ -137,15 +138,12 @@ export default class RegistrationSucceed extends React.Component{
 
     connectRoom = (roomId) => {
         roomId = this.state.selectedRoomId
-        console.log('Connecting to room #' & roomId)
         this.NaegelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(!body.errors){
                 roomSocket.emit('add_player_to_room', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
                 lobbySocket.emit('increase_room_players', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
-                console.log('connect_to_room')
                 setTimeout(function(){
-                    console.log('Connected successfuly')
                     window.location.replace('/room/' + roomId)
                 }, 1000)
             } else {
@@ -177,18 +175,16 @@ export default class RegistrationSucceed extends React.Component{
     }
 
     createNewRoom = () => {
-        console.log('creating new room "' + this.state.newRoomName + '"')
         this.closeModal()
-        /*this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
+        this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
         .then((body) => {
             if(body.errors) {
                 this.handleCreateRoomError(body)
             } else {
                 lobbySocket.emit('create_room', body.roomId, body.roomName, body.host, body.created)
-                console.log('create_room')
                 window.location.replace('/room/' + body.roomId);
             }
-        })*/
+        })
     };
 
     selectRoom = (event, roomId) => {
@@ -211,7 +207,6 @@ export default class RegistrationSucceed extends React.Component{
     }
 
     closeModal = () => {
-        console.log('closing modal')
         this.setState({ 
             modalOpen: false,
             newRoomName: ''

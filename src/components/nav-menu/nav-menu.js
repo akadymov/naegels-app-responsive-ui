@@ -8,6 +8,7 @@ import HomeRoundedIcon from '@mui/icons-material/Home';
 import InfoRoundedIcon from '@mui/icons-material/Info';
 import LogoutRoundedIcon from '@mui/icons-material/Logout';
 import LoginRoundedIcon from '@mui/icons-material/Login';
+import Avatar from '@mui/material/Avatar';
 
 // Integration modules
 import Cookies from 'universal-cookie';
@@ -35,7 +36,9 @@ export default class NavMenu extends React.Component{
     }
 
     expandMenu = () => {
-        this.setState({ menuExpanded: true})
+        if(this.props.isDesktop){
+            this.setState({ menuExpanded: true})
+        }
     }
 
     wrapMenu = () => {
@@ -59,6 +62,35 @@ export default class NavMenu extends React.Component{
         window.location.reload()
     }
 
+    stringToColor(string) {
+        let hash = 0;
+        let i;
+      
+        /* eslint-disable no-bitwise */
+        for (i = 0; i < string.length; i += 1) {
+          hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+      
+        let color = '#';
+      
+        for (i = 0; i < 3; i += 1) {
+          const value = (hash >> (i * 8)) & 0xff;
+          color += `00${value.toString(16)}`.slice(-2);
+        }
+        /* eslint-enable no-bitwise */
+      
+        return color;
+    }
+      
+    stringAvatar(name) {
+        return {
+            sx: {
+            bgcolor: this.stringToColor(name),
+            },
+            children: `${name[0][0]}`,
+        };
+    }
+
     componentDidMount() {
         this.CheckIfAlreadyLoggedIn()
     }
@@ -70,28 +102,54 @@ export default class NavMenu extends React.Component{
 
         return(
             <div className={`nav-menu ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} onMouseOver={this.expandMenu} onMouseLeave={this.wrapMenu}> {/* FIXME: when hovering element above function is not triggered*/}
-                <div 
-                    className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
-                    id="feedback" 
-                    onMouseEnter={this.hoverItem} 
-                    onMouseLeave={this.unhoverItems}
-                    path="/feedback/"
-                    onClick={this.handleNavItemClick}
-                >
-                    <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
-                        <FeedbackRoundedIcon 
-                            fontSize="large" 
-                            color={this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'primary')}
-                        />
-                    </div>
-                    {this.state.menuExpanded ? 
+                {this.state.loggedIn ? 
+                    <div 
+                        className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
+                        id="profile"
+                        onMouseEnter={this.hoverItem} 
+                        onMouseLeave={this.unhoverItems}
+                        path="/profile/"
+                        onClick={this.handleNavItemClick}
+                    >
+                        <div className={`menu-item-icon-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <Avatar 
+                                {...this.stringAvatar(this.Cookies.get('username').toUpperCase())}
+                                src={`/img/profile-pics/${this.Cookies.get('username')}.png`}
+                                sx={{ width: 35, height: 35 , outline: this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : 'none'}}
+                            ></Avatar>
+                        </div>
+                        {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">
-                            <p className={`menu-item-title ${this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'')}`}>FEEDBACK</p>
+                            <p className={`menu-item-title ${this.state.hoveredItem === 'profile' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'')}`}>PROFILE</p>
                         </div>   
                     :
                         ''
                     }
-                </div>
+                    </div>
+                :
+                    <div 
+                        className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
+                        id="feedback" 
+                        onMouseEnter={this.hoverItem} 
+                        onMouseLeave={this.unhoverItems}
+                        path="/feedback/"
+                        onClick={this.handleNavItemClick}
+                    >
+                        <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
+                            <FeedbackRoundedIcon 
+                                fontSize="large" 
+                                color={this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'primary')}
+                            />
+                        </div>
+                        {this.state.menuExpanded ? 
+                            <div className="menu-item-title-container">
+                                <p className={`menu-item-title ${this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname === '/feedback/' ? 'action' :'')}`}>FEEDBACK</p>
+                            </div>   
+                        :
+                            ''
+                        }
+                    </div>
+                }
                 <div 
                     className={`menu-item-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`} 
                     id="leaderboard" 
@@ -125,12 +183,12 @@ export default class NavMenu extends React.Component{
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <HomeRoundedIcon 
                             fontSize="large" 
-                            color={this.state.loggedIn ? (this.state.hoveredItem === 'lobby' ? 'secondary' : (window.location.pathname.startsWith('/lobby/') ? 'action' : 'primary')) : 'disabled'}
+                            color={this.state.loggedIn ? (this.state.hoveredItem === 'lobby' ? 'secondary' : (window.location.pathname.startsWith('/lobby') ? 'action' : 'primary')) : 'disabled'}
                         />
                     </div>
                     {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">
-                            <p className={`menu-item-title ${this.state.loggedIn ? (this.state.hoveredItem === 'lobby' ? 'secondary' : (window.location.pathname.startsWith('/lobby/') ? 'action' :'')) : 'disabled'}`}>LOBBY</p>
+                            <p className={`menu-item-title ${this.state.loggedIn ? (this.state.hoveredItem === 'lobby' ? 'secondary' : (window.location.pathname.startsWith('/lobby') ? 'action' :'')) : 'disabled'}`}>LOBBY</p>
                         </div>   
                     :
                         ''

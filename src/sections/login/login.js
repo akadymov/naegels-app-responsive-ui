@@ -22,8 +22,8 @@ export default class Login extends React.Component{
                     variant:"outlined", 
                     type: "text", 
                     width: "220px",
-                    // text: props.match.params.username ? props.match.params.username : '', 
-                    text: '',
+                    text: this.props.match.params.username ? this.props.match.params.username : '', 
+                    //text: '',
                     onChange: this.handleUsernameChange, errorMessage: "", value: "", 
                     onClick: this.clearErrorMessage
                 },
@@ -135,8 +135,6 @@ export default class Login extends React.Component{
       };
 
     render() {
-
-        
       
         if(window.location.pathname === '/signout') {
             this.SignOut();

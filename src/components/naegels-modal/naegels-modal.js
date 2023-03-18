@@ -41,6 +41,7 @@ export default class NaegelsModal extends React.Component{
                                                         onChange={control.onChange}
                                                         type={control.type}
                                                         width={control.width}
+                                                        defaultValue={control.text}
                                                     ></TextField>
                                                 </ThemeProvider>
                                             </div>

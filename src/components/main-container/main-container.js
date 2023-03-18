@@ -1,10 +1,12 @@
 import React from 'react';
 import './main-container.css'
 import { useMediaQuery } from 'react-responsive';
+import Cookies from 'universal-cookie';
 
 // Local components
 import NavMenu from '../nav-menu';
 import ActiveContainer from '../active-container';
+
 
 const MainContainer = () => {
     var isMobile = false
@@ -22,19 +24,18 @@ const MainContainer = () => {
         isDesktop = isDesktopHeight
     }
     var isTablet = !isMobile & !isDesktop
+
     return (
         <div>   
             <NavMenu 
                 isMobile = {isMobile}
                 isDesktop = {isDesktop}
-                isTablet = {isTablet}
                 isPortrait = {isPortrait}
             ></NavMenu>
             <div className={`main-container ${ isMobile ? "mobile" : (isDesktop ? "desktop" : "tablet")} ${ isPortrait ? "portrait" : "landscape"}`}>
                 <ActiveContainer
                     isMobile = {isMobile}
                     isDesktop = {isDesktop}
-                    isTablet = {isTablet}
                     isPortrait = {isPortrait}
                 ></ActiveContainer>
             </div>
