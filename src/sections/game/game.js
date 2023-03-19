@@ -5,10 +5,13 @@ import './game.css'
 //Local services
 import Cookies from 'universal-cookie';
 import NaegelsApi from '../../services/naegels-api-service';
-import { roomSocket, gameSocket } from '../../services/socket';
+import { lobbySocket, roomSocket, gameSocket } from '../../services/socket';
 
 //Local components
 import SectionHeader from '../../components/section-header';
+import PlayerContainer from '../../components/player-container';
+import OpponentContainer from '../../components/opponent-container';
+import NaegelsModal from '../../components/naegels-modal';
 
 export default class Game extends React.Component{
 
@@ -45,11 +48,12 @@ export default class Game extends React.Component{
                     disabled: false,
                     size: 'small',
                     width: '130px',
-                    onSubmit: this.confirmExit
+                    onSubmit: this.exitGame
                 }
             ],
+            modalControls: [],
             youAreHost: false,
-            error: false,
+            modalOpen: false,
             gameDetails: {
                 players:[],
                 canDeal: false,
@@ -178,12 +182,12 @@ export default class Game extends React.Component{
             {
                 id: 'exit',
                 type: 'button',
-                text: this.state.youAreHost ? 'Close' : 'Exit',
+                text: this.state.youAreHost ? 'Finish' : 'Exit',
                 variant: 'contained',
                 disabled: false,
                 size: 'small',
                 width: '130px',
-                onSubmit: this.state.youAreHost ? this.closeRoom : this.confirmExit
+                onSubmit: this.state.youAreHost ? this.finishGame : this.exitGame
             }
         ]
         if (this.state.youAreHost){
@@ -192,7 +196,7 @@ export default class Game extends React.Component{
                 type: 'button',
                 text: 'Shuffle',
                 variant: 'contained',
-                disabled: this.state.positionsDefined,
+                disabled: this.state.gameDetails.positionsDefined,
                 size: 'small',
                 width: '130px',
                 onSubmit: this.definePositions
@@ -202,13 +206,64 @@ export default class Game extends React.Component{
                 type: 'button',
                 text: 'Deal',
                 variant: 'contained',
-                disabled: !this.state.canDeal,
+                disabled: !this.state.gameDetails.canDeal,
                 size: 'small',
                 width: '130px',
                 onSubmit: this.dealCards
             })
         }
         this.setState({ headerControls: newHeaderControls })
+    }
+
+    finishGame = () => {
+        var newModalControls = [
+            {
+                id: "confirm_finish_game",
+                type: "button",
+                variant: "contained",
+                text: "Finish game",
+                width: '140px',
+                disabled: false,
+                onSubmit: this.confirmFinishGame
+            },
+            {
+                id: "cancel_finish_game",
+                type: "button",
+                variant: "outlined",
+                text: "Cancel",
+                width: '140px',
+                disabled: false,
+                onSubmit: this.closeModal
+            }
+        ]
+        this.setState({
+            modalControls: newModalControls,
+            modalOpen: true
+        })
+    }
+
+
+    closeModal = () => {
+        this.setState({ 
+            modalOpen: false 
+        })
+    }
+
+    confirmFinishGame = () => {
+        const gameId = this.state.gameDetails.id
+        const roomId = this.state.gameDetails.roomId
+        this.NaegelsApi.finishGame(this.Cookies.get('idToken'))
+        .then((body) => {
+            if(body.errors){
+                this.setState({popupError: body.errors[0].message})
+            } else {
+                gameSocket.emit('finish_game', this.Cookies.get('username'), gameId);
+                this.setState({popupError: 'Game #' + gameId + ' was successfully finished!'})
+                setTimeout(function(){
+                    window.location.replace('/room/' + roomId)
+                }, 1000)
+            }
+        });
     }
 
     dealCards = () => {
@@ -284,8 +339,8 @@ export default class Game extends React.Component{
         });
     };
 
-    selectCard = (e) => {
-        const cardId = e.target.getAttribute('cardId').substring(5)
+    selectCard = (cardId) => {
+        
         if( cardId !== this.state.selectedCard) {
             this.setState({
                 selectedCard: cardId
@@ -319,6 +374,57 @@ export default class Game extends React.Component{
     handleBetChange(e) {
         this.setState({myBetSizeValue: e.target.value})
     };
+
+    exitGame = () => {
+        var newModalControls = [
+            {
+                id: "confirm_exit_game",
+                type: "button",
+                variant: "contained",
+                text: "Exit game",
+                width: '140px',
+                disabled: false,
+                onSubmit: this.confirmExit
+            },
+            {
+                id: "cancel_exit_game",
+                type: "button",
+                variant: "outlined",
+                text: "Cancel",
+                width: '140px',
+                disabled: false,
+                onSubmit: this.closeModal
+            }
+        ]
+        this.setState({
+            modalControls: newModalControls,
+            modalOpen: true
+        })
+    }
+
+    confirmExit = () => {
+        const roomId = this.state.gameDetails.roomId
+        const roomName = this.state.gameDetails.roomName
+        const username = this.Cookies.get('username')
+        this.NaegelsApi.disconnectRoom(this.Cookies.get('idToken'), roomId, username)
+        .then((body) => {
+            if(!body.errors){
+                roomSocket.emit('remove_player_from_room', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
+                lobbySocket.emit('decrease_room_players', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
+                window.location.replace('/lobby')
+            } else {
+                this.setState({popupError: body.errors[0].message})
+            }
+        });
+    }
+
+    onSelectCard = (e) => {
+        const cardId = e.target.getAttribute('cardId').substring(5)
+        console.log('selecting card ' + cardId)
+        if(this.state.handDetails.nextActingPlayer === this.state.myInhandInfo.username && this.state.handDetails.betsAreMade) {
+            this.selectCard(cardId)
+        }
+    }
     
     componentDidMount = () => {
         this.GetGameStatus();
@@ -338,6 +444,11 @@ export default class Game extends React.Component{
 
     render() {
 
+        console.log(this.state)
+
+        const players = this.state.handDetails.players.length > 0 ? this.state.handDetails.players : this.state.gameDetails.players
+        const myPosition = this.state.myPosition === 0 ? 1 : this.state.myPosition
+
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                 <SectionHeader
@@ -349,8 +460,55 @@ export default class Game extends React.Component{
                     subtitle={this.state.gameDetails.host}
                 ></SectionHeader>
                 <div className={`game-table ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-
+                    {
+                    players.map(player => {
+                        if(player.username !== this.Cookies.get('username')) {
+                            if(this.state.gameDetails.positionsDefined){
+                                return (
+                                    <OpponentContainer
+                                        key={`player ${player.position} conrainer`}
+                                        isMobile={this.props.isMobile}
+                                        isDesktop={this.props.isDesktop}
+                                        isPortrait={this.props.isPortrait}
+                                        cards={player.cardsOnHand}
+                                        numberOfPlayers={players.length}
+                                        username={player.username}
+                                        position={((players.length + player.position - myPosition) % players.length)}
+                                        betSize={player.betSize}
+                                        tookBets={player.tookBets}
+                                        active={this.state.handDetails.nextActingPlayer === player.username}
+                                    ></OpponentContainer>
+                                )
+                            }
+                        }
+                    })}
+                    {this.state.gameDetails.positionsDefined ? 
+                        <PlayerContainer
+                            isMobile={this.props.isMobile}
+                            isDesktop={this.props.isDesktop}
+                            isPortrait={this.props.isPortrait}
+                            username={this.state.myInhandInfo.username}
+                            betSize={this.state.myInhandInfo.betSize}
+                            tookBets={this.state.myInhandInfo.tookBets}
+                            active={this.state.myInhandInfo.username === this.state.handDetails.nextActingPlayer}
+                            cardsInHand={this.state.cardsInHand}
+                            selectedCard={this.state.selectedCard}
+                            onClick={this.onSelectCard}
+                        ></PlayerContainer>
+                    :
+                        ''
+                    }
+                    
                 </div>
+                <NaegelsModal
+                    open={this.state.modalOpen}
+                    text="Please, confirm action"
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
+                    controls={this.state.modalControls}
+                    closeModal={this.closeModal}
+                ></NaegelsModal>
             </div>
         )
     }
