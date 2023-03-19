@@ -1,0 +1,59 @@
+.game-container.mobile.landscape{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 92vw;
+    height: 100vh;
+}
+
+.game-container.mobile.portrait{
+    position: absolute;
+    top: 10vh;
+    right: 0;
+    width: 100vw;
+    height: 82vh;
+}
+
+.game-container.desktop{
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, 0%);
+    left: 50%;
+    width: 80vw;
+    max-width: 1400px;
+    border-bottom: 2px solid gray;
+}
+
+.game-table{
+    position: absolute;
+    background-color: green;
+    border-radius: 50%;
+    transform: translate(-50%, 0%);
+    left: 50%;
+}
+
+.game-table.desktop{
+    height: 55vh;
+    width: 70vw;
+    max-width: 1200px;
+    margin-top: 5vh;
+}
+
+.game-table.tablet.portrait{
+    height: 60vh;
+    width: 60vw;
+    max-width: 1200px;
+    margin-top: 5vh;
+}
+
+.game-table.mobile.portrait{
+    height: 55vh;
+    width: 80vw;
+    margin-top: 5vh;
+}
+
+.game-table.mobile.landscape{
+    height: 60vh;
+    width: 80vw;
+    margin-top: 13vh;
+}

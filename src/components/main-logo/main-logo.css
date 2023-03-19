@@ -54,11 +54,9 @@
 .main-logo-text.mobile{
     font-size: 30px;
     right: 0;
-    max-width: 200px;
 }
 
 .main-logo-text.mobile.portrait{
-    left: 50%;
     transform: translate(-50%, -50%);
 }
 

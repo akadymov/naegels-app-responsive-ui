@@ -14,6 +14,20 @@ export default class SectionHeader extends React.Component{
 
         return(
             <div className={`section-header-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                {this.props.title ?
+                    <div className={`section-title-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        {this.props.title}
+                    </div>
+                :
+                    ''
+                }
+                {this.props.subtitle ?
+                    <div className={`section-subtitle-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        {this.props.subtitle}
+                    </div>
+                :
+                    ''
+                }
                 <div className={`controls-container  ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     {this.props.controls.map(control => {
                         return(

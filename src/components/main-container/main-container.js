@@ -1,7 +1,6 @@
 import React from 'react';
 import './main-container.css'
 import { useMediaQuery } from 'react-responsive';
-import Cookies from 'universal-cookie';
 
 // Local components
 import NavMenu from '../nav-menu';
@@ -23,7 +22,6 @@ const MainContainer = () => {
         isMobile = isMobileHeight
         isDesktop = isDesktopHeight
     }
-    var isTablet = !isMobile & !isDesktop
 
     return (
         <div>   

@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import Game from './game.js';
 
-export default MainLogo;
+export default Game;

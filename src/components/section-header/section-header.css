@@ -26,7 +26,7 @@
 }
 
 .section-header-container.mobile.portrait{
-    width: 100vw;
+    width: 98vw;
     margin: 1vh;
 }
 
@@ -42,7 +42,9 @@
 }
 
 .controls-container.desktop{
-    width: 76vw
+    position: absolute;
+    width: 64vw;
+    right: 2vw;
 }
 
 .controls-container.tablet.portrait{
@@ -55,4 +57,87 @@
 
 .controls-container.mobile.landscape{
     width: 91vw
+}
+
+.section-title-container{
+    font-family: Mukta;
+}
+
+.section-subtitle-container{
+    font-family: Mukta;
+}
+
+.section-title-container.desktop{
+    position: absolute;
+    text-align: left;
+    top: 0;
+    max-width: 12vw;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 24px;
+}
+
+.section-title-container.tablet.portrait{
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 24px;
+    top:-80vh;
+    max-width: 15vw;
+}
+
+.section-title-container.mobile{
+    position: absolute;
+    left:2vw;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 18px;
+}
+
+
+.section-title-container.mobile.landscape{
+    top:-90vh;
+    max-width: 25vw;
+}
+
+.section-title-container.mobile.portrait{
+    top:-76vh;
+    max-width: 23vw;
+}
+
+.section-subtitle-container.desktop{
+    position: absolute;
+    text-align: left;
+    top: 32px;
+    max-width: 12vw;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.section-subtitle-container.tablet.portrait{
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    top:-77vh;
+    max-width: 15vw;
+}
+
+.section-subtitle-container.mobile{
+    position: absolute;
+    left:2vw;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+.section-subtitle-container.mobile.landscape{
+    top:-83vh;
+    max-width: 25vw;
+}
+
+.section-subtitle-container.mobile.portrait{
+    top:-72.5vh;
+    max-width: 23vw;
 }

@@ -11,9 +11,9 @@ import RegistrationSucceed from '../../sections/registration-succeed'
 import Lobby from '../../sections/lobby';
 import Room from '../../sections/room';
 import About from '../../sections/about';
+import Game from '../../sections/game';
 /*import ForgotPassword from '../../sections/forgot-password';
 import RestorePassword from '../../sections/restore-password';
-import Game from '../../sections/game';
 import LeaderBoard from '../../sections/leaderboard';
 import Feedback from '../../sections/feedback';*/
 
@@ -26,6 +26,7 @@ export default class ActiveContainer extends React.Component{
         const AboutWithRouter = withRouter(About)
         const RegistrationSucceedWithRouter = withRouter(RegistrationSucceed)
         const RegistrationWithRouter = withRouter(Registration)
+        const GameWithRouter = withRouter(Game)
 
         return (
             <div className={`active-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -35,6 +36,16 @@ export default class ActiveContainer extends React.Component{
                     isPortrait = {this.props.isPortrait}
                 ></MainLogo>
                 <Switch>
+                    <Route 
+                        path="/game/:gameId" 
+                        component={
+                            () => <GameWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
                     <Route 
                         path="/about" 
                         component={
