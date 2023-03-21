@@ -16,7 +16,8 @@ import NaegelsModal from '../../components/naegels-modal';
 export default class Game extends React.Component{
 
     constructor(props) {
-        super(props);this.handleBetChange = this.handleBetChange.bind(this);
+        super(props);
+        this.handleBetChange = this.handleBetChange.bind(this);
         this.selectCard = this.selectCard.bind(this);
         this.state = {
             gameDetails: {

@@ -18,7 +18,7 @@ export default class Lobby extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            roomsHeaders: ['Room', 'Host', 'Created', 'Players', 'Status'],
+            roomsHeaders:  this.props.isMobile && this.props.isPortrait ? ['Room', 'Host', 'Players', ''] : ['Room', 'Host', 'Players', 'Created', 'Status', ''],
             rooms: [],
             selectedRoomId: -1,
             headerControls: [
@@ -30,14 +30,6 @@ export default class Lobby extends React.Component{
                     disabled: false,
                     size: 'small',
                     onSubmit: this.createRoomPopup
-                },
-                {
-                    id: 'connect_to_room',
-                    type: 'button',
-                    text: 'Connect',
-                    variant: 'contained',
-                    size: 'small',
-                    disabled: true
                 }
             ],
             modalOpen: false,
@@ -79,19 +71,56 @@ export default class Lobby extends React.Component{
     };
 
     GetRoomsList = () => {
-        this.NaegelsApi.getRooms()
+        this.NaegelsApi.getRooms(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
                 console.log('Something went wrong! Cannot get rooms list!')
             } else {
                 const newRooms = []
-                body.rooms.forEach(r => {
+                body.rooms.forEach((r, index) => {
                     //TODO: format created timestamp (firstly, convert all dates to numbers in server responses)
                     r.id = r.roomId
+                    r.dataArray = [
+                        {
+                            type: 'text',
+                            value: r.roomName
+                        },
+                        {
+                            type: 'text',
+                            value: r.host  
+                        },
+                        {
+                            type: 'text',
+                            value: r.connectedUsers + '/6'
+                        }
+                    ]
+                    if (!(this.props.isMobile && this.props.isPortrait)){
+                        r.dataArray.push({
+                            type: 'text',
+                            value: r.created
+                        })
+                        r.dataArray.push({
+                            type: 'text',
+                            value: r.status
+                        })
+                    }
+                    r.dataArray.push({
+                        type:'button',
+                        variant: 'contained',
+                        text: body.myConnectedRoomId === r.roomId ? 'Open' : 'Connect',
+                        onSubmit: body.myConnectedRoomId === r.roomId ? () => window.location.replace('/room/' + r.roomId) : this.connectRoom.bind(this, index),
+                        size: 'small',
+                        disabled: (body.myConnectedRoomId !== r.roomId & body.myConnectedRoomId > 0) || r.connectedUsers >= 6
+                    })
                     r.valuesArray = [r.roomName, r.host, r.created, r.connectedUsers, r.status]
                     newRooms.push(r)
                 });
-                this.setState({rooms: newRooms})
+                this.setState({
+                    rooms: newRooms,
+                    myConnectedRoomId: body.myConnectedRoomId
+                }, () => {
+                    this.updateControls()
+                })
             }
         });
     };
@@ -103,18 +132,9 @@ export default class Lobby extends React.Component{
                 type: 'button',
                 text: 'Create',
                 variant: 'contained',
-                disabled: false,
+                disabled: this.state.myConnectedRoomId > 0,
                 size: 'small',
                 onSubmit: this.createRoomPopup
-            },
-            {
-                id: 'connect_to_room',
-                type: 'button',
-                text: 'Connect',
-                variant: 'contained',
-                size: 'small',
-                disabled: this.state.selectedRoomId === -1,
-                onSubmit: this.connectRoom
             }
         ]
         var newModalControls = [
@@ -140,8 +160,8 @@ export default class Lobby extends React.Component{
         })
     }
 
-    connectRoom = (roomId) => {
-        roomId = this.state.selectedRoomId
+    connectRoom = (roomIndex) => {
+        const roomId = this.state.rooms[roomIndex].roomId
         this.NaegelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(!body.errors){
@@ -226,6 +246,7 @@ export default class Lobby extends React.Component{
     render() {
       
         this.CheckIfLoggedIn();
+        console.log(this.state.rooms)
 
         return(
             <div className={`lobby-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -236,7 +257,8 @@ export default class Lobby extends React.Component{
                     controls={this.state.headerControls}
                 ></SectionHeader>
                 <div className={`lobby-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                    <NaegelsTableContainer
+                    <NaegelsTableContainer 
+                        height={this.props.isMobile ? (this.props.isPortrait ? '74vh' : '88vh') : '90vh'}
                         headers={this.state.roomsHeaders}
                         rows={this.state.rooms}
                         onClick={this.selectRoom}

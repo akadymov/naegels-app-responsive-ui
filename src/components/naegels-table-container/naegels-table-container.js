@@ -2,7 +2,7 @@ import React from 'react';
 
 import './naegels-table-container.css';
 
-// MUI table components
+// MUI components
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -12,8 +12,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
+
+import Checkbox from '@mui/material/Checkbox';
+import Switch from '@mui/material/Switch';
+
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+
 // local components
-import defaultTheme from '../../themes/default'
+import defaultTheme from '../../themes/default';
+import FormButton from '../form-button';
 
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -33,12 +40,12 @@ export default class NaegelsTableContainer extends React.Component{
     render() {
 
         return(
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableContainer component={Paper} sx={{ height:this.props.height, overflow: 'scroll'}}>
+                <Table stickyHeader aria-label="simple table" >
                     <TableHead>
                         <TableRow>
                             {this.props.headers.map(header => {
-                                return <StyledTableCell key={header} align="right">{header}</StyledTableCell>
+                                return <StyledTableCell key={header} align={this.props.headers.indexOf(header) === 0 ? 'left' : 'right'}>{header}</StyledTableCell>
                             })}
                         </TableRow>
                     </TableHead>
@@ -54,10 +61,51 @@ export default class NaegelsTableContainer extends React.Component{
                                     hover
                                 >
                                     {
-                                        row.valuesArray.map(value => (
-                                            <StyledTableCell key={`row ${row.id} column ${row.valuesArray.indexOf(value)}`} align="right">{value}</StyledTableCell>
-                                        ))
-                                    }
+                                        row.dataArray.map(data => {
+                                                switch(data.type){
+                                                    case 'text':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                {data.value}
+                                                            </StyledTableCell>
+                                                        )
+                                                    case 'player':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                <div className="username-container">
+                                                                    <span>{data.username}</span>
+                                                                    {data.host ? <SupervisorAccountIcon/> : ''}
+                                                                </div>
+                                                            </StyledTableCell>
+                                                        )
+                                                    case 'switch':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                <Switch
+                                                                    defaulrChecked={data.checked}
+                                                                    disabled={data.disabled}
+                                                                    username={data.username}
+                                                                    onChange={data.onChange}
+                                                                />
+                                                            </StyledTableCell>
+                                                        )
+                                                    case 'button':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                <FormButton 
+                                                                    variant={data.variant}
+                                                                    text={data.text}
+                                                                    onSubmit={data.onSubmit}
+                                                                    width={data.width}
+                                                                    size={data.size}
+                                                                    disabled={data.disabled}
+                                                                    color = {data.color}
+                                                                ></FormButton>
+                                                            </StyledTableCell>
+                                                        )
+                                                }
+                                            })
+                                    } 
                                 </TableRow>
                             </ThemeProvider>
                         )

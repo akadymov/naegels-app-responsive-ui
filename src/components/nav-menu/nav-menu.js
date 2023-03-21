@@ -133,6 +133,7 @@ export default class NavMenu extends React.Component{
                     >
                         <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                             <FeedbackRoundedIcon 
+                                type="navItem"
                                 fontSize="large" 
                                 color={this.state.hoveredItem === 'feedback' ? 'secondary' : (window.location.pathname.startsWith('/feedback') ? 'action' :'primary')}
                             />
@@ -155,6 +156,7 @@ export default class NavMenu extends React.Component{
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <EmojiEventsRoundedIcon 
+                            type="navItem"
                             fontSize="large" 
                             color={this.state.hoveredItem === 'leaderboard' ? 'secondary' : (window.location.pathname.startsWith('/leaderboard') ? 'action' :'primary')}
                         />
@@ -176,6 +178,7 @@ export default class NavMenu extends React.Component{
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <HomeRoundedIcon 
+                            type="navItem"
                             fontSize="large" 
                             color={this.state.loggedIn ? (this.state.hoveredItem === 'lobby' ? 'secondary' : (window.location.pathname.startsWith('/lobby') ? 'action' : 'primary')) : 'disabled'}
                         />
@@ -196,6 +199,7 @@ export default class NavMenu extends React.Component{
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         <InfoRoundedIcon 
+                            type="navItem"
                             fontSize="large" 
                             color={this.state.hoveredItem === 'about' ? 'secondary' : (window.location.pathname.startsWith('/about') ? 'action' :'primary')}
                         />
@@ -215,9 +219,9 @@ export default class NavMenu extends React.Component{
                 >
                     <div className={`menu-item-icon-container ${ ScreenSizeClassPostfix} ${ ScreenOrientationClassPostfix }`}>
                         {this.state.loggedIn ?
-                            <LogoutRoundedIcon fontSize="large" color={this.state.hoveredItem === 'signout' ? 'secondary' : 'primary'}/>
+                            <LogoutRoundedIcon type="navItem" fontSize="large" color={this.state.hoveredItem === 'signout' ? 'secondary' : 'primary'}/>
                         :
-                            <LoginRoundedIcon fontSize="large" color={this.state.hoveredItem === 'signin' ? 'secondary' : (window.location.pathname === '/' ? 'action' :'primary')}/>
+                            <LoginRoundedIcon type="navItem" fontSize="large" color={this.state.hoveredItem === 'signin' ? 'secondary' : (window.location.pathname === '/' ? 'action' :'primary')}/>
                         }
                     </div>
                     {this.state.menuExpanded ? 

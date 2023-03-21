@@ -70,8 +70,11 @@ export default class NaegelsApi {
         return res
     };
 
-    getRooms = async (closed=false) => {
-        const res = await this.apiCall('/room/all' + (closed ? '?closed=Y' : ''));
+    getRooms = async (token, closed=false) => {
+        const data = {
+            token: token
+        };
+        const res = await this.apiCall('/room/all' + (closed ? '?closed=Y' : ''), 'POST', data);
         return res
     };
 

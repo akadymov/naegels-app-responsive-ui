@@ -16,9 +16,10 @@ import NaegelsModal from '../../components/naegels-modal';
 export default class Room extends React.Component{
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.handleReadySwitchChange = this.handleReadySwitchChange.bind(this);
         this.state = {
-            playerHeaders: ['Player','Is host','Ready','Overall rating'],
+            playerHeaders: this.props.isMobile && this.props.isPortrait ? ['Player', 'Ready',''] : ['Player','Ready','','Overall rating'],
             players: [],
             modalOpen: false,
             modalControls: [
@@ -48,26 +49,6 @@ export default class Room extends React.Component{
                 games: []
             },
             headerControls: [
-                {
-                    id: 'disconnect',
-                    type: 'button',
-                    text: 'Disconnect',
-                    variant: 'contained',
-                    disabled: true,
-                    size: 'small',
-                    width: '130px',
-                    onSubmit: this.disconnectRoom
-                },
-                {
-                    id: 'ready',
-                    type: 'button',
-                    text: 'Ready',
-                    variant: 'contained',
-                    disabled: true,
-                    size: 'small',
-                    width: '130px',
-                    onSubmit: this.confirmReady
-                },
                 {
                     id: 'start_game',
                     type: 'button',
@@ -111,11 +92,43 @@ export default class Room extends React.Component{
 
     updatePlayersTable = () => {
         var newPlayers = []
-        this.state.roomDetails.connectedUserList.map(player => {
-            newPlayers.push({
-                id: player.id,
-                valuesArray: [player.username, player.username === this.state.roomDetails.host ? '*' : '', player.ready, player.rating]
-            })
+        var dataArray = []
+        this.state.roomDetails.connectedUserList.map((player, index) => {
+                dataArray = [
+                    {
+                        type: 'player',
+                        username: player.username,
+                        host: player.username === this.state.roomDetails.host
+                    },
+                    {
+                        type:'switch',
+                        checked: player.ready,
+                        disabled: this.Cookies.get('username') !== this.state.roomDetails.host && player.username !== this.Cookies.get('username'),
+                        username: player.username,
+                        onChange: this.handleReadySwitchChange.bind(this, index)
+                    },
+                    {
+                        type: 'button',
+                        variant: 'contained',
+                        text: 'Disconnect',
+                        onSubmit: this.disconnectRoom.bind(this, index),
+                        size: 'small',
+                        color: 'error',
+                        disabled: this.Cookies.get('username') !== this.state.roomDetails.host && player.username !== this.Cookies.get('username')
+                    }
+                ]
+                if(!(this.props.isMobile && this.props.isPortrait)) {
+                    dataArray.push({
+                        type: 'text',
+                        value: player.rating
+                    })
+                }
+                newPlayers.push({
+                    id: player.id,
+                    username: player.username,
+                    dataArray: dataArray
+                })
+            
         })
         this.setState({ players: newPlayers })
     }
@@ -138,52 +151,30 @@ export default class Room extends React.Component{
     }
 
     updateControls = () => {
-        var newHeaderControls = [
-            {
-                id: 'disconnect',
-                type: 'button',
-                text: 'Disconnect',
-                variant: 'contained',
-                size: 'small',
-                disabled: this.state.selectedPlayerId === -1 || this.state.roomDetails.host === this.state.selectedPlayerUsername || !(this.state.youAreHost || this.state.selectedPlayerUsername === this.Cookies.get('username')) ,
-                width: '130px',
-                onSubmit: this.disconnectRoom
-            },
-            {
-                id: 'ready',
-                type: 'button',
-                text: this.state.selectedPlayerReady === 1 ? 'Not ready' : 'Ready',
-                variant: 'contained',
-                size: 'small',
-                disabled: this.state.selectedPlayerId === -1 || this.state.selectedPlayerUsername === this.state.roomDetails.host || (!this.state.youAreHost && this.state.selectedPlayerUsername !== this.Cookies.get('username')),
-                width: '130px',
-                onSubmit: this.state.selectedPlayerReady === 1 ? this.resetReady : this.confirmReady
-            }
-        ]
-        if(this.state.youAreHost){
-            newHeaderControls.push({
-                id: 'start_game',
-                type: 'button',
-                text: 'Start',
-                variant: 'contained',
-                size: 'small',
-                disabled: !this.state.youAreHost,
-                width: '130px',
-                onSubmit: this.startGame
-            })
-            newHeaderControls.push({
-                id: 'close_room',
-                type: 'button',
-                text: 'Close',
-                variant: 'contained',
-                size: 'small',
-                disabled: !this.state.youAreHost,
-                width: '130px',
-                onSubmit: this.closeRoom
-            })
-        }
+        var newHeaderControls = []
+        newHeaderControls.push({
+            id: 'start_game',
+            type: 'button',
+            text: 'Start',
+            variant: 'contained',
+            size: 'small',
+            disabled: !this.state.youAreHost,
+            width: '130px',
+            onSubmit: this.startGame
+        })
+        newHeaderControls.push({
+            id: 'close_room',
+            type: 'button',
+            text: 'Close',
+            variant: 'contained',
+            size: 'small',
+            disabled: !this.state.youAreHost,
+            width: '130px',
+            onSubmit: this.closeRoom
+        })
         this.setState({ headerControls: newHeaderControls })
     }
+    
 
     GetRoomDetails = () => {
         this.NaegelsApi.getRoom(this.props.match.params.roomId)
@@ -207,10 +198,10 @@ export default class Room extends React.Component{
         });
     };
 
-    disconnectRoom = () => {
+    disconnectRoom = (playerIndex) => {
+        const username = this.state.players[playerIndex].username
         const roomId = this.state.roomDetails.roomId
         const roomName = this.state.roomDetails.roomName
-        const username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')
         //if(username===this.state.roomDetails.host){
         //    this.setState({
         //        confirmActionMsg: 'Are you sure you want to leave room? It will be closed since you are host',
@@ -238,9 +229,8 @@ export default class Room extends React.Component{
         });
     }
 
-    confirmReady = () => {
+    confirmReady = (username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')) => {
         const roomId = this.state.roomDetails.roomId
-        const username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')
         this.NaegelsApi.confirmReady(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
@@ -255,9 +245,8 @@ export default class Room extends React.Component{
         });
     }
 
-    resetReady = () => {
+    resetReady = (username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')) => {
         const roomId = this.state.roomDetails.roomId
-        const username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')
         this.NaegelsApi.resetReady(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
@@ -270,6 +259,18 @@ export default class Room extends React.Component{
                 this.setState({popupError: body.errors[0].message})
             }
         });
+    }
+
+    handleReadySwitchChange = (playerIndex) => {
+        var newPlayers = this.state.players
+        newPlayers[playerIndex].ready = !newPlayers[playerIndex].ready
+        if (!newPlayers[playerIndex].ready) {
+            this.confirmReady(newPlayers[playerIndex].username)
+            this.setState({players: newPlayers})
+        } else {
+            this.resetReady(newPlayers[playerIndex].username)
+            this.setState({players: newPlayers})
+        }
     }
 
     closeRoom = () => {
@@ -334,6 +335,7 @@ export default class Room extends React.Component{
                 ></SectionHeader>
                 <div className={`room-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     <NaegelsTableContainer
+                        height={this.props.isMobile ? (this.props.isPortrait ? '74vh' : '88vh') : '90vh'}
                         headers={this.state.playerHeaders}
                         rows={this.state.players}
                         onClick={this.selectPlayer}

@@ -11,6 +11,9 @@ const defaultTheme = createTheme({
     secondary: {
       main: '#b900f5',
     },
+    error: {
+      main: '#d32f2f',
+    }
   },
 });
 
