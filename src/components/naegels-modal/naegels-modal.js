@@ -37,9 +37,9 @@ export default class NaegelsModal extends React.Component{
                                                         id={control.id}
                                                         key={control.id}
                                                         label={control.label}
+                                                        type={control.textFormat}
                                                         variant={control.variant}
                                                         onChange={control.onChange}
-                                                        type={control.type}
                                                         width={control.width}
                                                         defaultValue={control.text}
                                                     ></TextField>
@@ -65,13 +65,17 @@ export default class NaegelsModal extends React.Component{
                                 }
                             })}
                         </div>
-                        <div class="modal-close-icon-container">
-                            <ThemeProvider theme={defaultTheme}>
-                                <CloseIcon
-                                    onClick={this.props.closeModal}
-                                ></CloseIcon>
-                            </ThemeProvider>
-                        </div>
+                        {this.props.modalCanClose ?
+                            <div class="modal-close-icon-container">
+                                <ThemeProvider theme={defaultTheme}>
+                                    <CloseIcon
+                                        onClick={this.props.closeModal}
+                                    ></CloseIcon>
+                                </ThemeProvider>
+                            </div>
+                        : 
+                            ''
+                        }
                     </div>
                 </div>
             </Modal>

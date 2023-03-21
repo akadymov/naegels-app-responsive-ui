@@ -28,48 +28,19 @@ export default class Game extends React.Component{
                 canDeal: false,
                 gameScores: [],
                 nextActingPlayer: null,
-                players: []
-            },
-            myInhandInfo: {
-                username: null,
-                betSize: null,
-                tookBets: null,
-                dealtCards: [],
-                selectedCard: null
-            },
-            headerControls: [
-                {
-                    id: 'scores',
-                    type: 'button',
-                    text: 'Scores',
-                    variant: 'contained',
-                    disabled: false,
-                    size: 'small',
-                    width: '130px',
-                    onSubmit: this.showScores
-                },
-                {
-                    id: 'refresh',
-                    type: 'button',
-                    text: 'Refresh',
-                    variant: 'contained',
-                    disabled: false,
-                    size: 'small',
-                    width: '130px',
-                    onSubmit: this.newGameStatus
-                },
-                {
-                    id: 'exit',
-                    type: 'button',
-                    text: 'Exit',
-                    variant: 'contained',
-                    disabled: false,
-                    size: 'small',
-                    width: '130px',
-                    onSubmit: this.exitGame
+                players: [],
+                myInHandInfo: {
+                    username: null,
+                    betSize: null,
+                    tookBets: null,
+                    dealtCards: [],
+                    selectedCard: null
                 }
-            ],
+            },
+            headerControls: [],
             modalOpen: false,
+            modalText: '',
+            modalCanClose: false,
             modalControls: []
         }
     };
@@ -95,6 +66,7 @@ export default class Game extends React.Component{
         // get game status
         console.log('updating game status')
         var newHeaderControls = []
+        var newModalControls = []
         this.NaegelsApi.getGame(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((getGameResponse) => {
             if(getGameResponse.errors){
@@ -156,73 +128,39 @@ export default class Game extends React.Component{
                         onSubmit: this.dealCards
                     })
                 }
+                if(getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade){
+                    newModalControls = [
+                        {
+                            id: "bet_size_input",
+                            type: "input",
+                            textFormat: "number",
+                            label: "bet size",
+                            variant: "outlined",
+                            value: this.state.myBetSizeValue,
+                            errorMessage: "",
+                            onChange: this.handleBetChange,
+                            width: '5px',
+                            defaultValue:0
+                        },
+                        {
+                            id: "bet_size_confirm_button",
+                            type: "button",
+                            variant: "contained",
+                            text: "Confirm",
+                            onSubmit: this.makeBet
+                        }
+                    ]
+                }
                 this.setState({
                     gameDetails: getGameResponse,
-                    headerControls: newHeaderControls
+                    headerControls: newHeaderControls,
+                    modalControls: newModalControls,
+                    modalOpen: getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade,
+                    modalText: "Make a bet",
+                    modalCanClose: false
                 })
-                
             }
         })
-    }
-
-    updateControls = () => {
-        console.log('updating controls')
-        var newHeaderControls = [
-            {
-                id: 'scores',
-                type: 'button',
-                text: 'Scores',
-                variant: 'contained',
-                disabled: false,
-                size: 'small',
-                width: '130px',
-                onSubmit: this.showScores
-            },
-            {
-                id: 'refresh',
-                type: 'button',
-                text: 'Refresh',
-                variant: 'contained',
-                disabled: false,
-                size: 'small',
-                width: '130px',
-                onSubmit: this.newGameStatus
-            },
-            {
-                id: 'exit',
-                type: 'button',
-                text: this.state.gameDetails.host === this.Cookies.get('username') ? 'Finish' : 'Exit',
-                variant: 'contained',
-                disabled: false,
-                size: 'small',
-                width: '130px',
-                onSubmit: this.state.gameDetails.host === this.Cookies.get('username') ? this.finishGame : this.exitGame
-            }
-        ]
-        if (this.state.gameDetails.host === this.Cookies.get('username')){
-            console.log('updating host controls')
-            newHeaderControls.push({
-                id: 'shuffle',
-                type: 'button',
-                text: 'Shuffle',
-                variant: 'contained',
-                disabled: this.state.gameDetails.positionsDefined,
-                size: 'small',
-                width: '130px',
-                onSubmit: this.definePositions
-            })
-            newHeaderControls.push({
-                id: 'deal',
-                type: 'button',
-                text: 'Deal',
-                variant: 'contained',
-                disabled: !this.state.gameDetails.canDeal,
-                size: 'small',
-                width: '130px',
-                onSubmit: this.dealCards
-            })
-        }
-        this.setState({ headerControls: newHeaderControls })
     }
 
     finishGame = () => {
@@ -248,10 +186,11 @@ export default class Game extends React.Component{
         ]
         this.setState({
             modalControls: newModalControls,
-            modalOpen: true
+            modalOpen: true,
+            modalText: "Please, confirm finishing the game",
+            modalCanClose: true
         })
     }
-
 
     closeModal = () => {
         this.setState({ 
@@ -300,7 +239,7 @@ export default class Game extends React.Component{
                     actionMessage: body.errors[0].message,
                     error: true
                 })
-            } else{
+            } else {
                 gameSocket.emit(
                     'make_bet', 
                     this.props.match.params.gameId,
@@ -309,39 +248,14 @@ export default class Game extends React.Component{
                     parseInt(this.state.myBetSizeValue,10),
                     body.nextPlayerToBet
                 )
-                if(body.nextPlayerToBet) {
-                    var myInhandInfoNew = this.state.myInhandInfo
-                    myInhandInfoNew.betSize = parseInt(this.state.myBetSizeValue,10)
-                    var handDetailsNew = this.state.handDetails
-                    handDetailsNew.players.map(player=>{
-                        if(player.position >= this.state.myPosition) {
-                            handDetailsNew.relativePosition = player.position - this.state.myPosition
-                        } else{
-                            handDetailsNew.relativePosition = this.state.handDetails.players.length + player.position - this.state.myPosition
-                        }
-                    })
-                    handDetailsNew.nextActingPlayer = body.nextPlayerToBet
-                    this.setState({ 
-                        myInhandInfoNew: myInhandInfoNew,
-                        handDetails: handDetailsNew 
-                    })    
-                } else {
-                    gameSocket.emit(
-                        'next_turn',
-                        this.props.match.params.gameId,
-                        this.state.gameDetails.currentHandId, 
-                        this.Cookies.get('username')
-                    )
                     this.newGameStatus();
                 }
-            }
-        });
+            });
     };
 
     definePositions = () => {
         this.NaegelsApi.definePositions(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((body) => {
-            var newGameDetails = this.state.gameDetails
             if(body.errors) {
                 this.setState({popupError: body.errors[0].message})
             } else {
@@ -384,6 +298,7 @@ export default class Game extends React.Component{
     }
 
     handleBetChange(e) {
+        console.log(e.target)
         this.setState({myBetSizeValue: e.target.value})
     };
 
@@ -410,7 +325,9 @@ export default class Game extends React.Component{
         ]
         this.setState({
             modalControls: newModalControls,
-            modalOpen: true
+            modalOpen: true,
+            modalText: "Please, confirm exit",
+            modalCanClose: true
         })
     }
 
@@ -433,7 +350,7 @@ export default class Game extends React.Component{
     onSelectCard = (e) => {
         const cardId = e.target.getAttribute('cardId').substring(5)
         console.log('selecting card ' + cardId)
-        if(this.state.handDetails.nextActingPlayer === this.state.myInhandInfo.username && this.state.handDetails.betsAreMade) {
+        if(this.state.handDetails.nextActingPlayer === this.state.gameDetails.myInHandInfo.username && this.state.handDetails.betsAreMade) {
             this.selectCard(cardId)
         }
     }
@@ -456,7 +373,7 @@ export default class Game extends React.Component{
 
     render() {
 
-        console.log(this.state.headerControls)
+        console.log(this.state)
         
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -496,10 +413,10 @@ export default class Game extends React.Component{
                             isMobile={this.props.isMobile}
                             isDesktop={this.props.isDesktop}
                             isPortrait={this.props.isPortrait}
-                            username={this.state.myInhandInfo.username}
-                            betSize={this.state.myInhandInfo.betSize}
-                            tookBets={this.state.myInhandInfo.tookBets}
-                            active={this.state.myInhandInfo.username === this.state.gameDetails.nextActingPlayer}
+                            username={this.state.gameDetails.myInHandInfo.username}
+                            betSize={this.state.gameDetails.myInHandInfo.betSize}
+                            tookBets={this.state.gameDetails.myInHandInfo.tookBets}
+                            active={this.state.gameDetails.myInHandInfo.username === this.state.gameDetails.nextActingPlayer}
                             dealtCards={this.state.gameDetails.myInHandInfo.dealtCards}
                             selectedCard={this.state.selectedCard}
                             onClick={this.onSelectCard}
@@ -507,16 +424,16 @@ export default class Game extends React.Component{
                     :
                         ''
                     }
-                    
                 </div>
                 <NaegelsModal
                     open={this.state.modalOpen}
-                    text="Please, confirm action"
+                    text={this.state.modalText}
                     isMobile={this.props.isMobile}
                     isDesktop={this.props.isDesktop}
                     isPortrait={this.props.isPortrait}
                     controls={this.state.modalControls}
                     closeModal={this.closeModal}
+                    modalCanClose={this.modalCanClose}
                 ></NaegelsModal>
             </div>
         )

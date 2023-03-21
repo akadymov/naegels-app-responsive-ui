@@ -46,7 +46,6 @@ export default class OpenCard extends React.Component{
                 cardId={this.props.cardId}
                 index={this.props.index}
                 selectedCard={this.props.selectedCard}
-                cardOnTable={this.props.cardOnTable}
                 style={{
                     zIndex: zindex, 
                     //left: this.props.cardOnTable ? leftShift : this.props.index*22, 
