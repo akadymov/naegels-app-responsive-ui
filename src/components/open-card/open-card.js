@@ -11,28 +11,30 @@ export default class OpenCard extends React.Component{
     
     render() {
 
+        var leftShift = 0
+        var topShift = 0
+        var zindex = this.props.index
+
         if(this.props.cardOnTable==='1') {
-            var zindex = this.props.index
             if(this.props.index === 1){
-                var leftShift = 97
-                var topShift = 200 + 40
+                leftShift = 97
+                topShift = 200 + 40
             } else if(this.props.index === 2){
-                var leftShift = 97 + 35
-                var topShift = 200
+                 leftShift = 97 + 35
+                 topShift = 200
             } else if(this.props.index === 3){
-                var leftShift = 97
-                var topShift = 200 - 40
+                 leftShift = 97
+                 topShift = 200 - 40
             }else if(this.props.index === 4){
-                var leftShift = 97 - 35
-                var topShift = 200
+                 leftShift = 97 - 35
+                 topShift = 200
             }
         } else {
-            var zindex = this.props.index
-            var leftShift = this.props.index * 22
+             leftShift = this.props.index * 22
             if(this.props.selectedCard === this.props.cardId.substring(5)){
-                var topShift = -this.props.index * 100 - 38
+                 topShift = -this.props.index * 100 - 38
             } else {
-                var topShift = -this.props.index * 100
+                 topShift = -this.props.index * 100
             }
             
         }

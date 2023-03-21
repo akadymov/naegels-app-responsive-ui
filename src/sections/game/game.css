@@ -27,7 +27,7 @@
 .game-table{
     position: absolute;
     background-color: green;
-    border-radius: 50%;
+    border-radius: 20%;
     transform: translate(-50%, 0%);
     left: 50%;
 }

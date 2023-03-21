@@ -19,6 +19,24 @@ export default class Game extends React.Component{
         super(props);this.handleBetChange = this.handleBetChange.bind(this);
         this.selectCard = this.selectCard.bind(this);
         this.state = {
+            gameDetails: {
+                gameId: null,
+                roomId: null,
+                roomName: null,
+                host: null,
+                positionsDefined: false,
+                canDeal: false,
+                gameScores: [],
+                nextActingPlayer: null,
+                players: []
+            },
+            myInhandInfo: {
+                username: null,
+                betSize: null,
+                tookBets: null,
+                dealtCards: [],
+                selectedCard: null
+            },
             headerControls: [
                 {
                     id: 'scores',
@@ -38,7 +56,7 @@ export default class Game extends React.Component{
                     disabled: false,
                     size: 'small',
                     width: '130px',
-                    onSubmit: this.GetGameStatus
+                    onSubmit: this.newGameStatus
                 },
                 {
                     id: 'exit',
@@ -51,34 +69,8 @@ export default class Game extends React.Component{
                     onSubmit: this.exitGame
                 }
             ],
-            modalControls: [],
-            youAreHost: false,
             modalOpen: false,
-            gameDetails: {
-                players:[],
-                canDeal: false,
-                startedHands: [],
-                gameScores: []
-            },
-            cardsInHand: [],
-            myInhandInfo: {
-                username: null,
-                betSize: null,
-                tookBets: null,
-                cardsOnHand: null,
-                dealer: false
-            },
-            myPosition: 0,
-            popupError: '',
-            confirmAction: '',
-            confirmActionMsg: '',
-            myBetSizeValue: 0,
-            handDetails: {
-                players: [],
-                nextActingPlayer: '',
-                cardsOnTable: []
-            },
-            selectedCard: ''
+            modalControls: []
         }
     };
 
@@ -91,70 +83,87 @@ export default class Game extends React.Component{
             window.location.replace('/signin/expired');
         }
     }
-    
-    GetGameStatus = () => {
+
+    handleApiError(responseWithErrors){
+        console.log('REST API error:')
+        responseWithErrors.errors.forEach(error => {
+            console.log(error.message)
+        })
+    }
+
+    newGameStatus = () => {
+        // get game status
         console.log('updating game status')
-        this.NaegelsApi.getGame(this.props.match.params.gameId)
-        .then((body) => {
-            if(body.errors) {
-                this.setState({
-                    actionMessage: body.errors[0].message,
-                    error: true
-                })
+        var newHeaderControls = []
+        this.NaegelsApi.getGame(this.props.match.params.gameId, this.Cookies.get('idToken'))
+        .then((getGameResponse) => {
+            if(getGameResponse.errors){
+                this.handleApiError(getGameResponse)
             } else {
-                this.setState({gameDetails: body}, () => {
-                    if(this.Cookies.get('username') === body.host) {
-                        this.setState({ youAreHost: true })
+                console.log('getting gameDetails')
+                newHeaderControls = [
+                    {
+                        id: 'scores',
+                        type: 'button',
+                        text: 'Scores',
+                        variant: 'contained',
+                        disabled: false,
+                        size: 'small',
+                        width: '130px',
+                        onSubmit: this.showScores
+                    },
+                    {
+                        id: 'refresh',
+                        type: 'button',
+                        text: 'Refresh',
+                        variant: 'contained',
+                        disabled: false,
+                        size: 'small',
+                        width: '130px',
+                        onSubmit: this.newGameStatus
+                    },
+                    {
+                        id: 'exit',
+                        type: 'button',
+                        text: getGameResponse.host === this.Cookies.get('username') ? 'Finish' : 'Exit',
+                        variant: 'contained',
+                        disabled: false,
+                        size: 'small',
+                        width: '130px',
+                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : this.exitGame
                     }
-                })
-                if(this.state.gameDetails.currentHandId) {
-                    // get inhand players data
-                    this.NaegelsApi.getHand(this.state.gameDetails.gameId, this.state.gameDetails.currentHandId, this.Cookies.get('idToken'))
-                    .then((body) => {
-                        if(body.errors) {
-                            this.setState({
-                                actionMessage: body.errors[0].message,
-                                error: true
-                            })
-                        } else {
-                            this.setState({handDetails: body})
-                            var newGameDetails = this.state.gameDetails
-                            newGameDetails.players.forEach(player => {
-                                var handPlayerIndex = this.state.handDetails.players.findIndex(handPlayer => handPlayer.username === player.username)
-                                var gamePlayerIndex = newGameDetails.players.findIndex(gamePlayer => gamePlayer.username === player.username)
-                                newGameDetails.players[gamePlayerIndex].betSize = this.state.handDetails.players[handPlayerIndex].betSize
-                                newGameDetails.players[gamePlayerIndex].tookBets = this.state.handDetails.players[handPlayerIndex].tookBets
-                            });
-                            const myIndex = this.state.handDetails.players.findIndex(handPlayer => handPlayer.username === this.Cookies.get('username'))
-                            this.setState({myInhandInfo: this.state.handDetails.players[myIndex]})
-                            this.setState({gameDetails: newGameDetails})
-                            
-                        }
-                    });
-                    // get cards on my hand
-                    var playerIndex = this.state.gameDetails.players.findIndex(element => element.username === this.Cookies.get('username') )
-                    if(playerIndex>=0 && this.state.gameDetails.currentHandId){
-                        this.NaegelsApi.getCards(this.Cookies.get('idToken'), this.state.gameDetails.gameId, this.state.gameDetails.currentHandId)
-                        .then((body) => {
-                            if(body.errors) {
-                                this.setState({
-                                    actionMessage: body.errors[0].message,
-                                    error: true
-                                })
-                            } else {
-                                this.setState({
-                                    cardsInHand: body.cardsInHand,
-                                    myPosition: body.myPosition
-                                })
-                            }
-                        })
-                    }
+                ]
+                if (getGameResponse.host === this.Cookies.get('username')){
+                    console.log('updating host controls')
+                    newHeaderControls.push({
+                        id: 'shuffle',
+                        type: 'button',
+                        text: 'Shuffle',
+                        variant: 'contained',
+                        disabled: getGameResponse.positionsDefined,
+                        size: 'small',
+                        width: '130px',
+                        onSubmit: this.definePositions
+                    })
+                    newHeaderControls.push({
+                        id: 'deal',
+                        type: 'button',
+                        text: 'Deal',
+                        variant: 'contained',
+                        disabled: !getGameResponse.canDeal,
+                        size: 'small',
+                        width: '130px',
+                        onSubmit: this.dealCards
+                    })
                 }
+                this.setState({
+                    gameDetails: getGameResponse,
+                    headerControls: newHeaderControls
+                })
+                
             }
         })
-        .then(() =>{this.updateControls()}
-        );
-    };
+    }
 
     updateControls = () => {
         console.log('updating controls')
@@ -177,20 +186,21 @@ export default class Game extends React.Component{
                 disabled: false,
                 size: 'small',
                 width: '130px',
-                onSubmit: this.GetGameStatus
+                onSubmit: this.newGameStatus
             },
             {
                 id: 'exit',
                 type: 'button',
-                text: this.state.youAreHost ? 'Finish' : 'Exit',
+                text: this.state.gameDetails.host === this.Cookies.get('username') ? 'Finish' : 'Exit',
                 variant: 'contained',
                 disabled: false,
                 size: 'small',
                 width: '130px',
-                onSubmit: this.state.youAreHost ? this.finishGame : this.exitGame
+                onSubmit: this.state.gameDetails.host === this.Cookies.get('username') ? this.finishGame : this.exitGame
             }
         ]
-        if (this.state.youAreHost){
+        if (this.state.gameDetails.host === this.Cookies.get('username')){
+            console.log('updating host controls')
             newHeaderControls.push({
                 id: 'shuffle',
                 type: 'button',
@@ -245,7 +255,8 @@ export default class Game extends React.Component{
 
     closeModal = () => {
         this.setState({ 
-            modalOpen: false 
+            modalControls: [],
+            modalOpen: false
         })
     }
 
@@ -276,7 +287,7 @@ export default class Game extends React.Component{
                 })
             } else{
                 gameSocket.emit('deal_cards', this.props.match.params.gameId)
-                this.GetGameStatus();
+                this.newGameStatus();
             }
         });
     };
@@ -302,6 +313,13 @@ export default class Game extends React.Component{
                     var myInhandInfoNew = this.state.myInhandInfo
                     myInhandInfoNew.betSize = parseInt(this.state.myBetSizeValue,10)
                     var handDetailsNew = this.state.handDetails
+                    handDetailsNew.players.map(player=>{
+                        if(player.position >= this.state.myPosition) {
+                            handDetailsNew.relativePosition = player.position - this.state.myPosition
+                        } else{
+                            handDetailsNew.relativePosition = this.state.handDetails.players.length + player.position - this.state.myPosition
+                        }
+                    })
                     handDetailsNew.nextActingPlayer = body.nextPlayerToBet
                     this.setState({ 
                         myInhandInfoNew: myInhandInfoNew,
@@ -314,7 +332,7 @@ export default class Game extends React.Component{
                         this.state.gameDetails.currentHandId, 
                         this.Cookies.get('username')
                     )
-                    this.GetGameStatus();
+                    this.newGameStatus();
                 }
             }
         });
@@ -325,16 +343,10 @@ export default class Game extends React.Component{
         .then((body) => {
             var newGameDetails = this.state.gameDetails
             if(body.errors) {
-                newGameDetails.actionMessage = body.errors[0].message
-                this.setState({
-                    gameDetails: newGameDetails
-                })
+                this.setState({popupError: body.errors[0].message})
             } else {
                 gameSocket.emit('define_positions', this.props.match.params.gameId, body.players)
-                newGameDetails.positionsDefined = true
-                newGameDetails.canDeal = true
-                newGameDetails.players = body.players
-                this.setState({ gameDetails: newGameDetails })
+                this.newGameStatus()
             }
         });
     };
@@ -365,7 +377,7 @@ export default class Game extends React.Component{
                         this.state.gameDetails.currentHandId,
                         this.Cookies.get('username')
                     )
-                    this.GetGameStatus();
+                    this.newGameStatus();
                 }
             })
         }
@@ -427,7 +439,7 @@ export default class Game extends React.Component{
     }
     
     componentDidMount = () => {
-        this.GetGameStatus();
+        this.newGameStatus()
     }
 
     /*componentDidUpdate = () => {
@@ -444,11 +456,8 @@ export default class Game extends React.Component{
 
     render() {
 
-        console.log(this.state)
-
-        const players = this.state.handDetails.players.length > 0 ? this.state.handDetails.players : this.state.gameDetails.players
-        const myPosition = this.state.myPosition === 0 ? 1 : this.state.myPosition
-
+        console.log(this.state.headerControls)
+        
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                 <SectionHeader
@@ -461,7 +470,7 @@ export default class Game extends React.Component{
                 ></SectionHeader>
                 <div className={`game-table ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     {
-                    players.map(player => {
+                    this.state.gameDetails.players.map(player => {
                         if(player.username !== this.Cookies.get('username')) {
                             if(this.state.gameDetails.positionsDefined){
                                 return (
@@ -471,18 +480,18 @@ export default class Game extends React.Component{
                                         isDesktop={this.props.isDesktop}
                                         isPortrait={this.props.isPortrait}
                                         cards={player.cardsOnHand}
-                                        numberOfPlayers={players.length}
+                                        numberOfPlayers={this.state.gameDetails.players.length}
                                         username={player.username}
-                                        position={((players.length + player.position - myPosition) % players.length)}
+                                        position={player.relativePosition}
                                         betSize={player.betSize}
                                         tookBets={player.tookBets}
-                                        active={this.state.handDetails.nextActingPlayer === player.username}
+                                        active={this.state.gameDetails.nextActingPlayer === player.username}
                                     ></OpponentContainer>
                                 )
                             }
                         }
                     })}
-                    {this.state.gameDetails.positionsDefined ? 
+                    {this.state.gameDetails.positionsDefined && this.state.gameDetails.myInHandInfo ? 
                         <PlayerContainer
                             isMobile={this.props.isMobile}
                             isDesktop={this.props.isDesktop}
@@ -490,8 +499,8 @@ export default class Game extends React.Component{
                             username={this.state.myInhandInfo.username}
                             betSize={this.state.myInhandInfo.betSize}
                             tookBets={this.state.myInhandInfo.tookBets}
-                            active={this.state.myInhandInfo.username === this.state.handDetails.nextActingPlayer}
-                            cardsInHand={this.state.cardsInHand}
+                            active={this.state.myInhandInfo.username === this.state.gameDetails.nextActingPlayer}
+                            dealtCards={this.state.gameDetails.myInHandInfo.dealtCards}
                             selectedCard={this.state.selectedCard}
                             onClick={this.onSelectCard}
                         ></PlayerContainer>
@@ -513,3 +522,4 @@ export default class Game extends React.Component{
         )
     }
 }
+

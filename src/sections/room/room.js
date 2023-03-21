@@ -303,7 +303,7 @@ export default class Room extends React.Component{
     }
 
     startGame = () => {
-        this.NaegelsApi.startGame(this.Cookies.get('idToken'), this.state.newRoomName)
+        this.NaegelsApi.startGame(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
                 this.setState({popupError: body.errors[0].message})

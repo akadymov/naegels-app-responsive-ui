@@ -1,0 +1,27 @@
+.player-container{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 200px;
+}
+
+.player-container.mobile{
+    bottom: -25%;
+}
+
+.player-container.tablet{
+    bottom: -10%;
+}
+
+.player-container.desktop{
+    bottom: -15%;
+}
+
+.player-cards-container{
+    height: 100px;
+    width: 220px;
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

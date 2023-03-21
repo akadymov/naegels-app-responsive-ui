@@ -15,6 +15,8 @@ export default class Login extends React.Component{
         this.CheckIfAlreadyLoggedIn = this.CheckIfAlreadyLoggedIn.bind(this);
         this.state = {
             title: 'Login',
+            username: this.props.match.params.username ? this.props.match.params.username : '',
+            password: '',
             textFieldsList: [
                 {
                     id:"username", 
@@ -24,7 +26,7 @@ export default class Login extends React.Component{
                     width: "220px",
                     text: this.props.match.params.username ? this.props.match.params.username : '', 
                     //text: '',
-                    onChange: this.handleUsernameChange, errorMessage: "", value: "", 
+                    onChange: this.handleUsernameChange, errorMessage: "", 
                     onClick: this.clearErrorMessage
                 },
                 {
@@ -35,7 +37,6 @@ export default class Login extends React.Component{
                     width: "220px",
                     onChange: this.handlePasswordChange, 
                     errorMessage: "", 
-                    value: "", 
                     onClick: this.clearErrorMessage
                 }
             ],

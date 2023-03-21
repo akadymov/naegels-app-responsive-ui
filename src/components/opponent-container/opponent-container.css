@@ -1,0 +1,102 @@
+.opponent-container{
+    position: absolute;
+    height: 75px;
+    width: 130px;
+}
+
+.opponent-container.player1.outof2{
+    top:-5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+
+
+
+
+.opponent-container.player1.outof3{
+    top: 30%;
+    right: -5%;
+}
+
+.opponent-container.player2.outof3{
+    top: 30%;
+    left: -5%;
+}
+
+
+
+
+
+.opponent-container.player1.outof4{
+    top: 50%;
+    right: -35px;
+    transform: translate(0, -50%);
+}
+
+.opponent-container.player2.outof4{
+    top:-5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.opponent-container.player3.outof4{
+    top: 50%;
+    left: -35px;
+    transform: translate(0, -50%);
+}
+
+
+
+
+
+
+.opponent-container.player1.outof5{
+    top: 60%;
+    right: -4vw;
+}
+
+.opponent-container.player2.outof5{
+    top: -2%;
+    right: 5vw;
+}
+
+.opponent-container.player3.outof5{
+    top: -2%;
+    left: 5vw;
+}
+
+.opponent-container.player4.outof5{
+    top: 60%;
+    left: -4vw;
+}
+
+
+
+
+
+.opponent-container.player1.outof6{
+    top: 70%;
+    right: -6vw;
+}
+
+.opponent-container.player2.outof6{
+    top: 20%;
+    right: -6vw;
+}
+
+.opponent-container.player3.outof6{
+    top:-5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.opponent-container.player4.outof6{
+    top: 20%;
+    left: -6vw;
+}
+
+.opponent-container.player5.outof6{
+    top: 70%;
+    left: -6vw;
+}

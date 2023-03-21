@@ -1,24 +1,20 @@
 import React from 'react';
 
-import './closed-cards.css'
+import './opponent-cards.css'
 
 export default class OpponentCards extends React.Component{
-
-    constructor(props) {
-        super(props);
-        this.state = {}
-    }
     
     render() {
 
         const cards = []
+        const numberOfCards = this.props.cards ? this.props.cards : 0
         
-        for (var i = 0; i < this.props.cards; i++) {
+        for (var i = 0; i < numberOfCards; i++) {
             cards.push(
-                <div 
+                <div key={`card ${i}`}
                     className="opponent-card" 
                     style={{
-                        zindex: this.props.cards-i, 
+                        zindex: numberOfCards-i, 
                         left: i*10,
                         top: -i*50
                     }}
@@ -30,7 +26,7 @@ export default class OpponentCards extends React.Component{
             <div 
                 className="cards-container"
                 style={{
-                    left: -(this.props.cards-1)*5
+                    left: -(numberOfCards-1)*5
                 }}
             >{cards}</div>
         )
