@@ -1,0 +1,33 @@
+.table-put-cards-container{
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 165px;
+}
+
+.table-put-cards-container.mobile{
+    width: 98px;
+    height: 105px;
+}
+
+.table-put-card{
+    position: absolute;
+}
+
+.table-put-card.player0{
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.table-put-card.player1.outof3{
+    right: 10%;
+    top: 0%;
+}
+
+.table-put-card.player2.outof3{
+    left: 10%;
+    top: 20%;
+}

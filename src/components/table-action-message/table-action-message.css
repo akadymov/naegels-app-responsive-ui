@@ -1,0 +1,26 @@
+.action-message-container{
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    width: 130px;
+    line-height: 20px;
+    background-color: #01aa00;
+    border-radius: 10%;
+    border: 1px solid darkviolet;
+}
+
+.action-message-container{
+    top:20%
+}
+
+.action-message-container.mobile.landscape{
+    display: none
+}
+
+.action-message-text{
+    color: darkviolet;
+    font-weight: 900;
+    padding: 2px;
+    font-family: Mukta;
+}

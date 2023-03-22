@@ -10,6 +10,12 @@
     transform: translate(-50%, 0);
 }
 
+.opponent-container.player1.outof2.mobile.landscape{
+    top:-20%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 
 
 
@@ -24,6 +30,16 @@
     left: -5%;
 }
 
+.opponent-container.player1.outof3.mobile.portrait{
+    top: 30%;
+    right: -10%;
+}
+
+.opponent-container.player2.outof3.mobile.portrait{
+    top: 30%;
+    left: -10%;
+}
+
 
 
 
@@ -36,6 +52,12 @@
 
 .opponent-container.player2.outof4{
     top:-5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.opponent-container.player2.outof4.mobile.landscape{
+    top:-20%;
     left: 50%;
     transform: translate(-50%, 0);
 }
@@ -66,6 +88,16 @@
     left: 5vw;
 }
 
+.opponent-container.player2.outof5.mobile.landscape{
+    top: -15%;
+    right: 5vw;
+}
+
+.opponent-container.player3.outof5.mobile.landscape{
+    top: -15%;
+    left: 5vw;
+}
+
 .opponent-container.player4.outof5{
     top: 60%;
     left: -4vw;
@@ -87,6 +119,12 @@
 
 .opponent-container.player3.outof6{
     top:-5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.opponent-container.player3.outof6.mobile.landscape{
+    top:-20%;
     left: 50%;
     transform: translate(-50%, 0);
 }

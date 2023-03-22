@@ -42,6 +42,8 @@ export default class NaegelsModal extends React.Component{
                                                         onChange={control.onChange}
                                                         width={control.width}
                                                         defaultValue={control.text}
+                                                        error={control.errorMessage !== ''}
+                                                        helperText={control.errorMessage}
                                                     ></TextField>
                                                 </ThemeProvider>
                                             </div>
@@ -57,6 +59,7 @@ export default class NaegelsModal extends React.Component{
                                                 disabled={control.disabled}
                                                 text={control.text}
                                                 width={control.width}
+                                                color={control.color}
                                             ></FormButton>
                                             </div>
                                         )

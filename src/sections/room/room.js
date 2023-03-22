@@ -182,17 +182,21 @@ export default class Room extends React.Component{
             if(body.errors) {
                 console.log('Something went wrong! Cannot get rooms list!')
             } else {
-                this.setState({roomDetails: body}, () => {
-                    this.updatePlayersTable()
-                    this.updateControls()
-                })
-                if(body.host === this.Cookies.get('username')) {
-                    this.setState({youAreHost: true}, () => {
+                if(body.games.ongoingGameId) {
+                    window.location.replace('/game/' + body.games.ongoingGameId)
+                } else {
+                    this.setState({roomDetails: body}, () => {
+                        this.updatePlayersTable()
                         this.updateControls()
                     })
-                }
-                if(this.state.roomDetails.status === 'closed') {
-                    window.location.replace('/lobby')
+                    if(body.host === this.Cookies.get('username')) {
+                        this.setState({youAreHost: true}, () => {
+                            this.updateControls()
+                        })
+                    }
+                    if(this.state.roomDetails.status === 'closed') {
+                        window.location.replace('/lobby')
+                    }
                 }
             }
         });

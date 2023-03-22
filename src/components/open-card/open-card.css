@@ -1,7 +1,6 @@
 .open-card{
-    width: 70px;
-    height: 100px;
     position: relative;
+    background-size: contain;
 }
 
 .open-card[cardontable]{

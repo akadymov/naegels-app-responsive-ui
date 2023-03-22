@@ -12,6 +12,8 @@ import SectionHeader from '../../components/section-header';
 import PlayerContainer from '../../components/player-container';
 import OpponentContainer from '../../components/opponent-container';
 import NaegelsModal from '../../components/naegels-modal';
+import TableActionMessage from '../../components/table-action-message';
+import TablePutCards from '../../components/table-put-cards';
 
 export default class Game extends React.Component{
 
@@ -30,10 +32,11 @@ export default class Game extends React.Component{
                 gameScores: [],
                 nextActingPlayer: null,
                 players: [],
+                cardsOnTable: [],
                 myInHandInfo: {
                     username: null,
                     betSize: null,
-                    tookBets: null,
+                    tookTurns: null,
                     dealtCards: [],
                     selectedCard: null
                 }
@@ -103,6 +106,7 @@ export default class Game extends React.Component{
                         disabled: false,
                         size: 'small',
                         width: '130px',
+                        color: 'error',
                         onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : this.exitGame
                     }
                 ]
@@ -172,13 +176,14 @@ export default class Game extends React.Component{
                 variant: "contained",
                 text: "Finish game",
                 width: '140px',
+                color: 'error',
                 disabled: false,
                 onSubmit: this.confirmFinishGame
             },
             {
                 id: "cancel_finish_game",
                 type: "button",
-                variant: "outlined",
+                variant: "contained",
                 text: "Cancel",
                 width: '140px',
                 disabled: false,
@@ -236,9 +241,10 @@ export default class Game extends React.Component{
         this.NaegelsApi.makeBet(this.Cookies.get('idToken'), this.state.gameDetails.gameId, this.state.gameDetails.currentHandId, parseInt(this.state.myBetSizeValue,10))
         .then((body) => {
             if(body.errors) {
+                var newModalControls = this.state.modalControls
+                newModalControls[0].errorMessage = body.errors[0].message
                 this.setState({
-                    actionMessage: body.errors[0].message,
-                    error: true
+                    modalControls: newModalControls
                 })
             } else {
                 gameSocket.emit(
@@ -311,13 +317,14 @@ export default class Game extends React.Component{
                 variant: "contained",
                 text: "Exit game",
                 width: '140px',
+                color: 'error',
                 disabled: false,
                 onSubmit: this.confirmExit
             },
             {
                 id: "cancel_exit_game",
                 type: "button",
-                variant: "outlined",
+                variant: "contained",
                 text: "Cancel",
                 width: '140px',
                 disabled: false,
@@ -351,7 +358,7 @@ export default class Game extends React.Component{
     onSelectCard = (e) => {
         const cardId = e.target.getAttribute('cardId').substring(5)
         console.log('selecting card ' + cardId)
-        if(this.state.handDetails.nextActingPlayer === this.state.gameDetails.myInHandInfo.username && this.state.handDetails.betsAreMade) {
+        if(this.state.gameDetails.nextActingPlayer === this.state.gameDetails.myInHandInfo.username && this.state.gameDetails.betsAreMade) {
             this.selectCard(cardId)
         }
     }
@@ -374,7 +381,6 @@ export default class Game extends React.Component{
 
     render() {
 
-        console.log(this.state)
         
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -387,6 +393,30 @@ export default class Game extends React.Component{
                     subtitle={this.state.gameDetails.host}
                 ></SectionHeader>
                 <div className={`game-table ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                    {
+                        this.state.gameDetails.actionMessage ? 
+                        <TableActionMessage
+                            isMobile={this.props.isMobile}
+                            isDesktop={this.props.isDesktop}
+                            isPortrait={this.props.isPortrait}
+                            message={this.state.gameDetails.actionMessage}
+                        >
+                        </TableActionMessage>
+                        :
+                            ''
+                    }
+                    {
+                        this.state.gameDetails.cardsOnTable.length > 0 ?
+                            <TablePutCards
+                                isMobile={this.props.isMobile}
+                                isDesktop={this.props.isDesktop}
+                                isPortrait={this.props.isPortrait}
+                                cardsOnTable={this.state.gameDetails.cardsOnTable}
+                                playersCount={this.state.gameDetails.players.length}
+                            ></TablePutCards>
+                        :
+                            ''
+                    }
                     {
                     this.state.gameDetails.players.map(player => {
                         if(player.username !== this.Cookies.get('username')) {
@@ -402,7 +432,7 @@ export default class Game extends React.Component{
                                         username={player.username}
                                         position={player.relativePosition}
                                         betSize={player.betSize}
-                                        tookBets={player.tookBets}
+                                        tookTurns={player.tookTurns}
                                         active={this.state.gameDetails.nextActingPlayer === player.username}
                                     ></OpponentContainer>
                                 )
@@ -416,11 +446,11 @@ export default class Game extends React.Component{
                             isPortrait={this.props.isPortrait}
                             username={this.state.gameDetails.myInHandInfo.username}
                             betSize={this.state.gameDetails.myInHandInfo.betSize}
-                            tookBets={this.state.gameDetails.myInHandInfo.tookBets}
+                            tookTurns={this.state.gameDetails.myInHandInfo.tookTurns}
                             active={this.state.gameDetails.myInHandInfo.username === this.state.gameDetails.nextActingPlayer}
                             dealtCards={this.state.gameDetails.myInHandInfo.dealtCards}
                             selectedCard={this.state.selectedCard}
-                            onClick={this.onSelectCard}
+                            onSelectCard={this.onSelectCard}
                         ></PlayerContainer>
                     :
                         ''

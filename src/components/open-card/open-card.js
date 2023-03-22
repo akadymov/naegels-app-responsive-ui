@@ -14,22 +14,10 @@ export default class OpenCard extends React.Component{
         var leftShift = 0
         var topShift = 0
         var zindex = this.props.index
+        var width = '70px'
+        var height = '100px'
 
-        if(this.props.cardOnTable==='1') {
-            if(this.props.index === 1){
-                leftShift = 97
-                topShift = 200 + 40
-            } else if(this.props.index === 2){
-                 leftShift = 97 + 35
-                 topShift = 200
-            } else if(this.props.index === 3){
-                 leftShift = 97
-                 topShift = 200 - 40
-            }else if(this.props.index === 4){
-                 leftShift = 97 - 35
-                 topShift = 200
-            }
-        } else {
+        if(!this.props.onTable) {
              leftShift = this.props.index * 22
             if(this.props.selectedCard === this.props.cardId.substring(5)){
                  topShift = -this.props.index * 100 - 38
@@ -37,6 +25,10 @@ export default class OpenCard extends React.Component{
                  topShift = -this.props.index * 100
             }
             
+        } 
+        if(this.props.isMobile && this.props.onTable) {
+            width = '49px'
+            height = '70px'
         }
 
         return (
@@ -51,7 +43,9 @@ export default class OpenCard extends React.Component{
                     //left: this.props.cardOnTable ? leftShift : this.props.index*22, 
                     //top:  this.props.cardOnTable ? topShift : (-this.props.index*100 - 38 * (this.props.selectedCard === this.props.cardId.substring(5) ? 1 : 0))
                     left: leftShift,
-                    top: topShift
+                    top: topShift,
+                    width: width,
+                    height: height
                 }}
             ></div>
         )
