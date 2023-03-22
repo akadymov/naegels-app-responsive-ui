@@ -21,6 +21,7 @@ export default class PlayerContainer extends React.Component{
                 >
                     {this.props.dealtCards.map(card => {return(
                         <OpenCard 
+                            key={'card-' + card}
                             cardId={'card-' + card}
                             selectedCard={this.props.selectedCard}
                             index={this.props.dealtCards.findIndex( el => el === card )}
@@ -31,7 +32,7 @@ export default class PlayerContainer extends React.Component{
                 <PlayerInfo
                     username={this.props.username}
                     betSize={this.props.betSize}
-                    tookBets={this.props.tookBets}
+                    tookTurns={this.props.tookTurns}
                     active={this.props.active}
                 ></PlayerInfo>
             </div>

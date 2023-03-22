@@ -13,7 +13,6 @@ import Paper from '@mui/material/Paper';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
 
-import Checkbox from '@mui/material/Checkbox';
 import Switch from '@mui/material/Switch';
 
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
@@ -101,6 +100,12 @@ export default class NaegelsTableContainer extends React.Component{
                                                                     disabled={data.disabled}
                                                                     color = {data.color}
                                                                 ></FormButton>
+                                                            </StyledTableCell>
+                                                        )
+                                                    default: // text
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                {data.value}
                                                             </StyledTableCell>
                                                         )
                                                 }

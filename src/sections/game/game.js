@@ -68,7 +68,6 @@ export default class Game extends React.Component{
 
     newGameStatus = () => {
         // get game status
-        console.log('updating game status')
         var newHeaderControls = []
         var newModalControls = []
         this.NaegelsApi.getGame(this.props.match.params.gameId, this.Cookies.get('idToken'))
@@ -76,7 +75,6 @@ export default class Game extends React.Component{
             if(getGameResponse.errors){
                 this.handleApiError(getGameResponse)
             } else {
-                console.log('getting gameDetails')
                 newHeaderControls = [
                     {
                         id: 'scores',
@@ -111,7 +109,6 @@ export default class Game extends React.Component{
                     }
                 ]
                 if (getGameResponse.host === this.Cookies.get('username')){
-                    console.log('updating host controls')
                     newHeaderControls.push({
                         id: 'shuffle',
                         type: 'button',
@@ -305,7 +302,6 @@ export default class Game extends React.Component{
     }
 
     handleBetChange(e) {
-        console.log(e.target)
         this.setState({myBetSizeValue: e.target.value})
     };
 
@@ -357,7 +353,6 @@ export default class Game extends React.Component{
 
     onSelectCard = (e) => {
         const cardId = e.target.getAttribute('cardId').substring(5)
-        console.log('selecting card ' + cardId)
         if(this.state.gameDetails.nextActingPlayer === this.state.gameDetails.myInHandInfo.username && this.state.gameDetails.betsAreMade) {
             this.selectCard(cardId)
         }

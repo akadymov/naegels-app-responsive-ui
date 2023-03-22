@@ -246,7 +246,6 @@ export default class Lobby extends React.Component{
     render() {
       
         this.CheckIfLoggedIn();
-        console.log(this.state.rooms)
 
         return(
             <div className={`lobby-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>

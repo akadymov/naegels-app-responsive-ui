@@ -20,7 +20,7 @@ export default class OpponentContainer extends React.Component{
                 <PlayerInfo
                     username={this.props.username}
                     betSize={this.props.betSize}
-                    tookBets={this.props.tookBets}
+                    tookTurns={this.props.tookTurns}
                     active={this.props.active}
                 ></PlayerInfo>
             </div>

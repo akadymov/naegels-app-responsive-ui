@@ -1,17 +1,20 @@
 .action-message-container{
     position: absolute;
-    top: 50%;
     transform: translate(-50%, -50%);
     left: 50%;
-    width: 130px;
+    width: 250px;
     line-height: 20px;
     background-color: #01aa00;
     border-radius: 10%;
     border: 1px solid darkviolet;
 }
 
+.action-message-container.mobile{
+    width: 130px;
+}
+
 .action-message-container{
-    top:20%
+    top:25%
 }
 
 .action-message-container.mobile.landscape{

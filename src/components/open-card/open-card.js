@@ -35,9 +35,9 @@ export default class OpenCard extends React.Component{
             <div 
                 className="open-card" 
                 onClick={this.props.onClick}
-                cardId={this.props.cardId}
+                cardid={this.props.cardId}
                 index={this.props.index}
-                selectedCard={this.props.selectedCard}
+                selectedcard={this.props.selectedCard}
                 style={{
                     zIndex: zindex, 
                     //left: this.props.cardOnTable ? leftShift : this.props.index*22, 

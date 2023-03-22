@@ -84,7 +84,6 @@ export default class Login extends React.Component{
     }
 
     SendLoginRequest = () => {
-        console.log('logging in')
         this.NaegelsApi.login(
             this.state.username, 
             this.state.password
