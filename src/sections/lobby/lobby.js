@@ -23,12 +23,21 @@ export default class Lobby extends React.Component{
             selectedRoomId: -1,
             headerControls: [
                 {
+                    id: 'refresh_lobby',
+                    type: 'button',
+                    text: 'Refresh',
+                    variant: 'contained',
+                    disabled: false,
+                    width: '130px',
+                    onSubmit: this.GetRoomsList
+                },
+                {
                     id: 'create_room',
                     type: 'button',
                     text: 'Create',
                     variant: 'contained',
                     disabled: false,
-                    size: 'small',
+                    width: '130px',
                     onSubmit: this.createRoomPopup
                 }
             ],
@@ -107,12 +116,11 @@ export default class Lobby extends React.Component{
                     r.dataArray.push({
                         type:'button',
                         variant: 'contained',
-                        text: body.myConnectedRoomId === r.roomId ? 'Open' : 'Connect',
-                        onSubmit: body.myConnectedRoomId === r.roomId ? () => window.location.replace('/room/' + r.roomId) : this.connectRoom.bind(this, index),
-                        size: 'small',
-                        disabled: (body.myConnectedRoomId !== r.roomId & body.myConnectedRoomId > 0) || r.connectedUsers >= 6
+                        text: !body.myConnectedRoomId && r.status === 'open' ? 'Connect' : (body.myConnectedRoomId===r.id ? 'Open' : 'Watch'),
+                        onSubmit: !body.myConnectedRoomId && r.status ? this.connectRoom.bind(this, r.roomId) : () => window.location.replace('/room/' + r.roomId),
+                        width: '130px',
+                        disabled: false
                     })
-                    r.valuesArray = [r.roomName, r.host, r.created, r.connectedUsers, r.status]
                     newRooms.push(r)
                 });
                 this.setState({
@@ -128,12 +136,21 @@ export default class Lobby extends React.Component{
     updateControls = () => {
         var newHeaderControls = [
             {
+                id: 'refresh_lobby',
+                type: 'button',
+                text: 'Refresh',
+                variant: 'contained',
+                disabled: false,
+                width: '130px',
+                onSubmit: this.GetRoomsList
+            },
+            {
                 id: 'create_room',
                 type: 'button',
                 text: 'Create',
                 variant: 'contained',
                 disabled: this.state.myConnectedRoomId > 0,
-                size: 'small',
+                width: '130px',
                 onSubmit: this.createRoomPopup
             }
         ]
@@ -160,8 +177,7 @@ export default class Lobby extends React.Component{
         })
     }
 
-    connectRoom = (roomIndex) => {
-        const roomId = this.state.rooms[roomIndex].roomId
+    connectRoom = (roomId) => {
         this.NaegelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(!body.errors){
@@ -182,7 +198,9 @@ export default class Lobby extends React.Component{
     };
 
     handleCreateRoomError=(body) => {
-        this.setState({newRoomError: body.errors[0].message});
+        var newModalControls = this.state.modalControls
+        newModalControls[0].errorMessage = body.errors[0].message
+        this.setState({modalControls: newModalControls});
     };
     
     handleKeyPress = (event) => {
@@ -241,6 +259,53 @@ export default class Lobby extends React.Component{
     
     componentDidMount = () => {
         this.GetRoomsList();
+
+        lobbySocket.on('update_lobby', (data) => {
+            var newRooms = {}
+            var updatedRoomIndex = -1
+            switch(true){
+                case data.event = 'create':
+                    var roomIsAlreadyDisplayed = this.state.rooms.findIndex(element => element.id === data.roomId )
+                    if (roomIsAlreadyDisplayed < 0){
+                        this.GetRoomsList()
+                    }
+                    break
+                case data.event = 'close':
+                    newRooms = this.state.rooms
+                    updatedRoomIndex = newRooms.findIndex(element => element.id === data.roomId )
+                    if (updatedRoomIndex >= 0) {
+                        newRooms.splice(updatedRoomIndex, 1)
+                        this.setState({rooms: newRooms})
+                    }
+                    break
+                case ['connect', 'disconnect'].includes(data.event):
+                    newRooms = this.state.rooms
+                    updatedRoomIndex = newRooms.findIndex(element => element.id === data.roomId )
+                    if (updatedRoomIndex > 0) {
+                        newRooms[updatedRoomIndex].dataArray[2] = {
+                            type: 'text',
+                            value: data.connectedUsers + '/6'
+                        }
+                        this.setState({ rooms: newRooms })
+                    }
+                    break
+                case data.event = 'start':
+                case data.event = 'finish':
+                    if(!this.props.isMobile || !this.props.isPortrait){
+                        newRooms = this.state.rooms
+                        updatedRoomIndex = newRooms.findIndex(element => element.id === data.roomId )
+                        if (updatedRoomIndex > 0) {
+                            newRooms[updatedRoomIndex].dataArray[4].value = data.newStatus
+                        } else {
+                            this.GetRoomsList()
+                        }
+                    }
+                    break
+                default:
+                    console.log('Received nknown event "' + data.event + '" from lobby socket.')
+                    break
+            }
+        })
     };
 
     render() {
@@ -272,6 +337,7 @@ export default class Lobby extends React.Component{
                     isPortrait={this.props.isPortrait}
                     controls={this.state.modalControls}
                     closeModal={this.closeModal}
+                    modalCanClose
                 ></NaegelsModal>
             </div>
         )

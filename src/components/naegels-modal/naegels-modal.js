@@ -42,7 +42,7 @@ export default class NaegelsModal extends React.Component{
                                                         onChange={control.onChange}
                                                         width={control.width}
                                                         defaultValue={control.text}
-                                                        error={control.errorMessage !== ''}
+                                                        error={control.errorMessage}
                                                         helperText={control.errorMessage}
                                                     ></TextField>
                                                 </ThemeProvider>

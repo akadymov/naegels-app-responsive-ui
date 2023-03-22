@@ -81,7 +81,11 @@ export default class NaegelsTableContainer extends React.Component{
                                                         return(
                                                             <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
                                                                 <Switch
-                                                                    defaulrChecked={data.checked}
+                                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                                    key={`ready-switch-${data.username}`}
+                                                                    id={`ready-switch-${data.username}`}
+                                                                    defaultChecked={data.defaultChecked}
+                                                                    checked={data.checked}
                                                                     disabled={data.disabled}
                                                                     username={data.username}
                                                                     onChange={data.onChange}

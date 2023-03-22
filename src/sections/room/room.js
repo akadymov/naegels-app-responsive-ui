@@ -29,13 +29,14 @@ export default class Room extends React.Component{
                     variant: "contained",
                     text: "Close room",
                     width: '140px',
+                    color: 'error',
                     disabled: false,
                     onSubmit: this.confirmCloseRoom
                 },
                 {
                     id: "cancel_close_room",
                     type: "button",
-                    variant: "outlined",
+                    variant: "contained",
                     text: "Cancel",
                     width: '140px',
                     disabled: false,
@@ -49,6 +50,15 @@ export default class Room extends React.Component{
                 games: []
             },
             headerControls: [
+                {
+                    id: 'refresh_lobby',
+                    type: 'button',
+                    text: 'Refresh',
+                    variant: 'contained',
+                    disabled: false,
+                    width: '130px',
+                    onSubmit: this.GetRoomDetails
+                },
                 {
                     id: 'start_game',
                     type: 'button',
@@ -64,6 +74,7 @@ export default class Room extends React.Component{
                     text: 'Close',
                     variant: 'contained',
                     disabled: true,
+                    color: 'error',
                     width: '130px',
                     onSubmit: this.closeRoom
                 }
@@ -93,41 +104,42 @@ export default class Room extends React.Component{
     updatePlayersTable = () => {
         var newPlayers = []
         var dataArray = []
-        this.state.roomDetails.connectedUserList.map((player, index) => {
-                dataArray = [
-                    {
-                        type: 'player',
-                        username: player.username,
-                        host: player.username === this.state.roomDetails.host
-                    },
-                    {
-                        type:'switch',
-                        checked: player.ready,
-                        disabled: this.Cookies.get('username') !== this.state.roomDetails.host && player.username !== this.Cookies.get('username'),
-                        username: player.username,
-                        onChange: this.handleReadySwitchChange.bind(this, index)
-                    },
-                    {
-                        type: 'button',
-                        variant: 'contained',
-                        text: 'Disconnect',
-                        onSubmit: this.disconnectRoom.bind(this, index),
-                        size: 'small',
-                        color: 'error',
-                        disabled: this.Cookies.get('username') !== this.state.roomDetails.host && player.username !== this.Cookies.get('username')
-                    }
-                ]
-                if(!(this.props.isMobile && this.props.isPortrait)) {
-                    dataArray.push({
-                        type: 'text',
-                        value: player.rating
-                    })
-                }
-                newPlayers.push({
-                    id: player.id,
+        this.state.roomDetails.connectedUserList.map((player, index) => { // TODO consider replacing with forEach
+            dataArray = [
+                {
+                    type: 'player',
                     username: player.username,
-                    dataArray: dataArray
+                    host: player.username === this.state.roomDetails.host
+                },
+                {
+                    type:'switch',
+                    checked: player.ready,
+                    defaultChecked: player.defaultChecked || player.ready,
+                    disabled: player.username === this.state.roomDetails.host || (this.Cookies.get('username') !== this.state.roomDetails.host && player.username !== this.Cookies.get('username')),
+                    username: player.username,
+                    onChange: this.handleReadySwitchChange.bind(this, index) // FIXME: handle changes state but doesnot change UI appearance
+                },
+                {
+                    type: 'button',
+                    variant: 'contained',
+                    text: 'Disconnect',
+                    onSubmit: this.disconnectRoom.bind(this, index),
+                    width: '130px',
+                    color: 'error',
+                    disabled: player.username === this.state.roomDetails.host || (player.username !== this.Cookies.get('username') && this.state.roomDetails.host !== this.Cookies.get('username'))
+                }
+            ]
+            if(!(this.props.isMobile && this.props.isPortrait)) {
+                dataArray.push({
+                    type: 'text',
+                    value: player.rating
                 })
+            }
+            newPlayers.push({
+                id: player.id,
+                username: player.username,
+                dataArray: dataArray
+            })
             
         })
         this.setState({ players: newPlayers })
@@ -153,11 +165,19 @@ export default class Room extends React.Component{
     updateControls = () => {
         var newHeaderControls = []
         newHeaderControls.push({
+            id: 'refresh_lobby',
+            type: 'button',
+            text: 'Refresh',
+            variant: 'contained',
+            disabled: false,
+            width: '130px',
+            onSubmit: this.GetRoomDetails
+        })
+        newHeaderControls.push({
             id: 'start_game',
             type: 'button',
             text: 'Start',
             variant: 'contained',
-            size: 'small',
             disabled: !this.state.youAreHost,
             width: '130px',
             onSubmit: this.startGame
@@ -167,7 +187,7 @@ export default class Room extends React.Component{
             type: 'button',
             text: 'Close',
             variant: 'contained',
-            size: 'small',
+            color: 'error',
             disabled: !this.state.youAreHost,
             width: '130px',
             onSubmit: this.closeRoom
@@ -220,11 +240,11 @@ export default class Room extends React.Component{
                 if(username === this.Cookies.get('username')){
                     window.location.replace('/lobby')
                 } else {
-                    var newRoomDetails = this.state.roomDetails
-                    var disconnectedUserIndex = newRoomDetails.connectedUserList.findIndex(element => element.username === username )
+                    var newPlayers = this.state.players
+                    var disconnectedUserIndex = newPlayers.findIndex(element => element.username === username )
                     if (disconnectedUserIndex >= 0){
-                        newRoomDetails.connectedUserList.splice(disconnectedUserIndex,1)
-                        this.setState({ roomDetails: newRoomDetails })
+                        newPlayers.splice(disconnectedUserIndex,1)
+                        this.setState({ players: newPlayers })
                     }
                 }
             } else {
@@ -240,7 +260,7 @@ export default class Room extends React.Component{
             if(!body.errors){
                 var newRoomDetails = this.state.roomDetails
                 var targetUserUpdated = newRoomDetails.connectedUserList.findIndex(element => element.username === username )
-                newRoomDetails.connectedUserList[targetUserUpdated].ready = 1
+                newRoomDetails.connectedUserList[targetUserUpdated].ready = true
                 this.setState({roomDetails: newRoomDetails})
                 roomSocket.emit('ready', this.Cookies.get('username'), username, roomId)
             } else {
@@ -256,7 +276,7 @@ export default class Room extends React.Component{
             if(!body.errors){
                 var newRoomDetails = this.state.roomDetails
                 var targetUserUpdated = newRoomDetails.connectedUserList.findIndex(element => element.username === username )
-                newRoomDetails.connectedUserList[targetUserUpdated].ready = 0
+                newRoomDetails.connectedUserList[targetUserUpdated].ready = false
                 this.setState({roomDetails: newRoomDetails})
                 roomSocket.emit('not_ready', this.Cookies.get('username'), username, roomId)
             } else {
@@ -267,8 +287,13 @@ export default class Room extends React.Component{
 
     handleReadySwitchChange = (playerIndex) => {
         var newPlayers = this.state.players
+        /*var targetSwitch = document.getElementById('ready-switch-' + newPlayers[playerIndex].username)
+        if (targetSwitch) {
+            targetSwitch.checked = !newPlayers[playerIndex].ready
+        }*/
+        newPlayers[playerIndex].defaultChecked = newPlayers[playerIndex].ready
         newPlayers[playerIndex].ready = !newPlayers[playerIndex].ready
-        if (!newPlayers[playerIndex].ready) {
+        if (newPlayers[playerIndex].ready) {
             this.confirmReady(newPlayers[playerIndex].username)
             this.setState({players: newPlayers})
         } else {
@@ -297,8 +322,8 @@ export default class Room extends React.Component{
             if(body.errors){
                 this.setState({popupError: body.errors[0].message})
             } else {
-                roomSocket.emit('close_room', this.Cookies.get('username'), roomName);
-                lobbySocket.emit('remove_room_from_lobby', roomName);
+                roomSocket.emit('close_room', this.Cookies.get('username'), roomId);
+                lobbySocket.emit('remove_room_from_lobby', roomId);
                 this.setState({popupError: 'Room "' + roomName + '" was successfully closed!'})
                 setTimeout(function(){
                     window.location.replace('/lobby' + roomId)
@@ -323,7 +348,78 @@ export default class Room extends React.Component{
     
     componentDidMount = () => {
         this.GetRoomDetails();
+        roomSocket.on("update_room", (data) => {
+            if(this.Cookies.get('username') !== data.actor){
+                if(data.roomId && data.username){
+                    if(parseInt(data.roomId) === parseInt(this.state.roomDetails.roomId)){
+                        var newRoomDetails = {}
+                        var targetUserUpdated = -1
+                        switch(data.event){
+                            case "ready" :
+                                newRoomDetails = this.state.roomDetails
+                                targetUserUpdated = newRoomDetails.connectedUserList.findIndex(element => element.username === data.username )
+                                newRoomDetails.connectedUserList[targetUserUpdated].defaultChecked = newRoomDetails.connectedUserList[targetUserUpdated].ready
+                                newRoomDetails.connectedUserList[targetUserUpdated].ready = true
+                                if (targetUserUpdated>0){
+                                    this.setState({roomDetails: newRoomDetails}, () => {this.updatePlayersTable()})
+                                }
+                                break
+                            case 'not ready':
+                                newRoomDetails = this.state.roomDetails
+                                targetUserUpdated = newRoomDetails.connectedUserList.findIndex(element => element.username === data.username )
+                                newRoomDetails.connectedUserList[targetUserUpdated].defaultChecked = newRoomDetails.connectedUserList[targetUserUpdated].ready
+                                newRoomDetails.connectedUserList[targetUserUpdated].ready = false
+                                if (targetUserUpdated>0){
+                                    this.setState({roomDetails: newRoomDetails}, () => {this.updatePlayersTable()})
+                                }
+                                break
+                            case 'connect':
+                                targetUserUpdated = this.state.roomDetails.connectedUserList.findIndex(element => element.username === data.username )
+                                this.GetRoomDetails()
+                                break
+                            case 'disconnect':
+                                targetUserUpdated = this.state.roomDetails.connectedUserList.findIndex(element => element.username === data.username )
+                                if (targetUserUpdated >= 0){
+                                    if(this.state.roomDetails.connectedUserList[targetUserUpdated].username === this.Cookies.get('username')){
+                                        window.location.replace('/lobby/')
+                                    } else {
+                                        this.GetRoomDetails()
+                                    }
+                                }
+                                break
+                            default:
+                                console.log('Received unknown roomsocket event "' + data.event + '"')
+                        }
+                    }
+                }
+            }
+        });
+
+        
+        roomSocket.on("exit_room", (data) => {
+            if(parseInt(data.roomId) === parseInt(this.state.roomDetails.roomId)){
+                if(data.username === 0 || data.username === this.Cookies.get('username')){
+                    window.location.replace('/lobby/')
+                }
+            }
+        });
+        
+
+        roomSocket.on("start_game", (data) => {
+            if(data.username !== this.Cookies.get('username')){
+                var userConnected = this.state.roomDetails.connectedUserList.findIndex(element => element.username === this.Cookies.get('username') )
+                if (userConnected >=0){
+                    this.setState({nextUrl: '/game/' + data.gameId})
+                }
+            }
+        });
+
     };
+
+    componentWillUnmount = () => {
+        roomSocket.disconnect()
+        lobbySocket.disconnect()
+    }
 
     render() {
       

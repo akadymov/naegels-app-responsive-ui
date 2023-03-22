@@ -105,7 +105,7 @@ export default class Game extends React.Component{
                         size: 'small',
                         width: '130px',
                         color: 'error',
-                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : this.exitGame
+                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : (getGameResponse.myInHandInfo.cardsOnHand ? this.exitGame : ()=> window.location.replace('/lobby'))
                     }
                 ]
                 if (getGameResponse.host === this.Cookies.get('username')){
@@ -364,7 +364,6 @@ export default class Game extends React.Component{
 
     /*componentDidUpdate = () => {
         if(this.state.handDetails.cardsOnTable.length === this.state.gameDetails.players.length){
-            console.log(this.state.handDetails)
             var newHandDetails = this.state.handDetails
             setTimeout(function(){
                 newHandDetails.cardsOnTable = []
@@ -413,7 +412,7 @@ export default class Game extends React.Component{
                             ''
                     }
                     {
-                    this.state.gameDetails.players.map(player => {
+                    this.state.gameDetails.players.map(player => {  // TODO consider replacing with forEach
                         if(player.username !== this.Cookies.get('username')) {
                             if(this.state.gameDetails.positionsDefined){
                                 return (
@@ -434,7 +433,7 @@ export default class Game extends React.Component{
                             }
                         }
                     })}
-                    {this.state.gameDetails.positionsDefined && this.state.gameDetails.myInHandInfo ? 
+                    {this.state.gameDetails.positionsDefined && this.state.gameDetails.myInHandInfo.dealtCards ? 
                         <PlayerContainer
                             isMobile={this.props.isMobile}
                             isDesktop={this.props.isDesktop}

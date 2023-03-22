@@ -32,6 +32,24 @@
 
 
 
+
+
+.table-put-card.player1.outof2{
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 0%;
+}
+
+.table-put-card.player2.outof2{
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+
+
+
+
 .table-put-card.player1.outof3{
     right: 10%;
     top: 0%;
@@ -40,6 +58,12 @@
 .table-put-card.player2.outof3{
     left: 10%;
     top: 20%;
+}
+
+.table-put-card.player3.outof3{
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 
@@ -59,4 +83,10 @@
 .table-put-card.player3.outof4{
     left: 10%;
     top: 20%;
+}
+
+.table-put-card.player4.outof4{
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }

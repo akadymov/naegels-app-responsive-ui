@@ -16,6 +16,12 @@
     transform: translate(-50%, 0);
 }
 
+.opponent-container.player2.outof2{
+    bottom:-10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 
 
 
@@ -38,6 +44,12 @@
 .opponent-container.player2.outof3.mobile.portrait{
     top: 30%;
     left: -10%;
+}
+
+.opponent-container.player3.outof3{
+    bottom:-10%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 
@@ -66,6 +78,12 @@
     top: 50%;
     left: -35px;
     transform: translate(0, -50%);
+}
+
+.opponent-container.player4.outof4{
+    bottom:-10%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 
@@ -103,6 +121,12 @@
     left: -4vw;
 }
 
+.opponent-container.player5.outof5{
+    bottom:-10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 
 
 
@@ -137,4 +161,10 @@
 .opponent-container.player5.outof6{
     top: 70%;
     left: -6vw;
+}
+
+.opponent-container.player6.outof6{
+    bottom:-10%;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
