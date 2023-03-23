@@ -7,6 +7,10 @@
     border-radius: 10px;
 }
 
+.modal-container.mobile.landscape{
+    top:25%;
+}
+
 .modal-content-container{
     padding: 30px 2vw 10px 2vw;
     min-height: 40px;

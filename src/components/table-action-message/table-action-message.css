@@ -17,9 +17,9 @@
     top:25%
 }
 
-.action-message-container.mobile.landscape{
+/*.action-message-container.mobile.landscape{
     display: none
-}
+}*/
 
 .action-message-text{
     color: darkviolet;

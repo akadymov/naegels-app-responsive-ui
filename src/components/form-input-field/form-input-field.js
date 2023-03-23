@@ -23,6 +23,7 @@ const FormInputField = ({type, id, name, placeholder, value, onChange, errorMess
                 onChange={onChange}
                 checked={checked}
                 onClick={onClick}
+                autoComplete={autoComplete}
             ></input>
             {errorDiv}
         </div>

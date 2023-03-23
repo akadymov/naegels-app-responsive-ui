@@ -29,6 +29,7 @@ export default class Game extends React.Component{
                 host: null,
                 positionsDefined: false,
                 canDeal: false,
+                actionMessage: '',
                 gameScores: [],
                 nextActingPlayer: null,
                 players: [],
@@ -203,14 +204,14 @@ export default class Game extends React.Component{
     }
 
     confirmFinishGame = () => {
-        const gameId = this.state.gameDetails.id
+        const gameId = this.state.gameDetails.gameId
         const roomId = this.state.gameDetails.roomId
         this.NaegelsApi.finishGame(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors){
                 this.setState({popupError: body.errors[0].message})
             } else {
-                gameSocket.emit('finish_game', this.Cookies.get('username'), gameId);
+                gameSocket.emit('finish_game_in_room', this.Cookies.get('username'), gameId, roomId);
                 this.setState({popupError: 'Game #' + gameId + ' was successfully finished!'})
                 setTimeout(function(){
                     window.location.replace('/room/' + roomId)
@@ -250,9 +251,10 @@ export default class Game extends React.Component{
                     this.state.gameDetails.currentHandId, 
                     this.Cookies.get('username'), 
                     parseInt(this.state.myBetSizeValue,10),
-                    body.nextPlayerToBet
+                    body.isLastPlayerToBet,
+                    body.nextActingPlayer
                 )
-                    this.newGameStatus();
+                this.newGameStatus();
                 }
             });
     };
@@ -290,10 +292,14 @@ export default class Game extends React.Component{
                     })
                 } else {
                     gameSocket.emit(
-                        'next_turn', 
+                        'put_card', 
                         this.props.match.params.gameId,
                         this.state.gameDetails.currentHandId,
-                        this.Cookies.get('username')
+                        this.Cookies.get('username'),
+                        body.cardsOnTable,
+                        body.tookPlayer,
+                        body.nextActingPlayer,
+                        body.isLastCardInHand
                     )
                     this.newGameStatus();
                 }
@@ -360,6 +366,117 @@ export default class Game extends React.Component{
     
     componentDidMount = () => {
         this.newGameStatus()
+
+        gameSocket.on('refresh_game_table', (data) => {
+            if(parseInt(data.gameId) === parseInt(this.props.match.params.gameId)){
+                if(data.actor !== this.Cookies.get('username')){
+                    var newGameDetails = this.state.gameDetails
+                    var newModalOpen = this.state.modalOpen
+                    var newModalControls = this.state.modalControls
+                    var newModalText = this.state.modalText
+                    var newModalCanClose = this.state.modalCanClose
+                    var updatedPlayerIndex = -1
+                    switch(data.event){
+                        case 'define positions':
+                            /*newGameDetails.players = data.players
+                            newGameDetails.positionsDefined = true
+                            newGameDetails.canDeal = true
+                            newGameDetails.actionMessage = 'Dealing cards...'
+                            this.setState({ gameDetails: newGameDetails })*/
+                            this.newGameStatus() // TODO replace whole page refreshing to socket transfer of updated data only
+                        break
+                        case 'deal cards':
+                            this.newGameStatus(); // TODO replace whole page refreshing to socket transfer of updated data only
+                        break
+                        case 'make bet':
+                            updatedPlayerIndex = newGameDetails.players.findIndex(el => el.username === data.actor)
+                            if (updatedPlayerIndex >= 0){
+                                newGameDetails.players[updatedPlayerIndex].betSize = data.betSize
+                                newGameDetails.nextActingPlayer = data.nextPlayerToBet
+                                if(data.isLastPlayerToBet){
+                                    newGameDetails.betsAreMade = data.isLastPlayerToBet
+                                    newGameDetails.nextActingPlayer = data.nextActingPlayer
+                                    if(data.nextActingPlayer === this.Cookies.get('username')){
+                                        newGameDetails.actionMessage = "It's your turn now"
+                                    } else{
+                                        newGameDetails.actionMessage = data.nextActingPlayer + "'s turn..."
+                                    }
+                                } else {
+                                    if(data.nextActingPlayer === this.Cookies.get('username')){
+                                        newGameDetails.actionMessage = "It's your turn now"
+                                        newModalOpen = true
+                                        newModalControls = newModalControls = [
+                                            {
+                                                id: "bet_size_input",
+                                                type: "input",
+                                                textFormat: "number",
+                                                label: "bet size",
+                                                variant: "outlined",
+                                                value: this.state.myBetSizeValue,
+                                                errorMessage: "",
+                                                onChange: this.handleBetChange,
+                                                width: '5px',
+                                                defaultValue:0
+                                            },
+                                            {
+                                                id: "bet_size_confirm_button",
+                                                type: "button",
+                                                variant: "contained",
+                                                text: "Confirm",
+                                                onSubmit: this.makeBet
+                                            }
+                                        ]
+                                        newModalText = "Make a bet"
+                                        newModalCanClose = false
+                                    } else {
+                                        newGameDetails.actionMessage = data.nextActingPlayer + ' is making bet...'
+                                    }
+                                }
+                                this.setState({
+                                    gameDetails: newGameDetails,
+                                    modalOpen: newModalOpen,
+                                    modalControls: newModalControls,
+                                    modalCanClose: newModalCanClose,
+                                    modalText: newModalText
+                                })
+                            }
+                        break
+                        case 'put card':
+                            newGameDetails.cardsOnTable = data.cardsOnTable
+                            newGameDetails.nextActingPlayer = data.nextActingPlayer
+                            if(data.isLastCardInHand){
+                                this.newGameStatus()
+                            } else {
+                                var tookPlayerIndex = newGameDetails.players.findIndex(el => el.username === data.tookPlayer)
+                                if(data.tookPlayerIndex >= 0){
+                                    newGameDetails.players[tookPlayerIndex].tookTurns ++
+                                }
+                                if(data.tookPlayer === newGameDetails.myInHandInfo.username) {
+                                    newGameDetails.myInHandInfo.tookTurns ++
+                                }
+                                if(data.nextActingPlayer === this.Cookies.get('username')) {
+                                    newGameDetails.actionMessage = "It's your turn now"
+                                } else {
+                                    newGameDetails.actionMessage = data.nextActingPlayer + "'s turn..."
+                                }
+                                this.setState({
+                                    gameDetails: newGameDetails
+                                })
+                            }
+                        break
+                        case 'finish':
+                            if(data.actor !== this.Cookies.get('username')){
+                                window.location.replace('/room/' + data.roomId)
+                            }
+                        break
+                        default:
+                            console.log('Received unknown event "' + data.event + '" from game socket')
+                        break
+                    }
+                }
+            }
+        });
+
     }
 
     /*componentDidUpdate = () => {
@@ -388,7 +505,7 @@ export default class Game extends React.Component{
                 ></SectionHeader>
                 <div className={`game-table ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     {
-                        this.state.gameDetails.actionMessage ? 
+                        this.state.gameDetails.actionMessage && (!this.props.isMobile || this.props.isPortrait || this.state.gameDetails.cardsOnTable.length === 0) ? 
                         <TableActionMessage
                             isMobile={this.props.isMobile}
                             isDesktop={this.props.isDesktop}

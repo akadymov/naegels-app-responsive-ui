@@ -264,13 +264,13 @@ export default class Lobby extends React.Component{
             var newRooms = {}
             var updatedRoomIndex = -1
             switch(true){
-                case data.event = 'create':
+                case data.event === 'create':
                     var roomIsAlreadyDisplayed = this.state.rooms.findIndex(element => element.id === data.roomId )
                     if (roomIsAlreadyDisplayed < 0){
                         this.GetRoomsList()
                     }
                     break
-                case data.event = 'close':
+                case data.event === 'close':
                     newRooms = this.state.rooms
                     updatedRoomIndex = newRooms.findIndex(element => element.id === data.roomId )
                     if (updatedRoomIndex >= 0) {

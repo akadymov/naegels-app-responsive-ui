@@ -406,11 +406,8 @@ export default class Room extends React.Component{
         
 
         roomSocket.on("start_game", (data) => {
-            if(data.username !== this.Cookies.get('username')){
-                var userConnected = this.state.roomDetails.connectedUserList.findIndex(element => element.username === this.Cookies.get('username') )
-                if (userConnected >=0){
-                    this.setState({nextUrl: '/game/' + data.gameId})
-                }
+            if(data.roomId === this.state.roomDetails.roomId){
+                window.location.replace('/game/' + data.gameId)
             }
         });
 

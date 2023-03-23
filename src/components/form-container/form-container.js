@@ -42,6 +42,7 @@ export default class FormContainer extends React.Component{
                                         helperText={field.errorMessage}
                                         type={field.type}
                                         defaultValue={field.text}
+                                        autoComplete={field.autoComplete}
                                         sx={{width: field.width}}
                                     ></TextField>
                                 </ThemeProvider>
