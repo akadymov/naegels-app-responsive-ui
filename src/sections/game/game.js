@@ -597,7 +597,14 @@ export default class Game extends React.Component{
                     :
                         ''
                     }
+                    <div className={`current-game-trump-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        <div className={`hand-id-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Hand #{this.state.gameDetails.currentHandSerialNo}</div>
+                        <div className={`hand-id-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <p className={`${this.state.gameDetails.trump} trump-container`}>{this.state.gameDetails.cardsPerPlayer}</p>
+                        </div>
+                    </div>
                 </div>
+                
                 <NaegelsModal
                     open={this.state.modalOpen}
                     text={this.state.modalText}

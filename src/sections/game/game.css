@@ -57,3 +57,104 @@
     width: 80vw;
     margin-top: 13vh;
 }
+
+.current-game-trump-container{
+    position: absolute;
+    right: -5%;
+    top: -5%;
+    width: 70px;
+    height: 40px;
+}
+
+.current-game-trump-container.mobile{
+    width: 40px;
+    height: 30px;
+}
+
+.current-game-trump-container.mobile.portrait{
+    right: -5%;
+    top: -5%;
+}
+
+.current-game-trump-container.tablet.portrait{
+    right: -20%;
+    top: -5%;
+}
+
+.current-game-trump-container.mobile.landscape{
+    left: -5%;
+    bottom: -25%;
+    right: unset;
+    top: unset;
+}
+
+.hand-id-label{
+    position: absolute;
+    top: 0%;
+    width: 70px;
+    height: 15px;
+    font-size: 14px;
+    line-height: 15px;
+    font-family: Mukta;
+    text-align: center;
+}
+
+.hand-id-label.mobile{
+    width: 40px;
+    height: 10px;
+    font-size: 10px;
+}
+
+.hand-id-value{
+    position: absolute;
+    bottom: 0%;
+    width: 70px;
+    height: 25px;
+    line-height: 0px;
+    font-size: 20px;
+    font-family: Mukta;
+    text-align: center;
+}
+
+.hand-id-value.mobile{
+    width: 40px;
+    height: 20px;
+    line-height: 0px;
+    font-size: 14px;
+}
+
+.trump-container:after{
+    font-size: 20px;
+    line-height: 0px;
+}
+
+.trump-container.mobile:after{
+    font-size: 14px;
+    line-height: 0px;
+}
+
+
+.d.trump-container:after{
+    content: "\2666";
+    color: red;
+}
+
+.h.trump-container:after{
+    content: "\2665";
+    color: red;
+}
+
+.c.trump-container:after{
+    content: "\2663";
+    color: black;
+}
+
+.s.trump-container:after{
+    content: "\2660";
+    color: black;
+}
+
+.x.trump-container:after{
+    content: "\2298";
+    color: black;
+}

@@ -16,31 +16,31 @@
     flex-wrap: wrap;
 }
 
-.suit-container:before{
+.suit-container:after{
     font-size: 18px;
 }
 
-.d.suit-container:before{
+.d.suit-container:after{
     content: "\2666";
     color: red;
 }
 
-.h.suit-container:before{
+.h.suit-container:after{
     content: "\2665";
     color: red;
 }
 
-.c.suit-container:before{
+.c.suit-container:after{
     content: "\2663";
     color: black;
 }
 
-.s.suit-container:before{
+.s.suit-container:after{
     content: "\2660";
     color: black;
 }
 
-.x.suit-container:before{
+.x.suit-container:after{
     content: "\2298";
     color: black;
 }
