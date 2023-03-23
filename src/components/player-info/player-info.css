@@ -1,76 +1,149 @@
-.player-info{
-    width: 100px;
-    height: 50px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    text-align: center;
-    position: absolute;
-    bottom:0;
-}
-
 .player-info-container{
     position: absolute;
-    width: 100px;
-    height: 50px;
-    
-    background: #E6E7E8;
-    border: 1px solid #929292;
-    box-sizing: border-box;
+    width: 175px;
+    height: 75px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 0%;
+    background-color: hsl(0, 0%, 0%, 0.8);
     border-radius: 10px;
-    color: #929292;
+    color: white;
 }
 
 .player-info-container[active=true]{
-    color: #FF0000;
-    border-color: #FF0000;
+    outline: 2px solid darkviolet;
+    color: darkviolet;
 }
 
-.player-name{
-    height: 50%;
-    width: 100%;
-    font-size: 18px;
+.player-info-container.mobile{
+    width: 124px;
+    height: 75px;
 }
 
-.player-bet-size{
+.player-info-avatar-container{
     position: absolute;
-    top: 50%;
-    height: 50%;
-    width: 50%;
-    border-top: 1px solid #929292;
-    border-right: 1px solid #929292;
+    width: 61px;
+    height: 61px;
+    margin: 7px;
+    left: 0;
+    top: 0;
 }
 
-.player-took-bets{
+.player-info-avatar-container.mobile{
+    width: 38px;
+    height: 38px;
+    margin: 6px;
+    top: 0;
+}
+
+.player-data-container{
     position: absolute;
-    width: 50%;
-    top: 50%;
-    height: 50%;
-    border-top: 1px solid #929292;
-    left: 50%;
+    top: 0;
+    right: 0;
+    height: 75px;
+    width: 100px;
+    line-height: 25px;
+    font-family: Mukta;
+    text-align: center;
 }
 
-.player-bet-size[active=true], .player-took-bets[active=true]{
-    color: #FF0000;
-    border-color: #FF0000;
+.player-data-container.mobile{
+    height: 50px;
+    width: 74px;
+    top: 0;
 }
 
-.player-prop-header{
-    height: 40%;
-    font-size: 10px;
-    margin:0;
-    padding:0;
+.player-username-container{
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 25px;
+    width: 100px;
+    font-size: 20px;
+    overflow: hidden;
 }
 
-.player-prop-value{
-    height: 60%;
-    top: 40%;
+.player-username-container.mobile{
+    position: absolute;
+    height: 25px;
+    width: 124px;
+    top: 50px;
+    left: -50px;
+    font-size: 16px;
+    overflow: hidden
+}
+
+.player-bets-container{
+    position: absolute;
+    bottom: 0;
+    right: 50px;
+    height: 50px;
+    width: 50px;
+}
+
+.player-bets-container.mobile{
+    right: 37px;
+    width: 37px;
+}
+
+.player-bets-label{
+    position: absolute;
+    top: 0;
+    height: 25px;
+    width: 50px;
     font-size: 12px;
-    margin:0;
-    padding:0;
 }
 
-.player-info[myinfo]{
-    left: 82px;
-    top: 55px;
-    z-index: 100;
+.player-bets-label.mobile{
+    width: 37px;
+    font-size: 10px;
+}
+
+.player-bets-value{
+    position: absolute;
+    bottom: 0;
+    height: 25px;
+    width: 50px;
+}
+
+.player-bets-value.mobile{
+    width: 37px;
+    font-size: 14px;
+}
+
+.player-took-container{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+}
+
+.player-took-container.mobile{
+    width: 37px;
+}
+
+.player-took-label{
+    position: absolute;
+    top: 0;
+    height: 25px;
+    width: 50px;
+    font-size: 12px;
+}
+
+.player-took-label.mobile{
+    width: 37px;
+    font-size: 10px;
+}
+
+.player-took-value{
+    position: absolute;
+    bottom: 0;
+    height: 25px;
+    width: 50px;
+}
+
+.player-took-value.mobile{
+    width: 37px;
+    font-size: 14px;
 }

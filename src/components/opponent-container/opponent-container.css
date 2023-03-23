@@ -1,11 +1,15 @@
 .opponent-container{
     position: absolute;
-    height: 75px;
+    height: 100px;
     width: 130px;
 }
 
+.opponent-container.mobile{
+    height: 100px;
+}
+
 .opponent-container.player1.outof2{
-    top:-5%;
+    top:-8%;
     left: 50%;
     transform: translate(-50%, 0);
 }
@@ -28,12 +32,12 @@
 
 .opponent-container.player1.outof3{
     top: 30%;
-    right: -5%;
+    right: -4%;
 }
 
 .opponent-container.player2.outof3{
     top: 30%;
-    left: -5%;
+    left: -35px;
 }
 
 .opponent-container.player1.outof3.mobile.portrait{
@@ -63,7 +67,7 @@
 }
 
 .opponent-container.player2.outof4{
-    top:-5%;
+    top:-8%;
     left: 50%;
     transform: translate(-50%, 0);
 }
@@ -142,7 +146,7 @@
 }
 
 .opponent-container.player3.outof6{
-    top:-5%;
+    top:-8%;
     left: 50%;
     transform: translate(-50%, 0);
 }

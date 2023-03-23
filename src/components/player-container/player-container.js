@@ -30,6 +30,9 @@ export default class PlayerContainer extends React.Component{
                     )})}
                 </div>
                 <PlayerInfo
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
                     username={this.props.username}
                     betSize={this.props.betSize}
                     tookTurns={this.props.tookTurns}
