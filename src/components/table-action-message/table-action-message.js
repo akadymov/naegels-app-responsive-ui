@@ -20,7 +20,7 @@ export default class TableActionMessage extends React.Component{
                 <p className={`action-message-text ${this.props.highlighted ? 'highlighted' : ''}`}>
                     {this.props.message}
                 </p>
-                {!this.props.isMobile && !this.props.highlighted ? 
+                {!this.props.isMobile && !this.props.highlighted && this.props.message !== 'This game is closed!' ? 
                     <ThemeProvider theme={defaultTheme}>
                         <LinearProgress
                             color='primary'

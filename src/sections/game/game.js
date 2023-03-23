@@ -14,6 +14,7 @@ import OpponentContainer from '../../components/opponent-container';
 import NaegelsModal from '../../components/naegels-modal';
 import TableActionMessage from '../../components/table-action-message';
 import TablePutCards from '../../components/table-put-cards';
+import GameScores from '../../components/game-scores';
 
 export default class Game extends React.Component{
 
@@ -44,6 +45,7 @@ export default class Game extends React.Component{
                 }
             },
             headerControls: [],
+            scoresModalOpen: false,
             modalOpen: false,
             modalText: '',
             modalCanClose: false,
@@ -88,7 +90,7 @@ export default class Game extends React.Component{
                         id: 'scores',
                         type: 'button',
                         text: 'Scores',
-                        variant: 'contained',
+                        variant: 'outlined',
                         disabled: false,
                         size: 'small',
                         width: '130px',
@@ -98,7 +100,7 @@ export default class Game extends React.Component{
                         id: 'refresh',
                         type: 'button',
                         text: 'Refresh',
-                        variant: 'contained',
+                        variant: 'outlined',
                         disabled: false,
                         size: 'small',
                         width: '130px',
@@ -221,6 +223,10 @@ export default class Game extends React.Component{
         })
     }
 
+    closeScoresModal = () => {
+        this.setState({ scoresModalOpen: false })
+    }
+
     confirmFinishGame = () => {
         const gameId = this.state.gameDetails.gameId
         const roomId = this.state.gameDetails.roomId
@@ -323,6 +329,12 @@ export default class Game extends React.Component{
         this.setState({myBetSizeValue: e.target.value})
     };
 
+    showScores = () => {
+        this.setState({
+            scoresModalOpen: true
+        })
+    }
+
     exitGame = () => {
         var newModalControls = [
             {
@@ -387,6 +399,7 @@ export default class Game extends React.Component{
                     var newModalControls = this.state.modalControls
                     var newModalText = this.state.modalText
                     var newModalCanClose = this.state.modalCanClose
+                    var newScoresModalOpen = this.state.scoresModalOpen
                     var updatedPlayerIndex = -1
                     switch(data.event){
                         case 'define positions':
@@ -419,6 +432,7 @@ export default class Game extends React.Component{
                                         newGameDetails.actionMessage = "It's your turn now"
                                         newGameDetails.attentionToMessage = true
                                         newModalOpen = true
+                                        newScoresModalOpen = false
                                         newModalControls = newModalControls = [
                                             {
                                                 id: "bet_size_input",
@@ -451,7 +465,8 @@ export default class Game extends React.Component{
                                     modalOpen: newModalOpen,
                                     modalControls: newModalControls,
                                     modalCanClose: newModalCanClose,
-                                    modalText: newModalText
+                                    modalText: newModalText,
+                                    scoresModalOpen: newScoresModalOpen
                                 })
                             }
                         break
@@ -593,6 +608,15 @@ export default class Game extends React.Component{
                     closeModal={this.closeModal}
                     modalCanClose={this.modalCanClose}
                 ></NaegelsModal>
+                <GameScores
+                    open={this.state.scoresModalOpen}
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
+                    scoresHeaders={this.state.gameDetails.gameScores.headers}
+                    scores={this.state.gameDetails.gameScores.rows}
+                    closeModal={this.closeScoresModal}
+                ></GameScores>
             </div>
         )
     }

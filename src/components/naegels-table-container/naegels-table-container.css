@@ -15,3 +15,33 @@
     align-items: center;
     flex-wrap: wrap;
 }
+
+.suit-container:before{
+    font-size: 18px;
+}
+
+.d.suit-container:before{
+    content: "\2666";
+    color: red;
+}
+
+.h.suit-container:before{
+    content: "\2665";
+    color: red;
+}
+
+.c.suit-container:before{
+    content: "\2663";
+    color: black;
+}
+
+.s.suit-container:before{
+    content: "\2660";
+    color: black;
+}
+
+.x.suit-container:before{
+    content: "\2298";
+    color: black;
+}
+

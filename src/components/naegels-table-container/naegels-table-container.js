@@ -20,23 +20,25 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 // local components
 import defaultTheme from '../../themes/default';
 import FormButton from '../form-button';
-
-const StyledTableCell = styled(TableCell)(() => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: 'black',
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
+import Score from '../score';
 
 
 
 export default class NaegelsTableContainer extends React.Component{
 
     render() {
+
+        const StyledTableCell = styled(TableCell)(() => ({
+            [`&.${tableCellClasses.head}`]: {
+                backgroundColor: 'black',
+                color: 'white',
+                fontWeight: 'bold'
+            },
+            [`&.${tableCellClasses.body}`]: {
+                fontSize: 14,
+                padding: this.props.padding || '16px'
+            },
+        }));
 
         return(
             <TableContainer component={Paper} sx={{ height:this.props.height, overflow: 'scroll'}}>
@@ -55,7 +57,7 @@ export default class NaegelsTableContainer extends React.Component{
                                 <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={(event) => this.props.onClick(event, row.id)}
+                                    onClick={this.props.onClick ? (event) => this.props.onClick(event, row.id) : ''}
                                     selected={row.id === this.props.selected}
                                     hover
                                 >
@@ -104,6 +106,24 @@ export default class NaegelsTableContainer extends React.Component{
                                                                     disabled={data.disabled}
                                                                     color = {data.color}
                                                                 ></FormButton>
+                                                            </StyledTableCell>
+                                                        )
+                                                    case 'hand id':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                <p key={`handspan ${data.cards}-${data.trump}-${row.dataArray.indexOf(data)}`} className={`${data.trump} suit-container`}>{data.cards}</p>
+                                                            </StyledTableCell>
+                                                        )
+                                                    case 'score':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                                <Score
+                                                                    total={data.total}
+                                                                    betSize={data.betSize}
+                                                                    tookTurns={data.tookTurns}
+                                                                    bonus={data.bonus}
+                                                                    score={data.score}
+                                                                ></Score>
                                                             </StyledTableCell>
                                                         )
                                                     default: // text
