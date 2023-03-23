@@ -15,6 +15,9 @@ export default class OpponentContainer extends React.Component{
                 className={`opponent-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"} player${this.props.position} outof${this.props.numberOfPlayers}`}
             >
                 <OpponentCards
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
                     cards={this.props.cards}
                 ></OpponentCards>
                 <PlayerInfo

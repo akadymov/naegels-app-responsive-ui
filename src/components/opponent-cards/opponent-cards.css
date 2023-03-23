@@ -1,29 +1,17 @@
 .opponent-card{
     position: relative;
+    outline: 1px solid gray;
+    border-radius: 10%;
+    background-image: url(./opponent-card-pattern.png);
+    background-size: 56px 90px;
+    width: 56px;
+    height: 90px;
+}
+
+.opponent-card.mobile{
     width: 35px;
     height: 50px;
-    /*background: url(./opponent-cards.png);
-    background-repeat: no-repeat;
-    background-size:cover;*/
-    border: 1px solid #929292;
-    box-sizing: border-box;
-    border-radius: 5px;
-
-    /*choose patterh here: https://freefrontend.com/css-background-patterns/ */
-    --s: 10px; /* control the size */
-    --c1: darkblue;
-    --c2: darkviolet;
-    
-    --_s: calc(2*var(--s)) calc(2*var(--s));
-    --_g: var(--_s) conic-gradient(at 40% 40%,#0000 75%,var(--c1) 0);
-    --_p: var(--_s) conic-gradient(at 20% 20%,#0000 75%,var(--c2) 0);
-    background:
-      calc( .9*var(--s)) calc( .9*var(--s))/var(--_p),
-      calc(-.1*var(--s)) calc(-.1*var(--s))/var(--_p),
-      calc( .7*var(--s)) calc( .7*var(--s))/var(--_g),
-      calc(-.3*var(--s)) calc(-.3*var(--s))/var(--_g),
-      conic-gradient(from 90deg at 20% 20%,var(--c2) 25%,var(--c1) 0) 
-       0 0/var(--s) var(--s);
+    background-size: 35px 50px;
 }
 
 .cards-container{
