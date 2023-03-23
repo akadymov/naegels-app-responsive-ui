@@ -54,7 +54,7 @@ export default class PlayerInfo extends React.Component{
                             sx={{ 
                                 width: this.props.isMobile ? 38 :61, 
                                 height: this.props.isMobile ? 38 : 61,
-                                outline: this.props.active ? '2px solid darkViolet' : 'none' 
+                                outline: this.props.active ? '2px solid #58f958' : 'none' 
                             }}
                         ></Avatar>
                     </div>

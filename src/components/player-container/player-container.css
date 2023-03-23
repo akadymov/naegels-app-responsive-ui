@@ -5,8 +5,13 @@
     height: 200px;
 }
 
-.player-container.mobile{
-    bottom: -29%;
+.player-container.mobile.landscape{
+    bottom: -27%;
+    height: 125px;
+}
+
+.player-container.mobile.portrait{
+    bottom: -20%;
     height: 125px;
 }
 

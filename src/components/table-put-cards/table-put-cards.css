@@ -35,8 +35,9 @@
 
 
 .table-put-card.player1.outof2{
-    left: 50%;
-    transform: translate(-50%, 0);
+    left: 70%;
+    top: 0%;
+    transform: translate(-50%, 30%);
     top: 0%;
 }
 

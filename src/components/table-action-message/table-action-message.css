@@ -6,7 +6,12 @@
     line-height: 20px;
     background-color: hsl(0, 0%, 0%, 0.7);
     border-radius: 10%;
-    border: 1px solid darkviolet;
+    border: 1px solid #58f958;
+}
+
+.action-message-container.highlighted{
+    border: 2px solid darkviolet;
+    background-color: #58f958;
 }
 
 .action-message-container.mobile{
@@ -22,8 +27,13 @@
 }
 
 .action-message-text{
-    color: darkviolet;
+    color: #58f958;
     font-weight: 900;
     padding: 2px;
     font-family: Mukta;
+}
+
+.action-message-text.highlighted{
+    color: darkviolet;
+    font-weight: bold;
 }

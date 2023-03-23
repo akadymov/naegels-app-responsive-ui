@@ -30,6 +30,7 @@ export default class Game extends React.Component{
                 positionsDefined: false,
                 canDeal: false,
                 actionMessage: '',
+                attentionToMessage: false,
                 gameScores: [],
                 nextActingPlayer: null,
                 players: [],
@@ -65,6 +66,12 @@ export default class Game extends React.Component{
         responseWithErrors.errors.forEach(error => {
             console.log(error.message)
         })
+    }
+
+    handleInGameError(responseWithErrorMessage){
+        var newGameDetails = this.state.gameDetails
+        newGameDetails.actionMessage = responseWithErrorMessage.errors[0].message
+        this.setState({gameDetails: newGameDetails})
     }
 
     newGameStatus = () => {
@@ -130,6 +137,14 @@ export default class Game extends React.Component{
                         width: '130px',
                         onSubmit: this.dealCards
                     })
+                    if(!getGameResponse.positionsDefined){
+                        getGameResponse.attentionToMessage = true
+                        getGameResponse.actionMessage = 'Press "SHUFFLE" button in game controls to define players positions in game'
+                    }
+                    if(getGameResponse.canDeal){
+                        getGameResponse.attentionToMessage = true
+                        getGameResponse.actionMessage = 'Press "DEAL" button in game controls to deal cards in hand'
+                    }
                 }
                 if(getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade){
                     newModalControls = [
@@ -153,6 +168,9 @@ export default class Game extends React.Component{
                             onSubmit: this.makeBet
                         }
                     ]
+                }
+                if(getGameResponse.nextActingPlayer === this.Cookies.get('username')){
+                    getGameResponse.attentionToMessage = true
                 }
                 this.setState({
                     gameDetails: getGameResponse,
@@ -209,7 +227,7 @@ export default class Game extends React.Component{
         this.NaegelsApi.finishGame(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors){
-                this.setState({popupError: body.errors[0].message})
+                this.handleInGameError(body)
             } else {
                 gameSocket.emit('finish_game_in_room', this.Cookies.get('username'), gameId, roomId);
                 this.setState({popupError: 'Game #' + gameId + ' was successfully finished!'})
@@ -224,10 +242,7 @@ export default class Game extends React.Component{
         this.NaegelsApi.dealCards(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
-                this.setState({
-                    actionMessage: body.errors[0].message,
-                    error: true
-                })
+                this.handleInGameError(body)
             } else{
                 gameSocket.emit('deal_cards', this.props.match.params.gameId)
                 this.newGameStatus();
@@ -263,7 +278,7 @@ export default class Game extends React.Component{
         this.NaegelsApi.definePositions(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
-                this.setState({popupError: body.errors[0].message})
+                this.handleInGameError(body)
             } else {
                 gameSocket.emit('define_positions', this.props.match.params.gameId, body.players)
                 this.newGameStatus()
@@ -286,10 +301,7 @@ export default class Game extends React.Component{
             )
             .then((body) => {
                 if(body.errors) {
-                    this.setState({
-                        actionMessage: body.errors[0].message,
-                        error: true
-                    })
+                    this.handleInGameError(body)
                 } else {
                     gameSocket.emit(
                         'put_card', 
@@ -398,12 +410,14 @@ export default class Game extends React.Component{
                                     newGameDetails.nextActingPlayer = data.nextActingPlayer
                                     if(data.nextActingPlayer === this.Cookies.get('username')){
                                         newGameDetails.actionMessage = "It's your turn now"
+                                        newGameDetails.attentionToMessage = true
                                     } else{
                                         newGameDetails.actionMessage = data.nextActingPlayer + "'s turn..."
                                     }
                                 } else {
                                     if(data.nextActingPlayer === this.Cookies.get('username')){
                                         newGameDetails.actionMessage = "It's your turn now"
+                                        newGameDetails.attentionToMessage = true
                                         newModalOpen = true
                                         newModalControls = newModalControls = [
                                             {
@@ -456,6 +470,7 @@ export default class Game extends React.Component{
                                 }
                                 if(data.nextActingPlayer === this.Cookies.get('username')) {
                                     newGameDetails.actionMessage = "It's your turn now"
+                                    newGameDetails.attentionToMessage = true
                                 } else {
                                     newGameDetails.actionMessage = data.nextActingPlayer + "'s turn..."
                                 }
@@ -476,7 +491,6 @@ export default class Game extends React.Component{
                 }
             }
         });
-
     }
 
     /*componentDidUpdate = () => {
@@ -492,6 +506,7 @@ export default class Game extends React.Component{
 
     render() {
 
+        console.log(this.state)
         
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -511,6 +526,7 @@ export default class Game extends React.Component{
                             isDesktop={this.props.isDesktop}
                             isPortrait={this.props.isPortrait}
                             message={this.state.gameDetails.actionMessage}
+                            highlighted={this.state.gameDetails.attentionToMessage}
                         >
                         </TableActionMessage>
                         :

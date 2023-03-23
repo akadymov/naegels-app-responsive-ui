@@ -5,14 +5,14 @@
     left: 50%;
     transform: translate(-50%, 0);
     bottom: 0%;
-    background-color: hsl(0, 0%, 0%, 0.8);
+    background-color: hsl(0, 0%, 0%, 0.85);
     border-radius: 10px;
     color: white;
 }
 
 .player-info-container[active=true]{
-    outline: 2px solid darkviolet;
-    color: darkviolet;
+    outline: 2px solid #58f958;
+    color: #58f958;
 }
 
 .player-info-container.mobile{
