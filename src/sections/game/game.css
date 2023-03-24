@@ -26,10 +26,12 @@
 
 .game-table{
     position: absolute;
-    background-color: green;
+    background: rgb(0,62,0);
+    background: linear-gradient(90deg, rgba(0,62,0,1) 0%, rgba(0,156,0,1) 50%, rgba(0,93,0,1) 100%);
     border-radius: 20%;
     transform: translate(-50%, 0%);
     left: 50%;
+    outline: 5px solid black;
 }
 
 .game-table.desktop{

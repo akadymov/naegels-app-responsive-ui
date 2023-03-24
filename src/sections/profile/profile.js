@@ -30,14 +30,14 @@ export default class Profile extends React.Component{
                 registered: null,
                 username: null
             },
+            aboutMeSymbols: 0,
             canUpdate: false,
-            password: null,
-            passwordHelperText: 'new password',
-            passwordError: false,
-            passwordRepeat: null,
-            passwordRepeatHelperText: 'repeat new password',
-            passwordRepeatError: false,
-            canUpdatePassword: false
+            currentPassword: null,
+            newPassword: null,
+            repeatPassword: null,
+            canUpdatePassword: false,
+            passwordUpdated: false,
+            errors:{}
         }
     }
 
@@ -48,32 +48,89 @@ export default class Profile extends React.Component{
         this.NaegelsApi.getUser(this.props.match.params.username || this.Cookies.get('username'))
         .then((body)=>{
             if(body.errors) {
-                console.log(body) 
+                var newErrors = {}
+                var fieldName = ''
+                var helperMessage = ''
+                body.errors.forEach(error => {
+                    fieldName = error.field
+                    helperMessage = error.message
+                    newErrors[fieldName] = helperMessage
+                })
+                this.setState({ errors: newErrors })
             } else {
-                this.setState({ userData: body, canUpdate: false })
+                this.setState({ 
+                    userData: body, 
+                    canUpdate: false, 
+                    canUpdatePassword: false, 
+                    aboutMeSymbols: body.aboutMe ? body.aboutMe.length : 0
+                })
             }
         })
     }
 
     updateProfile = () => {
-        this.NaegelsApi.updateUser(this.props.match.params.username || this.Cookies.get('username'), this.Cookies.get('idToken'), this.state.userData.email, this.state.userData.aboutMe)
+        this.NaegelsApi.updateUser(this.props.match.params.username || this.Cookies.get('username'), this.Cookies.get('idToken'), this.state.userData.email, this.state.userData.aboutMe || '')
         .then((body)=>{
             if(body.errors) {
-                console.log(body) // FIXME: change edit user errors format on BE and bring error text to corresponding form fields
+                var newErrors = this.state.errors
+                var fieldName = ''
+                var helperMessage = ''
+                body.errors.forEach(error => {
+                    fieldName = error.field
+                    helperMessage = error.message
+                    newErrors[fieldName] = helperMessage
+                })
+                this.setState({ 
+                    errors: newErrors, 
+                    canUpdate: false,
+                    passwordUpdated: false 
+                })
             } else {
-                this.setState({ userData: body, canUpdate: false })
+                this.setState({ 
+                    userData: body, 
+                    canUpdate: false, 
+                    passwordUpdated: false,
+                    errors: {}
+                })
             }
         })
     }
 
     updatePassword = () => {
-        if(this.state.password !== this.state.passwordRepeat){
-            this.setState({
-                passwordRepeatHelperText: 'password confirmation does not match',
-                passwordRepeatError: true
+        if(this.state.newPassword !== this.state.repeatPassword){
+            var newErrors = {
+                repeatPassword: 'password confirmation does not match'
+            }
+            this.setState({ errors: newErrors })
+        } else {
+            this.NaegelsApi.updatePassword(this.Cookies.get('idToken'), this.state.currentPassword, this.state.newPassword, this.state.repeatPassword)
+            .then((body)=>{
+                if(body.errors) {
+                    var newErrors = this.state.errors
+                    var fieldName = ''
+                    var helperMessage = ''
+                    body.errors.forEach(error => {
+                        fieldName = error.field
+                        helperMessage = error.message
+                        newErrors[fieldName] = helperMessage
+                    })
+                    this.setState({ 
+                        errors: newErrors, 
+                        canUpdate: false, 
+                        passwordUpdated: false 
+                    })
+                } else {
+                    this.setState({ 
+                        currentPassword: null, 
+                        newPassword: null, 
+                        repeatPassword: null, 
+                        passwordUpdated: true,
+                        canUpdatePassword: false,
+                        errors: {}
+                    })
+                }
             })
         }
-        console.log('Password update is triggered but not executed. The corresponding method is not ready yet')
     }
 
     activatePicControls = () => {
@@ -91,25 +148,65 @@ export default class Profile extends React.Component{
     handleEmailChange = (e) => {
         var newUserData = this.state.userData
         newUserData.email = e.target.value
-        this.setState({ userData: newUserData, canUpdate: true })
+        var newErrors = this.state.errors
+        newErrors.email = null
+        this.setState({ 
+            userData: newUserData, 
+            canUpdate: true,
+            passwordUpdated: false,
+            errors: newErrors
+        })
     }
 
     handleAboutMeChange = (e) => {
         var newUserData = this.state.userData
-        newUserData.aboutMe = e.target.aboutMe
-        this.setState({ userData: newUserData, canUpdate: true })
+        newUserData.aboutMe = e.target.value
+        var newErrors = this.state.errors
+        newErrors.aboutMe = e.target.value.length > 500 ? 'about me (' + this.state.aboutMeSymbols + '/500)' : null
+        this.setState({ 
+            userData: newUserData, 
+            canUpdate: newErrors.aboutMe == null, 
+            aboutMeSymbols: e.target.value.length,
+            passwordUpdated: false ,
+            errors: newErrors
+        })
+    }
+
+    handlecurrentPasswordChange = (e) => {
+        var newErrors = this.state.errors
+        newErrors.currentPassword = null
+        this.setState({ 
+            currentPassword: e.target.value, 
+            canUpdatePassword: true ,
+            passwordUpdated: false,
+            errors: newErrors
+        })
     }
 
     handleNewPasswordChange = (e) => {
-        this.setState({ password: e.target.value, canUpdatePassword: true })
+        var newErrors = this.state.errors
+        newErrors.newPassword = null
+        this.setState({ 
+            newPassword: e.target.value, 
+            canUpdatePassword: true ,
+            passwordUpdated: false,
+            errors: newErrors
+        })
     }
 
     handleRepeatNewPasswordChange = (e) => {
-        this.setState({ passwordRepeat: e.target.value, canUpdatePassword: true })
+        var newErrors = this.state.errors
+        newErrors.repeatPassword = null
+        this.setState({ 
+            repeatPassword: e.target.value, 
+            canUpdatePassword: true ,
+            passwordUpdated: false,
+            errors: newErrors
+        })
     }
 
-    uploadFile = async (e) => { // TODO upload avatar method is not working (problem may exist in FE, BE or both)
-        console.log(e.target.files)
+    uploadFile = async () => { // TODO upload avatar method is not working (problem may exist in FE, BE or both)
+        alert('Work in progress: upload tool is in development')
         /*this.NaegelsApi.uploadProfilePic(this.Cookies.get('idToken'), this.props.match.params.username || this.Cookies.get('username'), e.target.files[0])
         .then((body) => {
             if(body.errors) {
@@ -132,11 +229,12 @@ export default class Profile extends React.Component{
                         className={`profile-picture-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
                         onMouseEnter={this.activatePicControls}
                         onMouseLeave={this.deActivatePicControls}
+                        onClick={this.uploadFile} // FIXME
                     >
                         <NaegelsAvatar
                             username={this.props.match.params.username || this.Cookies.get('username')}
-                            width={200}
-                            height={200}
+                            width={this.props.isMobile ? 120 : 200}
+                            height={this.props.isMobile ? 120 : 200}
                         ></NaegelsAvatar>
                         <div 
                             className={`profile-picture-update-controls ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
@@ -146,9 +244,10 @@ export default class Profile extends React.Component{
                                 <FormButton
                                     id='avatar_update_button'
                                     key='avatar_update_button'
-                                    onSubmit={this.uploadFile} // FIXME
+                                    onClick={this.uploadFile} // FIXME
                                     variant='outlined'
                                     text='Upload new'
+                                    size={this.props.isMobile ? 'small' : 'medium'}
                                     color='shadowed'
                                 ></FormButton>
                             </div>
@@ -164,53 +263,83 @@ export default class Profile extends React.Component{
                             <TextField
                                 id='email'
                                 disabled={this.state.userData.username !== this.Cookies.get('username')}
-                                helperText='email'
+                                size='small'
+                                helperText={this.state.errors.email || 'email'}
+                                error={this.state.errors.email}
                                 value={this.state.userData.email}
-                                sx={{width: '26vw'}}
+                                sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '30vw'}}
                                 onChange={this.handleEmailChange}
                             ></TextField>
                         </div>
-                        <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <TextField
-                                id='registered'
-                                disabled
-                                variant='filled'
-                                helperText='registered'
-                                value={this.state.userData.registered}
-                                sx={{width: '26vw'}}
-                            ></TextField>
-                        </div>
+                        {!this.props.isMobile ? 
+                            <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <TextField
+                                    id='registered'
+                                    disabled
+                                    variant='filled'
+                                    size='small'
+                                    helperText='registered'
+                                    value={this.state.userData.registered}
+                                    sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '30vw'}}
+                                ></TextField>
+                            </div>
+                        :
+                            ''
+                        }
                         <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                             <TextField
                                 id='about'
                                 disabled={this.state.userData.username !== this.Cookies.get('username')}
-                                helperText='about'
+                                helperText={this.state.errors.aboutMe || 'about me (' + this.state.aboutMeSymbols + '/500)'}
+                                error={this.state.errors.aboutMe}
                                 value={this.state.userData.aboutMe}
-                                sx={{width: '35vw'}}
+                                sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '49vw'}}
                                 onChange={this.handleAboutMeChange}
                                 multiline
-                                rows={3}
+                                rows={2}
                             ></TextField>
-                        </div>
-                        <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <FormButton
-                                id='profile_update_button'
-                                key='profile_update_button'
-                                disabled={!this.state.canUpdate}
-                                onSubmit={this.updateProfile}
-                                variant='contained'
-                                text='Update profile'
-                            ></FormButton>
                         </div>
                         {this.state.userData.username === this.Cookies.get('username')?
                             <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <FormButton
+                                    id='profile_update_button'
+                                    key='profile_update_button'
+                                    disabled={!this.state.canUpdate}
+                                    onSubmit={this.updateProfile}
+                                    variant='contained'
+                                    text='Update profile'
+                                ></FormButton>
+                            </div>
+                        :
+                            ''
+                        }
+                        {this.state.userData.username === this.Cookies.get('username')?
+                            <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                                 <TextField
-                                    id='password'
-                                    helperText={this.state.passwordHelperText}
+                                    id='current_password'
+                                    helperText={this.state.errors.currentPassword || 'current password'}
+                                    error={this.state.errors.currentPassword}
+                                    value={this.state.currentPassword}
                                     type='password'
-                                    sx={{width: '26vw'}}
+                                    size='small'
+                                    sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
+                                    onChange={this.handlecurrentPasswordChange}
+                                ></TextField>
+                            </div>
+                        :
+                            ''
+                        }
+                        {this.state.userData.username === this.Cookies.get('username')?
+                            <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <TextField
+                                    id='new_password'
+                                    helperText={this.state.errors.newPassword || 'new password'}
+                                    error={this.state.errors.newPassword}
+                                    value={this.state.newPassword}
+                                    type='password'
+                                    size='small'
+                                    sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
                                     onChange={this.handleNewPasswordChange}
-                                    error={this.state.passwordError}
                                 ></TextField>
                             </div>
                         :
@@ -220,11 +349,13 @@ export default class Profile extends React.Component{
                             <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                                 <TextField
                                     id='confirm_password'
-                                    helperText={this.state.passwordRepeatHelperText}
+                                    helperText={this.state.errors.repeatPassword || 'repeat password'}
+                                    error={this.state.errors.repeatPassword}
+                                    value={this.state.repeatPassword}
                                     type='password'
-                                    sx={{width: '26vw'}}
+                                    size='small'
+                                    sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
                                     onChange={this.handleRepeatNewPasswordChange}
-                                    error={this.state.passwordRepeatError}
                                 ></TextField>
                             </div>
                         :
@@ -240,6 +371,7 @@ export default class Profile extends React.Component{
                                     variant='contained'
                                     text='Update password'
                                 ></FormButton>
+                                <div className="password-update-confirmation-message" style={{ display: this.state.passwordUpdated ? 'block' : 'none' }}>Password is saved</div>
                             </div>
                         :
                             ''

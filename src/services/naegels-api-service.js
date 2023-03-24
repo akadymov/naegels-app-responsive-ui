@@ -93,9 +93,20 @@ export default class NaegelsApi {
         if (preferredLang){
             data.preferredLang = preferredLang
         }
-        const res = await this.apiCall('/user' + username, 'PUT', data);
+        const res = await this.apiCall('/user/' + username, 'PUT', data);
         return res
     };
+
+    updatePassword = async (token, currentPassword, newPassword, passwordRepeat) => {
+        const data = {
+            token: token,
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+            passwordRepeat: passwordRepeat
+        };
+        const res = await this.apiCall('/user/password/new', 'POST', data);
+        return res
+    }
 
     login = async (username, password) => {
         if(!username){

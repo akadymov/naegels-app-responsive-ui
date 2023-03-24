@@ -84,6 +84,7 @@
     height: 70px;
     position: relative;
     left: 0px;
+    cursor: pointer;
 }
 
 .menu-item-icon-container.desktop{
@@ -136,7 +137,7 @@
 }
 
 .MuiSvgIcon-root[type=navItem].MuiSvgIcon-colorSecondary{
-    color: #01aa00;
+    color: darkviolet;
     z-index: 100;
 }
 
@@ -146,7 +147,7 @@
 }
 
 .MuiSvgIcon-root[type=navItem].MuiSvgIcon-colorAction{
-    color: darkviolet;
+    color: #01aa00;
     z-index: 100;
 }
 
@@ -178,7 +179,7 @@
 }
 
 .menu-item-title.secondary{
-    color: #01aa00
+    color: darkviolet
 }
 
 .menu-item-title.disabled{
@@ -186,5 +187,5 @@
 }
 
 .menu-item-title.action{
-    color: darkviolet;
+    color: #01aa00;
 }

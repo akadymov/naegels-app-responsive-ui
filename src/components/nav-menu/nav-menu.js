@@ -115,7 +115,7 @@ export default class NavMenu extends React.Component{
                                 username={this.Cookies.get('username')}
                                 width={35}
                                 height={35}
-                                outline={this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : (window.location.pathname.startsWith('/profile') ? '1px solid darkViolet' : 'none')}
+                                outline={this.state.hoveredItem === 'profile' ? '1px solid darkViolet' : (window.location.pathname.startsWith('/profile') ? '1px solid #01aa00' : 'none')}
                             ></NaegelsAvatar>
                         </div>
                         {this.state.menuExpanded ? 

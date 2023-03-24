@@ -11,14 +11,14 @@
     cursor: pointer;
 }
 
-.player-info-container:hover{
-    outline: darkviolet 2px solid;
-    color: darkviolet
-}
-
 .player-info-container[active=true]{
     outline: 2px solid #58f958;
     color: #58f958;
+}
+
+.player-info-container:hover{
+    outline: darkviolet 2px solid;
+    color: darkviolet;
 }
 
 .player-info-container.mobile{
