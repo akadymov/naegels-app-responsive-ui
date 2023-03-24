@@ -57,7 +57,7 @@ export default class Login extends React.Component{
                     text:"Register new player", 
                     width: "220px",
                     size: "small",
-                    onSubmit: () => window.location.replace('/register/')
+                    onSubmit: () => window.location.assign('/register/')
                 },
                 {
                     id:"forgot_button", 
@@ -65,7 +65,7 @@ export default class Login extends React.Component{
                     text:"Forgot password", 
                     width: "220px",
                     size: "small",
-                    onSubmit: () => window.location.replace('/forgot-password/')
+                    onSubmit: () => window.location.assign('/forgot-password/')
                 }
             ]
         }
@@ -76,14 +76,14 @@ export default class Login extends React.Component{
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(idToken) {
-            window.location.replace('/lobby/');
+            window.location.assign('/lobby/');
         }
     }
 
     SignOut = () => {
         this.Cookies.remove('idToken');
         this.Cookies.remove('username');
-        window.location.replace('/signin');
+        window.location.assign('/signin');
     }
 
     SendLoginRequest = () => {
@@ -100,9 +100,9 @@ export default class Login extends React.Component{
                 this.Cookies.set('idToken', body.token, { path: '/' , expires: expiresIn})
                 this.Cookies.set('username', this.state.username, { path: '/' , expires: expiresIn})
                 if(body.connectedRoomId) {
-                    window.location.replace('/room/' + body.connectedRoomId)
+                    window.location.assign('/room/' + body.connectedRoomId)
                 } else {
-                    window.location.replace('/lobby/');
+                    window.location.assign('/lobby/');
                 }
             }
         });

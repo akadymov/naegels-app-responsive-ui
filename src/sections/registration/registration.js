@@ -78,7 +78,7 @@ export default class Registration extends React.Component{
                     type:"outlined",
                     size: "small",
                     text:"Login", 
-                    onSubmit: () => window.location.replace('/signin')
+                    onSubmit: () => window.location.assign('/signin')
                 }
             ],
             languages: [
@@ -93,7 +93,7 @@ export default class Registration extends React.Component{
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(idToken) {
-            window.location.replace('/lobby/');
+            window.location.assign('/lobby/');
         }
     }
 
@@ -109,7 +109,7 @@ export default class Registration extends React.Component{
             if(body.errors) {
                 this.handleErrorResponse(body)
             } else {
-                window.location.replace('/registration-succeed/' + this.state.username);
+                window.location.assign('/registration-succeed/' + this.state.username);
             }
         });
     };

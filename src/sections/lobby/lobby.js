@@ -75,7 +75,7 @@ export default class Lobby extends React.Component{
     CheckIfLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(!idToken) {
-            window.location.replace('/signin/');
+            window.location.assign('/signin/');
         }
     };
 
@@ -117,7 +117,7 @@ export default class Lobby extends React.Component{
                         type:'button',
                         variant: 'contained',
                         text: !body.myConnectedRoomId && r.status === 'open' ? 'Connect' : (body.myConnectedRoomId===r.id ? 'Open' : 'Watch'),
-                        onSubmit: !body.myConnectedRoomId && r.status ? this.connectRoom.bind(this, r.roomId) : () => window.location.replace('/room/' + r.roomId),
+                        onSubmit: !body.myConnectedRoomId && r.status ? this.connectRoom.bind(this, r.roomId) : () => window.location.assign('/room/' + r.roomId),
                         width: '130px',
                         disabled: false
                     })
@@ -184,7 +184,7 @@ export default class Lobby extends React.Component{
                 roomSocket.emit('add_player_to_room', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
                 lobbySocket.emit('increase_room_players', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
                 setTimeout(function(){
-                    window.location.replace('/room/' + roomId)
+                    window.location.assign('/room/' + roomId)
                 }, 1000)
             } else {
                 this.setState({popupError: body.errors[0].message})
@@ -194,7 +194,7 @@ export default class Lobby extends React.Component{
 
     openRoom = (e) => {
         const roomId = e.target.id
-        window.location.replace('/room/' + roomId)
+        window.location.assign('/room/' + roomId)
     };
 
     handleCreateRoomError=(body) => {
@@ -224,7 +224,7 @@ export default class Lobby extends React.Component{
                 this.handleCreateRoomError(body)
             } else {
                 lobbySocket.emit('create_room', body.roomId, body.roomName, body.host, body.created)
-                window.location.replace('/room/' + body.roomId);
+                window.location.assign('/room/' + body.roomId);
             }
         })
     };

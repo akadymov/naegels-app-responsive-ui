@@ -97,7 +97,7 @@ export default class Room extends React.Component{
     CheckIfLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(!idToken) {
-            window.location.replace('/signin/');
+            window.location.assign('/signin/');
         }
     };
 
@@ -203,7 +203,7 @@ export default class Room extends React.Component{
                 console.log('Something went wrong! Cannot get rooms list!')
             } else {
                 if(body.games.ongoingGameId) {
-                    window.location.replace('/game/' + body.games.ongoingGameId)
+                    window.location.assign('/game/' + body.games.ongoingGameId)
                 } else {
                     this.setState({roomDetails: body}, () => {
                         this.updatePlayersTable()
@@ -215,7 +215,7 @@ export default class Room extends React.Component{
                         })
                     }
                     if(this.state.roomDetails.status === 'closed') {
-                        window.location.replace('/lobby')
+                        window.location.assign('/lobby')
                     }
                 }
             }
@@ -238,7 +238,7 @@ export default class Room extends React.Component{
                 roomSocket.emit('remove_player_from_room', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
                 lobbySocket.emit('decrease_room_players', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
                 if(username === this.Cookies.get('username')){
-                    window.location.replace('/lobby')
+                    window.location.assign('/lobby')
                 } else {
                     var newPlayers = this.state.players
                     var disconnectedUserIndex = newPlayers.findIndex(element => element.username === username )
@@ -326,7 +326,7 @@ export default class Room extends React.Component{
                 lobbySocket.emit('remove_room_from_lobby', roomId);
                 this.setState({popupError: 'Room "' + roomName + '" was successfully closed!'})
                 setTimeout(function(){
-                    window.location.replace('/lobby' + roomId)
+                    window.location.assign('/lobby' + roomId)
                 }, 1000)
             }
         });
@@ -340,7 +340,7 @@ export default class Room extends React.Component{
             } else {
                 roomSocket.emit('start_game_in_room', this.Cookies.get('username'), body.gameId, this.props.match.params.roomId)
                 setTimeout(function(){
-                    window.location.replace('/game/' + body.gameId)
+                    window.location.assign('/game/' + body.gameId)
                 }, 1000)
             }
         })
@@ -381,7 +381,7 @@ export default class Room extends React.Component{
                                 targetUserUpdated = this.state.roomDetails.connectedUserList.findIndex(element => element.username === data.username )
                                 if (targetUserUpdated >= 0){
                                     if(this.state.roomDetails.connectedUserList[targetUserUpdated].username === this.Cookies.get('username')){
-                                        window.location.replace('/lobby/')
+                                        window.location.assign('/lobby/')
                                     } else {
                                         this.GetRoomDetails()
                                     }
@@ -399,7 +399,7 @@ export default class Room extends React.Component{
         roomSocket.on("exit_room", (data) => {
             if(parseInt(data.roomId) === parseInt(this.state.roomDetails.roomId)){
                 if(data.username === 0 || data.username === this.Cookies.get('username')){
-                    window.location.replace('/lobby/')
+                    window.location.assign('/lobby/')
                 }
             }
         });
@@ -407,7 +407,7 @@ export default class Room extends React.Component{
 
         roomSocket.on("start_game", (data) => {
             if(data.roomId === this.state.roomDetails.roomId){
-                window.location.replace('/game/' + data.gameId)
+                window.location.assign('/game/' + data.gameId)
             }
         });
 

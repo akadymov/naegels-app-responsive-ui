@@ -46,7 +46,7 @@ export default class PlayerInfo extends React.Component{
                 <div 
                     className={`player-info-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
                     active={this.props.active ? 'true' : 'false'}
-                    onClick={()=>window.location.replace('/profile/' + this.props.username)}
+                    onClick={()=>window.location.assign('/profile/' + this.props.username)}
                 >
                     <div 
                         className={`player-info-avatar-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}

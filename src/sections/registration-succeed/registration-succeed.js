@@ -21,7 +21,7 @@ export default class RegistrationSucceed extends React.Component{
                     type:"contained", 
                     width:"220px",
                     text:"Login", 
-                    onSubmit: () => window.location.replace('/signin/' + this.props.match.params.username)
+                    onSubmit: () => window.location.assign('/signin/' + this.props.match.params.username)
                 },
                 {
                     id:"register_button",
@@ -29,7 +29,7 @@ export default class RegistrationSucceed extends React.Component{
                     width:"220px",
                     size: "small",
                     text:"Register another user", 
-                    onSubmit: () => window.location.replace('/register')
+                    onSubmit: () => window.location.assign('/register')
                 }
             ]
       };
@@ -40,7 +40,7 @@ export default class RegistrationSucceed extends React.Component{
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(idToken) {
-            window.location.replace('/lobby/');
+            window.location.assign('/lobby/');
         }
     }
 
@@ -56,7 +56,7 @@ export default class RegistrationSucceed extends React.Component{
             if(body.errors) {
                 this.handleErrorResponse(body)
             } else {
-                window.location.replace('/registration-succeed/' + this.state.username);
+                window.location.assign('/registration-succeed/' + this.state.username);
             }
         });
     };

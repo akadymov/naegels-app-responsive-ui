@@ -43,9 +43,9 @@ export default class About extends React.Component{
         var newSubmitButtonList = this.state.submitButtonList
         if(this.Cookies.get('idToken')) {
             newSubmitButtonList[0].text = "Go to games lobby"
-            newSubmitButtonList[0].onSubmit = () => window.location.replace('/lobby/')
+            newSubmitButtonList[0].onSubmit = () => window.location.assign('/lobby/')
         } else {
-            newSubmitButtonList[0].onSubmit = () => window.location.replace('/register/')
+            newSubmitButtonList[0].onSubmit = () => window.location.assign('/register/')
         }
     };
 

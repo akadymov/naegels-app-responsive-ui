@@ -59,7 +59,7 @@ export default class Game extends React.Component{
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
         if(!idToken) {
-            window.location.replace('/signin/expired');
+            window.location.assign('/signin/expired');
         }
     }
 
@@ -115,7 +115,7 @@ export default class Game extends React.Component{
                         size: 'small',
                         width: '130px',
                         color: 'error',
-                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : (getGameResponse.myInHandInfo.cardsOnHand ? this.exitGame : ()=> window.location.replace('/lobby'))
+                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : (getGameResponse.myInHandInfo.cardsOnHand ? this.exitGame : ()=> window.location.assign('/lobby'))
                     }
                 ]
                 if (getGameResponse.host === this.Cookies.get('username')){
@@ -238,7 +238,7 @@ export default class Game extends React.Component{
                 gameSocket.emit('finish_game_in_room', this.Cookies.get('username'), gameId, roomId);
                 this.setState({popupError: 'Game #' + gameId + ' was successfully finished!'})
                 setTimeout(function(){
-                    window.location.replace('/room/' + roomId)
+                    window.location.assign('/room/' + roomId)
                 }, 1000)
             }
         });
@@ -374,7 +374,7 @@ export default class Game extends React.Component{
             if(!body.errors){
                 roomSocket.emit('remove_player_from_room', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
                 lobbySocket.emit('decrease_room_players', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
-                window.location.replace('/lobby')
+                window.location.assign('/lobby')
             } else {
                 this.setState({popupError: body.errors[0].message})
             }
@@ -496,7 +496,7 @@ export default class Game extends React.Component{
                         break
                         case 'finish':
                             if(data.actor !== this.Cookies.get('username')){
-                                window.location.replace('/room/' + data.roomId)
+                                window.location.assign('/room/' + data.roomId)
                             }
                         break
                         default:

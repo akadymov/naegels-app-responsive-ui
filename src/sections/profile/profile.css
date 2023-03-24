@@ -103,8 +103,14 @@
     margin-bottom: 5px;
 }
 
-.profile-text-field-control-container.mobile{
+.profile-text-field-control-container.mobile.portrait{
     width: 90vw;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.profile-text-field-control-container.mobile.landscape{
+    width: 30vw;
     text-align: left;
     margin-bottom: 5px;
 }

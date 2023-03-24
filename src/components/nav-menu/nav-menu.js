@@ -54,12 +54,12 @@ export default class NavMenu extends React.Component{
     }
 
     handleNavItemClick = (pathname) => {
-        window.location.replace(pathname)
+        window.location.assign(pathname)
     }
 
     signOut = () => {
         this.Cookies.remove('idToken', {path:'/'})
-        window.location.replace('/signin')
+        window.location.assign('/signin')
     }
 
     stringToColor(string) {

@@ -75,7 +75,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                             <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 <div 
                                                                     className="username-container" 
-                                                                    onClick={()=>window.location.replace('/profile/' + data.username)}
+                                                                    onClick={()=>window.location.assign('/profile/' + data.username)}
                                                                 >
                                                                     <span>{data.username}</span>
                                                                     {data.host ? <SupervisorAccountIcon/> : ''}

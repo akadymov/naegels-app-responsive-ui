@@ -1,7 +1,7 @@
 .opponent-container{
     position: absolute;
     height: 100px;
-    width: 130px;
+    width: 180px;
 }
 
 .opponent-container.mobile{
