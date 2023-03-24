@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import Feedback from './feedback';
 
-export default MainLogo;
+export default Feedback;

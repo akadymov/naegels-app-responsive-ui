@@ -290,6 +290,16 @@ export default class NaegelsApi {
         return res
     }
 
+    sendFeedback = async (senderName, senderMail, message) => {
+        const data = {
+            senderName: senderName,
+            senderMail: senderMail,
+            message: message
+        };
+        const res = await this.apiCall('/feedback', 'POST', data);
+        return res
+    };
+
     uploadProfilePic = async (token, username, img) => {
         const formData = new FormData();
         //formData.append('avatar', img)

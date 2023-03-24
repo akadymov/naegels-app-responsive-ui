@@ -43,7 +43,12 @@ export default class FormContainer extends React.Component{
                                         type={field.type}
                                         defaultValue={field.text}
                                         autoComplete={field.autoComplete}
-                                        sx={{width: field.width}}
+                                        multiline={field.rows}
+                                        rows={field.rows}
+                                        sx={{
+                                            width: field.width,
+                                            display: !field.hidden ? 'inline-flex' : 'none'
+                                        }}
                                     ></TextField>
                                 </ThemeProvider>
                             </div>

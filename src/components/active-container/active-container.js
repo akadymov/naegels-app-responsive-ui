@@ -15,8 +15,8 @@ import Game from '../../sections/game';
 import Profile from '../../sections/profile';
 import ForgotPassword from '../../sections/forgot-password';
 import ResetPassword from '../../sections/reset-password';
-/*import LeaderBoard from '../../sections/leaderboard';
-import Feedback from '../../sections/feedback';*/
+import Feedback from '../../sections/feedback';
+/*import LeaderBoard from '../../sections/leaderboard';*/
 
 export default class ActiveContainer extends React.Component{
     
@@ -31,6 +31,7 @@ export default class ActiveContainer extends React.Component{
         const ProfileWithRouter = withRouter(Profile)
         const ForgotPasswordWithRouter = withRouter(ForgotPassword)
         const ResetPasswordWithRouter = withRouter(ResetPassword)
+        const FeedbackWithRouter = withRouter(Feedback)
 
         return (
             <div className={`active-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -64,6 +65,16 @@ export default class ActiveContainer extends React.Component{
                         path="/profile/:username" 
                         component={
                             () => <ProfileWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/feedback" 
+                        component={
+                            () => <FeedbackWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
                                 isPortrait = {this.props.isPortrait}
