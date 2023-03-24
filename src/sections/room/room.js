@@ -51,10 +51,10 @@ export default class Room extends React.Component{
             },
             headerControls: [
                 {
-                    id: 'refresh_lobby',
+                    id: 'refresh_room',
                     type: 'button',
                     text: 'Refresh',
-                    variant: 'contained',
+                    variant: 'outlined',
                     disabled: false,
                     width: '130px',
                     onSubmit: this.GetRoomDetails
@@ -165,10 +165,10 @@ export default class Room extends React.Component{
     updateControls = () => {
         var newHeaderControls = []
         newHeaderControls.push({
-            id: 'refresh_lobby',
+            id: 'refresh_room',
             type: 'button',
             text: 'Refresh',
-            variant: 'contained',
+            variant: 'outlined',
             disabled: false,
             width: '130px',
             onSubmit: this.GetRoomDetails

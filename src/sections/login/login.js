@@ -27,7 +27,8 @@ export default class Login extends React.Component{
                     width: "220px",
                     text: this.props.match.params.username ? this.props.match.params.username : '', 
                     //text: '',
-                    onChange: this.handleUsernameChange, errorMessage: "", 
+                    onChange: this.handleUsernameChange, 
+                    errorMessage: "", 
                     onClick: this.clearErrorMessage
                 },
                 {

@@ -4,7 +4,9 @@ import './user-info.css';
 import Cookies from 'universal-cookie';
 
 //MUI components
-import Avatar from '@mui/material/Avatar';
+
+//Local components
+import NaegelsAvatar from '../naegels-avatar';
 
 
 export default class UserInfo extends React.Component{
@@ -71,11 +73,11 @@ export default class UserInfo extends React.Component{
                         ''
                     }
                     <div className={`user-image-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <Avatar 
-                            {...this.stringAvatar(this.Cookies.get('username').toUpperCase())}
-                            src={`/img/profile-pics/${this.Cookies.get('username')}.png`}
-                            sx={{ width: 50, height: 50 }}
-                        ></Avatar>
+                        <NaegelsAvatar
+                            username={this.Cookies.get('username')}
+                            width={50}
+                            height={50}
+                        ></NaegelsAvatar>
                     </div>
                 </div>
             :

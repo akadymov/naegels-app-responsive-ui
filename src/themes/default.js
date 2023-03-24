@@ -13,6 +13,9 @@ const defaultTheme = createTheme({
     },
     error: {
       main: '#d32f2f',
+    },
+    shadowed: {
+      main: '#ffffff'
     }
   },
 });

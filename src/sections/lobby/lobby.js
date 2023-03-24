@@ -26,7 +26,7 @@ export default class Lobby extends React.Component{
                     id: 'refresh_lobby',
                     type: 'button',
                     text: 'Refresh',
-                    variant: 'contained',
+                    variant: 'outlined',
                     disabled: false,
                     width: '130px',
                     onSubmit: this.GetRoomsList
@@ -95,8 +95,8 @@ export default class Lobby extends React.Component{
                             value: r.roomName
                         },
                         {
-                            type: 'text',
-                            value: r.host  
+                            type: 'player',
+                            username: r.host  
                         },
                         {
                             type: 'text',
@@ -139,7 +139,7 @@ export default class Lobby extends React.Component{
                 id: 'refresh_lobby',
                 type: 'button',
                 text: 'Refresh',
-                variant: 'contained',
+                variant: 'outlined',
                 disabled: false,
                 width: '130px',
                 onSubmit: this.GetRoomsList

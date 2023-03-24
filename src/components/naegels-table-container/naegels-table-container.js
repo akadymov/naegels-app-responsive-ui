@@ -66,14 +66,17 @@ export default class NaegelsTableContainer extends React.Component{
                                                 switch(data.type){
                                                     case 'text':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 {data.value}
                                                             </StyledTableCell>
                                                         )
                                                     case 'player':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
-                                                                <div className="username-container">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                                <div 
+                                                                    className="username-container" 
+                                                                    onClick={()=>window.location.replace('/profile/' + data.username)}
+                                                                >
                                                                     <span>{data.username}</span>
                                                                     {data.host ? <SupervisorAccountIcon/> : ''}
                                                                 </div>
@@ -81,7 +84,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'switch':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 <Switch
                                                                     inputProps={{ 'aria-label': 'controlled' }}
                                                                     key={`ready-switch-${data.username}`}
@@ -96,7 +99,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'button':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 <FormButton 
                                                                     variant={data.variant}
                                                                     text={data.text}
@@ -110,13 +113,13 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'hand id':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 <p key={`handspan ${data.cards}-${data.trump}-${row.dataArray.indexOf(data)}`} className={`${data.trump} suit-container`}>{data.cards}</p>
                                                             </StyledTableCell>
                                                         )
                                                     case 'score':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 <Score
                                                                     total={data.total}
                                                                     betSize={data.betSize}
@@ -128,7 +131,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     default: // text
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align="right">
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
                                                                 {data.value}
                                                             </StyledTableCell>
                                                         )

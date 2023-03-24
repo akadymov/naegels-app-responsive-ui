@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './player-info.css';
-import Avatar from '@mui/material/Avatar';
+import NaegelsAvatar from '../naegels-avatar';
 
 export default class PlayerInfo extends React.Component{
 
@@ -46,20 +46,22 @@ export default class PlayerInfo extends React.Component{
                 <div 
                     className={`player-info-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
                     active={this.props.active ? 'true' : 'false'}
+                    onClick={()=>window.location.replace('/profile/' + this.props.username)}
                 >
-                    <div className={`player-info-avatar-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <Avatar 
-                            {...this.stringAvatar(this.props.username.toUpperCase())}
-                            src={`/img/profile-pics/${this.props.username}.png`}
-                            sx={{ 
-                                width: this.props.isMobile ? 38 :61, 
-                                height: this.props.isMobile ? 38 : 61,
-                                outline: this.props.active ? '2px solid #58f958' : 'none' 
-                            }}
-                        ></Avatar>
+                    <div 
+                        className={`player-info-avatar-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
+                    >
+                        <NaegelsAvatar
+                            username={this.props.username}
+                            width={this.props.isMobile ? 38 :61} 
+                            height={this.props.isMobile ? 38 : 61}
+                            outline={this.props.active ? '2px solid #58f958' : 'none'}
+                        ></NaegelsAvatar>
                     </div>
                     <div className={`player-data-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <div className={`player-username-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        <div 
+                            className={`player-username-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
+                        >
                         {this.props.username}
                         </div>
                         <div className={`player-bets-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>

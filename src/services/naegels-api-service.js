@@ -43,6 +43,25 @@ export default class NaegelsApi {
         return await res.json({});
     };
 
+    apiCallFormData = async(url, data) => {
+        const resourceLocation = `${this._apiHost}:${this._apiPort}${this._apiContext}${url}`
+        var req = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: data
+        }
+        const res = await fetch(
+            resourceLocation,
+            req
+        );
+        if(res.status >> 499) {
+            throw new Error(`Could not fetch ${url}, received ${res.status}`)
+        }
+        return await res.json({});
+    }
+
     registerUser = async (email, username, password, repeatPassword, preferredLang) => {
         const data = {
             email: email,
@@ -52,6 +71,29 @@ export default class NaegelsApi {
             preferredLang: preferredLang
         };
         const res = await this.apiCall('/user', 'POST', data);
+        return res
+    };
+
+    getUser = async (username) => {
+        const res = await this.apiCall('/user/' + username, 'GET');
+        return res
+    };
+
+    updateUser = async (username, token, email=null, aboutMe=null, preferredLang=null) => {
+        const data = {
+            username: username,
+            token: token
+        };
+        if (email){
+            data.email = email
+        }
+        if (aboutMe){
+            data.aboutMe = aboutMe
+        }
+        if (preferredLang){
+            data.preferredLang = preferredLang
+        }
+        const res = await this.apiCall('/user' + username, 'PUT', data);
         return res
     };
 
@@ -218,5 +260,12 @@ export default class NaegelsApi {
         return res
     }
 
+    uploadProfilePic = async (token, username, img) => {
+        const formData = new FormData();
+        //formData.append('avatar', img)
+        formData.append('token', token)
+        const res = await this.apiCallFormData('/user/' + username + '/profilepic', formData)
+        return res
+    }
 };
 

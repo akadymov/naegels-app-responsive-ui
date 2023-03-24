@@ -12,6 +12,7 @@ import Lobby from '../../sections/lobby';
 import Room from '../../sections/room';
 import About from '../../sections/about';
 import Game from '../../sections/game';
+import Profile from '../../sections/profile';
 /*import ForgotPassword from '../../sections/forgot-password';
 import RestorePassword from '../../sections/restore-password';
 import LeaderBoard from '../../sections/leaderboard';
@@ -27,6 +28,7 @@ export default class ActiveContainer extends React.Component{
         const RegistrationSucceedWithRouter = withRouter(RegistrationSucceed)
         const RegistrationWithRouter = withRouter(Registration)
         const GameWithRouter = withRouter(Game)
+        const ProfileWithRouter = withRouter(Profile)
 
         return (
             <div className={`active-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -50,6 +52,26 @@ export default class ActiveContainer extends React.Component{
                         path="/about" 
                         component={
                             () => <AboutWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/profile/:username" 
+                        component={
+                            () => <ProfileWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/profile" 
+                        component={
+                            () => <ProfileWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
                                 isPortrait = {this.props.isPortrait}

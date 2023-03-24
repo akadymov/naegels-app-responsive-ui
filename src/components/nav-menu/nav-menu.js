@@ -8,10 +8,12 @@ import HomeRoundedIcon from '@mui/icons-material/Home';
 import InfoRoundedIcon from '@mui/icons-material/Info';
 import LogoutRoundedIcon from '@mui/icons-material/Logout';
 import LoginRoundedIcon from '@mui/icons-material/Login';
-import Avatar from '@mui/material/Avatar';
 
 // Integration modules
 import Cookies from 'universal-cookie';
+
+//Local components
+import NaegelsAvatar from '../naegels-avatar';
 
 
 export default class NavMenu extends React.Component{
@@ -109,11 +111,12 @@ export default class NavMenu extends React.Component{
                         onClick={() => {this.handleNavItemClick('/profile')}}
                     >
                         <div className={`menu-item-icon-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <Avatar 
-                                {...this.stringAvatar(this.Cookies.get('username').toUpperCase())}
-                                src={`/img/profile-pics/${this.Cookies.get('username')}.png`}
-                                sx={{ width: 35, height: 35 , outline: this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : (window.location.pathname.startsWith('/profile') ? '1px solid darkViolet' : 'none')}}
-                            ></Avatar>
+                            <NaegelsAvatar
+                                username={this.Cookies.get('username')}
+                                width={35}
+                                height={35}
+                                outline={this.state.hoveredItem === 'profile' ? '1px solid #01aa00' : (window.location.pathname.startsWith('/profile') ? '1px solid darkViolet' : 'none')}
+                            ></NaegelsAvatar>
                         </div>
                         {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">
