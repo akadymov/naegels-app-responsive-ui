@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import ForgotPassword from './forgot-password';
 
-export default MainLogo;
+export default ForgotPassword;

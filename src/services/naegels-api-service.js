@@ -108,6 +108,25 @@ export default class NaegelsApi {
         return res
     }
 
+    sendPasswordRecovery = async (username=null, email=null) => {
+        const data = {
+            username: username,
+            email: email
+        };
+        const res = await this.apiCall('/user/password/recover', 'POST', data);
+        return res
+    }
+
+    resetPassword = async (token, newPassword, repeatPassword) => {
+        const data = {
+            token: token,
+            newPassword: newPassword,
+            repeatPassword: repeatPassword
+        };
+        const res = await this.apiCall('/user/password/reset', 'POST', data);
+        return res
+    }
+
     login = async (username, password) => {
         if(!username){
             username = ''

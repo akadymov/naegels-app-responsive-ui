@@ -13,9 +13,9 @@ import Room from '../../sections/room';
 import About from '../../sections/about';
 import Game from '../../sections/game';
 import Profile from '../../sections/profile';
-/*import ForgotPassword from '../../sections/forgot-password';
-import RestorePassword from '../../sections/restore-password';
-import LeaderBoard from '../../sections/leaderboard';
+import ForgotPassword from '../../sections/forgot-password';
+import ResetPassword from '../../sections/reset-password';
+/*import LeaderBoard from '../../sections/leaderboard';
 import Feedback from '../../sections/feedback';*/
 
 export default class ActiveContainer extends React.Component{
@@ -29,6 +29,8 @@ export default class ActiveContainer extends React.Component{
         const RegistrationWithRouter = withRouter(Registration)
         const GameWithRouter = withRouter(Game)
         const ProfileWithRouter = withRouter(Profile)
+        const ForgotPasswordWithRouter = withRouter(ForgotPassword)
+        const ResetPasswordWithRouter = withRouter(ResetPassword)
 
         return (
             <div className={`active-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -72,6 +74,16 @@ export default class ActiveContainer extends React.Component{
                         path="/profile" 
                         component={
                             () => <ProfileWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/reset-password/:resetPasswordToken" 
+                        component={
+                            () => <ResetPasswordWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
                                 isPortrait = {this.props.isPortrait}
@@ -133,6 +145,16 @@ export default class ActiveContainer extends React.Component{
                         path="/signin/:username" 
                         component={
                             () => <LoginWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/forgot-password/" 
+                        component={
+                            () => <ForgotPasswordWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
                                 isPortrait = {this.props.isPortrait}

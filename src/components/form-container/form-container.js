@@ -62,7 +62,9 @@ export default class FormContainer extends React.Component{
                                     text={button.text}
                                     onSubmit={button.onSubmit}
                                     width={button.width}
+                                    disabled={button.disabled}
                                     size={button.size}
+                                    hidden={button.hidden}
                                 ></FormButton>
                             </div>
                         )
