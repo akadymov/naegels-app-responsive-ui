@@ -14,6 +14,9 @@ import NaegelsAvatar from '../../components/naegels-avatar'
 //MUI components
 import TextField from '@mui/material/TextField';
 import { ThemeProvider } from '@mui/material/styles';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 
 export default class Profile extends React.Component{
@@ -28,7 +31,8 @@ export default class Profile extends React.Component{
                 lastSeen: null,
                 preferredLang: null,
                 registered: null,
-                username: null
+                username: null,
+                connectedRoomId: null
             },
             aboutMeSymbols: 0,
             canUpdate: false,
@@ -43,6 +47,24 @@ export default class Profile extends React.Component{
 
     NaegelsApi = new NaegelsApi();
     Cookies = new Cookies();
+
+    CheckIfLoggedIn = () => {
+        const idToken = this.Cookies.get('idToken')
+        if(!idToken) {
+            window.location.assign('/signin/');
+        }
+    };
+
+    backToGame = () => {
+        this.NaegelsApi.getUser(this.Cookies.get('username'))
+        .then((body)=>{
+            if(body.connectedRoomId){
+                window.location.assign('/room/' + body.connectedRoomId)
+            } else {
+                window.location.assign('/lobby/')
+            }
+        })
+    }
 
     getUserProfile = () => {
         this.NaegelsApi.getUser(this.props.match.params.username || this.Cookies.get('username'))
@@ -219,6 +241,7 @@ export default class Profile extends React.Component{
 
     componentDidMount = () => {
         this.getUserProfile()
+        this.CheckIfLoggedIn();
     }
 
     render () {
@@ -300,7 +323,7 @@ export default class Profile extends React.Component{
                             ></TextField>
                         </div>
                         {this.state.userData.username === this.Cookies.get('username')?
-                            <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <div className={`profile-control-submit-button-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                                 <FormButton
                                     id='profile_update_button'
                                     key='profile_update_button'
@@ -308,6 +331,7 @@ export default class Profile extends React.Component{
                                     onSubmit={this.updateProfile}
                                     variant='contained'
                                     text='Update profile'
+                                    width='180px'
                                 ></FormButton>
                             </div>
                         :
@@ -362,7 +386,7 @@ export default class Profile extends React.Component{
                             ''
                         }
                         {this.state.userData.username === this.Cookies.get('username')?
-                            <div className={`profile-text-field-control-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <div className={`profile-control-submit-button-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                                 <FormButton
                                     id='password_update_button'
                                     key='password_update_button'
@@ -370,16 +394,40 @@ export default class Profile extends React.Component{
                                     onSubmit={this.updatePassword}
                                     variant='contained'
                                     text='Update password'
+                                    width='180px'
                                 ></FormButton>
                                 <div className="password-update-confirmation-message" style={{ display: this.state.passwordUpdated ? 'block' : 'none' }}>Password is saved</div>
                             </div>
                         :
                             ''
                         }
+                        <div className={`profile-backtogame-button-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <Tooltip title="Back to game" onClick={this.backToGame}>
+                            <IconButton>
+                                <KeyboardBackspaceIcon/>
+                            </IconButton>
+                            </Tooltip>
+                        </div>
                     </ThemeProvider>
                 </div>
                 <div className={`profile-stats-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     User stats
+                    {this.state.userData.connectedRoomId ? 
+                        <div className="connected-room-container">
+                            Connected to room #{this.state.userData.connectedRoomId}
+                            <FormButton
+                                id='go_to_room'
+                                key='go_to_room'
+                                onSubmit={()=>window.location.assign('/room/' + this.state.userData.connectedRoomId)}
+                                variant='outlined'
+                                text='Watch'
+                                size='small'
+                                width='120px'
+                            ></FormButton>
+                        </div>
+                    :
+                        ''
+                    }
                 </div>
                 
             </div>

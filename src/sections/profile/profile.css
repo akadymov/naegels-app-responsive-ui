@@ -115,6 +115,45 @@
     margin-bottom: 5px;
 }
 
+.profile-control-submit-button-container{
+    width: 49vw;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.profile-control-submit-button-container.mobile.portrait{
+    width: 90vw;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.profile-control-submit-button-container.mobile.landscape{
+    width: 30vw;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.profile-backtogame-button-container{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    bottom: 0%;
+    left: -25vw;
+    top: 0%;
+}
+
+.profile-backtogame-button-container.mobile.portrait{
+    top: -25vh;
+    left: 0%;
+}
+
+.profile-backtogame-button-container.mobile.landscape{
+    left: -30vw;
+    top: 0%;
+}
+
 .profile-stats-container{
     position: absolute;
     width: 25vw;
@@ -147,4 +186,11 @@
     bottom: 1%;
     width: 200px;
     text-align: left;
+}
+
+.connected-room-container{
+    position: absolute;
+    bottom: 5%;
+    font-size: 14px;
+    text-align: center;
 }

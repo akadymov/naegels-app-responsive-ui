@@ -155,7 +155,12 @@ export default class ForgotPassword extends React.Component{
                     onSubmit={this.SendLoginRequest}
                 >
                 </FormContainer>
-                <div className="recovery-sent-confirmation-message" style={{ display: this.state.recoverySent ? 'block' : 'none' }}>Password recovery letter sent: check your mail inbox</div>
+                <div 
+                    className={`recovery-sent-confirmation-message ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
+                    style={{ display: this.state.recoverySent ? 'block' : 'none' }}
+                >
+                    Password recovery letter sent: check your mail inbox
+                </div>
             </div>
         )
     }

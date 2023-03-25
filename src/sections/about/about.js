@@ -18,7 +18,16 @@ export default class About extends React.Component{
                 {
                     id: 'lobby_or_login',
                     type: 'contained',
-                    text: "Register and start playing"
+                    width: "220px",
+                    text: "Register new player", 
+                    onSubmit: () => window.location.assign('/register/')
+                },
+                {
+                    id:"feedback", 
+                    type:"outlined", 
+                    width: "220px",
+                    text:"Feedback", 
+                    onSubmit: () => window.location.assign('/feedback/')
                 }
             ]
         }
@@ -44,8 +53,6 @@ export default class About extends React.Component{
         if(this.Cookies.get('idToken')) {
             newSubmitButtonList[0].text = "Go to games lobby"
             newSubmitButtonList[0].onSubmit = () => window.location.assign('/lobby/')
-        } else {
-            newSubmitButtonList[0].onSubmit = () => window.location.assign('/register/')
         }
     };
 

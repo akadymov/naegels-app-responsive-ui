@@ -173,7 +173,12 @@ export default class ResetPassword extends React.Component{
                     onSubmit={this.SendLoginRequest}
                 >
                 </FormContainer>
-                <div className="password-updated-confirmation-message" style={{ display: this.state.recoverySent ? 'block' : 'none' }}>Password is updated</div>
+                <div 
+                    className={`password-updated-confirmation-message ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
+                    style={{ display: this.state.passwordUpdated ? 'block' : 'none' }}
+                >
+                    Password is updated
+                </div>
             </div>
         )
     }

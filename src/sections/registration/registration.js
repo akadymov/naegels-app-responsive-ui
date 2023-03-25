@@ -109,7 +109,25 @@ export default class Registration extends React.Component{
             if(body.errors) {
                 this.handleErrorResponse(body)
             } else {
+                this.SendLoginRequest()
+            }
+        });
+    };
+
+    SendLoginRequest = () => {
+        this.NaegelsApi.login(
+            this.state.username, 
+            this.state.password
+        )
+        .then((body) => {
+            if(body.errors) {
                 window.location.assign('/registration-succeed/' + this.state.username);
+            } else {
+                var currentDate = new Date(); 
+                var expiresIn = new Date(currentDate.getTime() + body.expiresIn * 1000)
+                this.Cookies.set('idToken', body.token, { path: '/' , expires: expiresIn})
+                this.Cookies.set('username', this.state.username, { path: '/' , expires: expiresIn})
+                window.location.assign('/lobby/');
             }
         });
     };
