@@ -31,6 +31,7 @@ export default class Registration extends React.Component{
                     onChange: this.handleUsernameChange, 
                     errorMessage: "", 
                     value: "", 
+                    required: true,
                     onClick: this.clearErrorMessage
                 },
                 {
@@ -41,6 +42,7 @@ export default class Registration extends React.Component{
                     onChange: this.handleEmailChange, 
                     errorMessage: "", 
                     value: "", 
+                    required: true,
                     onClick: this.clearErrorMessage
                 },
                 {
@@ -51,6 +53,7 @@ export default class Registration extends React.Component{
                     onChange: this.handlePasswordChange, 
                     errorMessage: "", 
                     value: "", 
+                    required: true,
                     onClick: this.clearErrorMessage
                 },
                 {
@@ -61,6 +64,7 @@ export default class Registration extends React.Component{
                     onChange: this.handleRepeatPasswordChange, 
                     errorMessage: "", 
                     value: "", 
+                    required: true,
                     onClick: this.clearErrorMessage
                 }
             ],

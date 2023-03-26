@@ -48,6 +48,7 @@ export default class Lobby extends React.Component{
                     type: "input",
                     variant: "outlined",
                     value: "",
+                    required: true,
                     errorMessage: "",
                     label: "room name",
                     onChange: this.handleNewRoomNameChange
@@ -160,6 +161,7 @@ export default class Lobby extends React.Component{
                 type: "input",
                 value: this.state.newRoomName,
                 label: "room name",
+                required: true,
                 onChange: this.handleNewRoomNameChange
             },
             {
@@ -336,6 +338,7 @@ export default class Lobby extends React.Component{
                     isDesktop={this.props.isDesktop}
                     isPortrait={this.props.isPortrait}
                     controls={this.state.modalControls}
+                    onKeyPress={this.handleKeyPress}
                     closeModal={this.closeModal}
                     modalCanClose
                 ></NaegelsModal>

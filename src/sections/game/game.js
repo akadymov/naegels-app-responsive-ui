@@ -46,6 +46,7 @@ export default class Game extends React.Component{
             },
             headerControls: [],
             scoresModalOpen: false,
+            modalContentType: '',
             modalOpen: false,
             modalText: '',
             modalCanClose: false,
@@ -85,103 +86,109 @@ export default class Game extends React.Component{
             if(getGameResponse.errors){
                 this.handleApiError(getGameResponse)
             } else {
-                newHeaderControls = [
-                    {
-                        id: 'scores',
-                        type: 'button',
-                        text: 'Scores',
-                        variant: 'outlined',
-                        disabled: false,
-                        size: 'small',
-                        width: '130px',
-                        onSubmit: this.showScores
-                    },
-                    {
-                        id: 'refresh',
-                        type: 'button',
-                        text: 'Refresh',
-                        variant: 'outlined',
-                        disabled: false,
-                        size: 'small',
-                        width: '130px',
-                        onSubmit: this.newGameStatus
-                    },
-                    {
-                        id: 'exit',
-                        type: 'button',
-                        text: getGameResponse.host === this.Cookies.get('username') ? 'Finish' : 'Exit',
-                        variant: 'contained',
-                        disabled: false,
-                        size: 'small',
-                        width: '130px',
-                        color: 'error',
-                        onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : (getGameResponse.myInHandInfo.cardsOnHand ? this.exitGame : ()=> window.location.assign('/lobby'))
-                    }
-                ]
-                if (getGameResponse.host === this.Cookies.get('username')){
-                    newHeaderControls.push({
-                        id: 'shuffle',
-                        type: 'button',
-                        text: 'Shuffle',
-                        variant: 'contained',
-                        disabled: getGameResponse.positionsDefined,
-                        size: 'small',
-                        width: '130px',
-                        onSubmit: this.definePositions
-                    })
-                    newHeaderControls.push({
-                        id: 'deal',
-                        type: 'button',
-                        text: 'Deal',
-                        variant: 'contained',
-                        disabled: !getGameResponse.canDeal,
-                        size: 'small',
-                        width: '130px',
-                        onSubmit: this.dealCards
-                    })
-                    if(!getGameResponse.positionsDefined){
-                        getGameResponse.attentionToMessage = true
-                        getGameResponse.actionMessage = 'Press "SHUFFLE" button in game controls to define players positions in game'
-                    }
-                    if(getGameResponse.canDeal){
-                        getGameResponse.attentionToMessage = true
-                        getGameResponse.actionMessage = 'Press "DEAL" button in game controls to deal cards in hand'
-                    }
-                }
-                if(getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade){
-                    newModalControls = [
+                if(getGameResponse.canDeal && getGameResponse.autodeal && this.state.gameDetails.host == this.Cookies.get('username')){
+                    this.dealCards()
+                } else {
+                    newHeaderControls = [
                         {
-                            id: "bet_size_input",
-                            type: "input",
-                            textFormat: "number",
-                            label: "bet size",
-                            variant: "outlined",
-                            value: this.state.myBetSizeValue,
-                            errorMessage: "",
-                            onChange: this.handleBetChange,
-                            width: '5px',
-                            defaultValue:0
+                            id: 'scores',
+                            type: 'button',
+                            text: 'Scores',
+                            variant: 'outlined',
+                            disabled: false,
+                            size: 'small',
+                            width: '130px',
+                            onSubmit: this.showScores
                         },
                         {
-                            id: "bet_size_confirm_button",
-                            type: "button",
-                            variant: "contained",
-                            text: "Confirm",
-                            onSubmit: this.makeBet
+                            id: 'refresh',
+                            type: 'button',
+                            text: 'Refresh',
+                            variant: 'outlined',
+                            disabled: false,
+                            size: 'small',
+                            width: '130px',
+                            onSubmit: this.newGameStatus
+                        },
+                        {
+                            id: 'exit',
+                            type: 'button',
+                            text: getGameResponse.host === this.Cookies.get('username') ? 'Finish' : 'Exit',
+                            variant: 'contained',
+                            disabled: false,
+                            size: 'small',
+                            width: '130px',
+                            color: 'error',
+                            onSubmit: getGameResponse.host === this.Cookies.get('username') ? this.finishGame : (getGameResponse.myInHandInfo.username ? this.exitGame : ()=> window.location.assign('/lobby'))
                         }
                     ]
+                    if (getGameResponse.host === this.Cookies.get('username')){
+                        newHeaderControls.push({
+                            id: 'shuffle',
+                            type: 'button',
+                            text: 'Shuffle',
+                            variant: 'contained',
+                            disabled: getGameResponse.positionsDefined,
+                            size: 'small',
+                            width: '130px',
+                            onSubmit: this.definePositions
+                        })
+                        newHeaderControls.push({
+                            id: 'deal',
+                            type: 'button',
+                            text: 'Deal',
+                            variant: 'contained',
+                            disabled: !getGameResponse.canDeal,
+                            size: 'small',
+                            width: '130px',
+                            onSubmit: this.dealCards
+                        })
+                        if(!getGameResponse.positionsDefined){
+                            getGameResponse.attentionToMessage = true
+                            getGameResponse.actionMessage = 'Press "SHUFFLE" button in game controls to define players positions in game'
+                        }
+                        if(getGameResponse.canDeal){
+                            getGameResponse.attentionToMessage = true
+                            getGameResponse.actionMessage = 'Press "DEAL" button in game controls to deal cards in hand'
+                        }
+                    }
+                    if(getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade){
+                        newModalControls = [
+                            {
+                                id: "bet_size_input",
+                                type: "input",
+                                textFormat: "number",
+                                label: "bet size",
+                                required: true,
+                                variant: "outlined",
+                                value: this.state.myBetSizeValue,
+                                errorMessage: "",
+                                onChange: this.handleBetChange,
+                                width: '5px',
+                                defaultValue:0
+                            },
+                            {
+                                id: "bet_size_confirm_button",
+                                type: "button",
+                                variant: "contained",
+                                text: "Confirm",
+                                onSubmit: this.makeBet
+                            }
+                        ]
+                    }
+                    if(getGameResponse.nextActingPlayer === this.Cookies.get('username')){
+                        getGameResponse.attentionToMessage = true
+                    }
+                    this.setState({
+                        gameDetails: getGameResponse,
+                        headerControls: newHeaderControls,
+                        modalControls: newModalControls,
+                        modalOpen: getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade,
+                        modalText: "Make a bet",
+                        modalCanClose: false,
+                        modalContentType: 'Bet'
+                    })
                 }
-                if(getGameResponse.nextActingPlayer === this.Cookies.get('username')){
-                    getGameResponse.attentionToMessage = true
-                }
-                this.setState({
-                    gameDetails: getGameResponse,
-                    headerControls: newHeaderControls,
-                    modalControls: newModalControls,
-                    modalOpen: getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade,
-                    modalText: "Make a bet",
-                    modalCanClose: false
-                })
             }
         })
     }
@@ -212,7 +219,8 @@ export default class Game extends React.Component{
             modalControls: newModalControls,
             modalOpen: true,
             modalText: "Please, confirm finishing the game",
-            modalCanClose: true
+            modalCanClose: true,
+            modalContentType: 'Finish'
         })
     }
 
@@ -360,6 +368,7 @@ export default class Game extends React.Component{
         this.setState({
             modalControls: newModalControls,
             modalOpen: true,
+            modalContentType: 'Exit',
             modalText: "Please, confirm exit",
             modalCanClose: true
         })
@@ -387,6 +396,20 @@ export default class Game extends React.Component{
             this.selectCard(cardId)
         }
     }
+    
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            switch(this.state.modalContentType){
+                case 'Bet':
+                    this.makeBet();
+                break
+                case 'Exit':
+                    this.confirmExit();
+                default:
+
+            }
+        }
+    };
     
     componentDidMount = () => {
         this.newGameStatus()
@@ -440,6 +463,7 @@ export default class Game extends React.Component{
                                                 textFormat: "number",
                                                 label: "bet size",
                                                 variant: "outlined",
+                                                required: true,
                                                 value: this.state.myBetSizeValue,
                                                 errorMessage: "",
                                                 onChange: this.handleBetChange,
@@ -465,6 +489,7 @@ export default class Game extends React.Component{
                                     modalOpen: newModalOpen,
                                     modalControls: newModalControls,
                                     modalCanClose: newModalCanClose,
+                                    modalContentType: 'Bet',
                                     modalText: newModalText,
                                     scoresModalOpen: newScoresModalOpen
                                 })
@@ -598,9 +623,9 @@ export default class Game extends React.Component{
                         ''
                     }
                     <div className={`current-game-trump-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <div className={`hand-id-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Hand #{this.state.gameDetails.currentHandSerialNo}</div>
+                        <div className={`hand-id-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Hand #{this.state.gameDetails.currentHandSerialNo}/20</div>
                         <div className={`hand-id-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <p className={`${this.state.gameDetails.trump} trump-container`}>{this.state.gameDetails.cardsPerPlayer}</p>
+                            <p className={`${this.state.gameDetails.trump || 'x'} trump-container`}>{this.state.gameDetails.cardsPerPlayer}</p>
                         </div>
                     </div>
                 </div>
@@ -612,6 +637,7 @@ export default class Game extends React.Component{
                     isDesktop={this.props.isDesktop}
                     isPortrait={this.props.isPortrait}
                     controls={this.state.modalControls}
+                    onKeyPress={this.handleKeyPress}
                     closeModal={this.closeModal}
                     modalCanClose={this.modalCanClose}
                 ></NaegelsModal>

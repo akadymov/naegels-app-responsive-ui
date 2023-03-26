@@ -32,7 +32,8 @@ export default class Profile extends React.Component{
                 preferredLang: null,
                 registered: null,
                 username: null,
-                connectedRoomId: null
+                connectedRoomId: null,
+                stats: []
             },
             aboutMeSymbols: 0,
             canUpdate: false,
@@ -70,15 +71,7 @@ export default class Profile extends React.Component{
         this.NaegelsApi.getUser(this.props.match.params.username || this.Cookies.get('username'))
         .then((body)=>{
             if(body.errors) {
-                var newErrors = {}
-                var fieldName = ''
-                var helperMessage = ''
-                body.errors.forEach(error => {
-                    fieldName = error.field
-                    helperMessage = error.message
-                    newErrors[fieldName] = helperMessage
-                })
-                this.setState({ errors: newErrors })
+                window.location.assign('/lobby/')
             } else {
                 this.setState({ 
                     userData: body, 
@@ -345,6 +338,7 @@ export default class Profile extends React.Component{
                                     error={this.state.errors.currentPassword}
                                     value={this.state.currentPassword}
                                     type='password'
+                                    required={true}
                                     size='small'
                                     sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
                                     onChange={this.handlecurrentPasswordChange}
@@ -361,6 +355,7 @@ export default class Profile extends React.Component{
                                     error={this.state.errors.newPassword}
                                     value={this.state.newPassword}
                                     type='password'
+                                    required={true}
                                     size='small'
                                     sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
                                     onChange={this.handleNewPasswordChange}
@@ -377,6 +372,7 @@ export default class Profile extends React.Component{
                                     error={this.state.errors.repeatPassword}
                                     value={this.state.repeatPassword}
                                     type='password'
+                                    required={true}
                                     size='small'
                                     sx={{width: this.props.isMobile ? (this.props.isPortrait ? '90vw' : '55vw') : '24vw'}}
                                     onChange={this.handleRepeatNewPasswordChange}
@@ -410,26 +406,56 @@ export default class Profile extends React.Component{
                         </div>
                     </ThemeProvider>
                 </div>
-                <div className={`profile-stats-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                    User stats
-                    {this.state.userData.connectedRoomId ? 
-                        <div className="connected-room-container">
-                            Connected to room #{this.state.userData.connectedRoomId}
-                            <FormButton
-                                id='go_to_room'
-                                key='go_to_room'
-                                onSubmit={()=>window.location.assign('/room/' + this.state.userData.connectedRoomId)}
-                                variant='outlined'
-                                text='Watch'
-                                size='small'
-                                width='120px'
-                            ></FormButton>
+                {this.state.userData.stats ? 
+                    <div className={`profile-stats-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        <div className={`user-stats line1  ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.gamesPlayed}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Games</div>
+                            </div>
+                            <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.winRatio}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Won %</div>
+                            </div>
+                            <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.avgScore}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Avg Score</div>
+                            </div>
                         </div>
-                    :
-                        ''
-                    }
-                </div>
-                
+                        <div className={`user-stats line2 ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                        <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.avgBonuses}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Avg Bonuses</div>
+                            </div>
+                            <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.avgBetSize}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Avg Bet</div>
+                            </div>
+                            <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.totalScore}</div>
+                                <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Total Score</div>
+                            </div>
+                        </div>
+                        {this.state.userData.connectedRoomId ? 
+                            <div className="connected-room-container">
+                                Connected to room #{this.state.userData.connectedRoomId}
+                                <FormButton
+                                    id='go_to_room'
+                                    key='go_to_room'
+                                    onSubmit={()=>window.location.assign('/room/' + this.state.userData.connectedRoomId)}
+                                    variant='outlined'
+                                    text='Watch'
+                                    size='small'
+                                    width='120px'
+                                ></FormButton>
+                            </div>
+                        :
+                            ''
+                        }
+                    </div>
+                : 
+                    ''
+                }
             </div>
         )
     }

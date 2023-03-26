@@ -27,7 +27,10 @@ export default class NaegelsModal extends React.Component{
                             <div className="modal-text-container">
                                 <p>{this.props.text}</p>
                             </div>
-                            <div className="modal-controls-container">
+                            <div 
+                                className="modal-controls-container"
+                                onKeyPress={this.props.onKeyPress}
+                            >
                                 {this.props.controls.map(control => {
                                     switch(control.type){
                                         case 'input':
@@ -41,6 +44,7 @@ export default class NaegelsModal extends React.Component{
                                                             variant={control.variant}
                                                             onChange={control.onChange}
                                                             width={control.width}
+                                                            required={control.required}
                                                             defaultValue={control.text}
                                                             error={control.errorMessage}
                                                             helperText={control.errorMessage}

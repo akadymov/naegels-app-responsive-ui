@@ -333,7 +333,7 @@ export default class Room extends React.Component{
     }
 
     startGame = () => {
-        this.NaegelsApi.startGame(this.Cookies.get('idToken'))
+        this.NaegelsApi.startGame(this.Cookies.get('idToken'), 1) // TODO: introduce autodeal checkbox
         .then((body) => {
             if(body.errors) {
                 this.setState({popupError: body.errors[0].message})

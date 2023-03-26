@@ -95,14 +95,14 @@
     top: 0%;
     width: 70px;
     height: 15px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 15px;
     font-family: Mukta;
     text-align: center;
 }
 
 .hand-id-label.mobile{
-    width: 40px;
+    width: 56px;
     height: 10px;
     font-size: 10px;
 }
@@ -119,7 +119,7 @@
 }
 
 .hand-id-value.mobile{
-    width: 40px;
+    width: 56px;
     height: 20px;
     line-height: 0px;
     font-size: 14px;

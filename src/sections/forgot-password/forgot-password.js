@@ -30,6 +30,7 @@ export default class ForgotPassword extends React.Component{
                     label:"username", 
                     variant:"outlined", 
                     type: "text", 
+                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleUsernameChange, 
@@ -41,6 +42,7 @@ export default class ForgotPassword extends React.Component{
                     label:"email", 
                     variant:"outlined", 
                     type: "text", 
+                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleEmailChange, 
@@ -135,6 +137,12 @@ export default class ForgotPassword extends React.Component{
             recoverySent: false
         })
     }
+    
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+          this.createNewRoom();
+        }
+    };
 
     componentDidMount = () => {
         this.CheckIfAlreadyLoggedIn()

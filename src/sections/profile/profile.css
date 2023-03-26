@@ -162,7 +162,6 @@
     font-family: Mukta;
     text-align: left;
     font-size: 24px;
-    border: 1px solid black;
 }
 
 .profile-stats-container.mobile.portrait{
@@ -190,7 +189,82 @@
 
 .connected-room-container{
     position: absolute;
-    bottom: 5%;
+    top: 150px;
     font-size: 14px;
     text-align: center;
+}
+
+.connected-room-container.mobile{
+    display: none
+}
+
+.user-stats{
+    position: absolute;
+    height: 50px;
+    width: 25vw;
+    font-size: 18px;
+    font-family: Mukta;
+    text-align: center;
+}
+
+.user-stats.mobile.portrait{
+    width: 45vw
+}
+
+.user-stats.mobile.landscape{
+    width: 30vw
+}
+
+.user-stats.line1{
+    top: 0px
+}
+
+.user-stats.line2{
+    top: 60px
+}
+
+.user-stat-container{
+    width: 8vw;
+    height: 50px;
+    display: inline-block;
+}
+
+.user-stat-container.mobile.portrait{
+    width: 15vw
+}
+
+.user-stat-container.mobile.landscape{
+    width: 10vw
+}
+
+.user-stat-value{
+    position: absolute;
+    top: 0%;
+    width: 8vw;
+    height: 30px;
+}
+
+.user-stat-value.mobile.portrait{
+    width: 15vw
+}
+
+.user-stat-value.mobile.landscape{
+    width: 10vw
+}
+
+.user-stat-label{
+    position: absolute;
+    top: 30px;
+    width: 8vw;
+    height: 20px;
+    font-size: 14px;
+}
+
+.user-stat-label.mobile.portrait{
+    width: 15vw;
+    font-size: 10px;
+}
+
+.user-stat-label.mobile.landscape{
+    width: 10vw
 }

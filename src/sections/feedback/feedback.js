@@ -54,6 +54,7 @@ export default class Feedback extends React.Component{
                     label:'message (0/500)', 
                     variant:"outlined", 
                     type: "text", 
+                    required: true,
                     autoComplete: 'on',
                     width: "70vw",
                     rows: 5,
@@ -178,7 +179,13 @@ export default class Feedback extends React.Component{
             textFieldsList: newTextFieldsList,
             feedbackSent: false
         })
-    }
+    };
+    
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+          this.createNewRoom();
+        }
+    };
 
     componentDidMount = () => {
         this.CheckIfAlreadyLoggedIn()

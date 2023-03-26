@@ -30,6 +30,7 @@ export default class ResetPassword extends React.Component{
                     label:"new password", 
                     variant:"outlined", 
                     type: "password", 
+                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleNewPasswordChange, 
@@ -41,6 +42,7 @@ export default class ResetPassword extends React.Component{
                     label:"repeat password", 
                     variant:"outlined", 
                     type: "password", 
+                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleRepeatPasswordChange, 
@@ -154,6 +156,12 @@ export default class ResetPassword extends React.Component{
             textFieldsList: newTextFieldsList
         })
     }
+    
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+          this.createNewRoom();
+        }
+    };
 
     componentDidMount = () => {
         this.CheckIfAlreadyLoggedIn()

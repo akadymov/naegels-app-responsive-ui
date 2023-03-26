@@ -207,9 +207,10 @@ export default class NaegelsApi {
         return res
     };
 
-    startGame = async (token) => {
+    startGame = async (token, autodeal) => {
         const data = {
-            token: token
+            token: token,
+            autodeal: autodeal
         };
         const res = await this.apiCall('/game/start', 'POST', data);
         return res
