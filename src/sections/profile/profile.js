@@ -414,7 +414,7 @@ export default class Profile extends React.Component{
                                 <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Games</div>
                             </div>
                             <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{this.state.userData.stats.winRatio}</div>
+                                <div className={`user-stat-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>{100*this.state.userData.stats.winRatio}</div>
                                 <div className={`user-stat-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Won %</div>
                             </div>
                             <div className={`user-stat-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
@@ -438,15 +438,14 @@ export default class Profile extends React.Component{
                         </div>
                         {this.state.userData.connectedRoomId ? 
                             <div className="connected-room-container">
-                                Connected to room #{this.state.userData.connectedRoomId}
                                 <FormButton
                                     id='go_to_room'
                                     key='go_to_room'
                                     onSubmit={()=>window.location.assign('/room/' + this.state.userData.connectedRoomId)}
                                     variant='outlined'
-                                    text='Watch'
+                                    text={'Connected to room #' + this.state.userData.connectedRoomId}
                                     size='small'
-                                    width='120px'
+                                    width='200px'
                                 ></FormButton>
                             </div>
                         :

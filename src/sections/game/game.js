@@ -133,7 +133,7 @@ export default class Game extends React.Component{
                             width: '130px',
                             onSubmit: this.definePositions
                         })
-                        newHeaderControls.push({
+                        /*newHeaderControls.push({
                             id: 'deal',
                             type: 'button',
                             text: 'Deal',
@@ -142,10 +142,10 @@ export default class Game extends React.Component{
                             size: 'small',
                             width: '130px',
                             onSubmit: this.dealCards
-                        })
+                        })*/
                         if(!getGameResponse.positionsDefined){
                             getGameResponse.attentionToMessage = true
-                            getGameResponse.actionMessage = 'Press "SHUFFLE" button in game controls to define players positions in game'
+                            getGameResponse.actionMessage = 'Press "SHUFFLE" button in game controls to define players positions in game and deal cards'
                         }
                         if(getGameResponse.canDeal){
                             getGameResponse.attentionToMessage = true
@@ -622,12 +622,14 @@ export default class Game extends React.Component{
                     :
                         ''
                     }
-                    <div className={`current-game-trump-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <div className={`hand-id-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Hand #{this.state.gameDetails.currentHandSerialNo}/20</div>
-                        <div className={`hand-id-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <p className={`${this.state.gameDetails.trump || 'x'} trump-container`}>{this.state.gameDetails.cardsPerPlayer}</p>
+                    {this.state.gameDetails.currentHandId ?
+                        <div className={`current-game-trump-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                            <div className={`hand-id-label ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>Hand #{this.state.gameDetails.currentHandSerialNo}/20</div>
+                            <div className={`hand-id-value ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
+                                <p className={`${this.state.gameDetails.trump || 'x'} trump-container`}>{this.state.gameDetails.cardsPerPlayer}</p>
+                            </div>
                         </div>
-                    </div>
+                    : '' }
                 </div>
                 
                 <NaegelsModal
