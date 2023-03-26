@@ -71,7 +71,7 @@
 }
 
 .profile-username-container{
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-size: 36px
 }
 
@@ -159,7 +159,7 @@
     width: 25vw;
     height: 41vh;
     top: 32vh;
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     text-align: left;
     font-size: 24px;
 }
@@ -179,7 +179,7 @@
 
 .password-update-confirmation-message{
     color: green;
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     position: absolute;
     right: 0%;
     bottom: 1%;
@@ -204,7 +204,7 @@
     height: 50px;
     width: 25vw;
     font-size: 18px;
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     text-align: center;
 }
 

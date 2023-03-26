@@ -21,6 +21,7 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import defaultTheme from '../../themes/default';
 import FormButton from '../form-button';
 import Score from '../score';
+import NaegelsAvatar from '../naegels-avatar/naegels-avatar';
 
 
 
@@ -46,7 +47,10 @@ export default class NaegelsTableContainer extends React.Component{
                     <TableHead>
                         <TableRow>
                             {this.props.headers.map(header => {
-                                return <StyledTableCell key={header} align={this.props.headers.indexOf(header) === 0 ? 'left' : 'right'}>{header}</StyledTableCell>
+                                return <StyledTableCell 
+                                    key={header} 
+                                    align={this.props.headers.indexOf(header) === 0 ? 'left' : 'right'}
+                                >{header}</StyledTableCell>
                             })}
                         </TableRow>
                     </TableHead>
@@ -73,12 +77,19 @@ export default class NaegelsTableContainer extends React.Component{
                                                     case 'player':
                                                         return(
                                                             <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
-                                                                <div 
-                                                                    className="username-container" 
-                                                                    onClick={()=>window.location.assign('/profile/' + data.username)}
-                                                                >
-                                                                    <span>{data.username}</span>
-                                                                    {data.host ? <SupervisorAccountIcon/> : ''}
+                                                                <div className='player-table-data-container'>
+                                                                    <div className="avatar-small">
+                                                                        <NaegelsAvatar
+                                                                            width = "38px"
+                                                                            height = "38px"
+                                                                            username = {data.username}
+                                                                        ></NaegelsAvatar>
+                                                                    </div>
+                                                                    <div 
+                                                                        className="username-container" 
+                                                                        onClick={()=>window.location.assign('/profile/' + data.username)}
+                                                                    >{data.username}</div>
+                                                                    {data.host ? <div className="admin-icon-container"> <SupervisorAccountIcon/> </div> : ''}
                                                                 </div>
                                                             </StyledTableCell>
                                                         )

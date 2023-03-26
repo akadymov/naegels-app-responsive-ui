@@ -1,3 +1,3 @@
-import MainLogo from './main-logo.js.js';
+import LeaderBoard from './leaderboard';
 
-export default MainLogo;
+export default LeaderBoard;

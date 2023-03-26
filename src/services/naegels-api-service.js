@@ -308,5 +308,10 @@ export default class NaegelsApi {
         const res = await this.apiCallFormData('/user/' + username + '/profilepic', formData)
         return res
     }
+
+    getRatings = async () => {
+        const res = await this.apiCall('/ratings', 'GET');
+        return res
+    };
 };
 

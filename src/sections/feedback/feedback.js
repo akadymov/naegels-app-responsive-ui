@@ -108,9 +108,11 @@ export default class Feedback extends React.Component{
     sendFeedback = () => {
         this.NaegelsApi.sendFeedback(this.state.senderName, this.state.senderEmail, this.state.message)
         .then((body)=>{
+            var newSubmitButtonList = []
+            var newTextFieldsList = []
             if(body.errors){
-                var newTextFieldsList = this.state.textFieldsList
-                var newSubmitButtonList = this.state.submitButtonList
+                newTextFieldsList = this.state.textFieldsList
+                newSubmitButtonList = this.state.submitButtonList
                 body.errors.forEach(error=>{
                     switch(error.field) {
                         case 'message':
@@ -127,11 +129,11 @@ export default class Feedback extends React.Component{
                     submitButtonList: newSubmitButtonList
                 })
             } else {
-                var newSubmitButtonList = this.state.submitButtonList
+                newSubmitButtonList = this.state.submitButtonList
                 newSubmitButtonList[0].disabled = true
                 newSubmitButtonList[0].hidden = true
                 newSubmitButtonList[1].hidden = false
-                var newTextFieldsList = this.state.textFieldsList
+                newTextFieldsList = this.state.textFieldsList
                 newTextFieldsList[0].hidden=true
                 newTextFieldsList[1].hidden=true
                 newTextFieldsList[2].hidden=true

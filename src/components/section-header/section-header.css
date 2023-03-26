@@ -4,6 +4,7 @@
     width: 76vw;
     margin: 10px 2vw 5px 2vw;
     max-width: 1300px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
 .section-header-container.tablet.portrait{
@@ -60,18 +61,18 @@
 }
 
 .section-title-container{
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
 .section-subtitle-container{
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
 .section-title-container.desktop{
     position: absolute;
     text-align: left;
     top: 0;
-    max-width: 12vw;
+    max-width: 14vw;
     overflow: hidden;
     white-space: nowrap;
     font-size: 24px;
@@ -109,7 +110,7 @@
     position: absolute;
     text-align: left;
     top: 32px;
-    max-width: 12vw;
+    max-width: 14vw;
     overflow: hidden;
     white-space: nowrap;
     font-size: 14px;

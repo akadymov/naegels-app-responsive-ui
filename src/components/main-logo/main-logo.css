@@ -35,7 +35,7 @@
     top: 50%;
     margin: 0;
     color: black;
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: bold;
 }
 
@@ -57,7 +57,9 @@
 }
 
 .main-logo-text.mobile.portrait{
-    transform: translate(-50%, -50%);
+    transform: translate(0%, -50%);
+    width: 100vw;
+    text-align: center;
 }
 
 .main-logo-text.mobile.landscape{

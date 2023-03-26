@@ -18,7 +18,7 @@ export default class Lobby extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            roomsHeaders:  this.props.isMobile && this.props.isPortrait ? ['Room', 'Host', 'Players', ''] : ['Room', 'Host', 'Players', 'Created', 'Status', ''],
+            roomsHeaders: this.props.isMobile && this.props.isPortrait ? ['Room', 'Host', 'Players', ''] : ['Room', 'Host', 'Players', 'Created', 'Status', ''],
             rooms: [],
             selectedRoomId: -1,
             headerControls: [
@@ -321,6 +321,7 @@ export default class Lobby extends React.Component{
                     isDesktop={this.props.isDesktop}
                     isPortrait={this.props.isPortrait}
                     controls={this.state.headerControls}
+                    title= {!this.props.isMobile ? 'Games Lobby' : ''}
                 ></SectionHeader>
                 <div className={`lobby-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     <NaegelsTableContainer 

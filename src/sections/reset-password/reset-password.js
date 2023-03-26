@@ -87,9 +87,10 @@ export default class ResetPassword extends React.Component{
     resetPassword = () => {
         this.NaegelsApi.resetPassword(this.props.match.params.resetPasswordToken, this.state.newPassword, this.state.repeatPassword)
         .then((body)=>{
+            var newSubmitButtonList = []
             if(body.errors){
                 var newTextFieldsList = this.state.textFieldsList
-                var newSubmitButtonList = this.state.submitButtonList
+                newSubmitButtonList = this.state.submitButtonList
                 body.errors.forEach(error=>{
                     switch(error.field) {
                         case 'newPassword':
@@ -109,7 +110,7 @@ export default class ResetPassword extends React.Component{
                     submitButtonList: newSubmitButtonList
                 })
             } else {
-                var newSubmitButtonList = this.state.submitButtonList
+                newSubmitButtonList = this.state.submitButtonList
                 newSubmitButtonList[0].disabled = true
                 newSubmitButtonList[1].hidden = false
                 this.setState({

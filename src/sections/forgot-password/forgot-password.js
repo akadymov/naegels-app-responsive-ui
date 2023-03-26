@@ -78,9 +78,10 @@ export default class ForgotPassword extends React.Component{
     recoverPassword = () => {
         this.NaegelsApi.sendPasswordRecovery(this.state.username, this.state.email)
         .then((body)=>{
+            var newSubmitButtonList = []
             if(body.errors){
                 var newTextFieldsList = this.state.textFieldsList
-                var newSubmitButtonList = this.state.submitButtonList
+                newSubmitButtonList = this.state.submitButtonList
                 body.errors.forEach(error=>{
                     switch(error.field) {
                         case 'username':
@@ -100,7 +101,7 @@ export default class ForgotPassword extends React.Component{
                     submitButtonList: newSubmitButtonList
                 })
             } else {
-                var newSubmitButtonList = this.state.submitButtonList
+                newSubmitButtonList = this.state.submitButtonList
                 newSubmitButtonList[0].disabled = true
                 this.setState({
                     submitButtonList: newSubmitButtonList,

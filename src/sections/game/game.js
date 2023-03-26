@@ -86,7 +86,7 @@ export default class Game extends React.Component{
             if(getGameResponse.errors){
                 this.handleApiError(getGameResponse)
             } else {
-                if(getGameResponse.canDeal && getGameResponse.autodeal && this.state.gameDetails.host == this.Cookies.get('username')){
+                if(getGameResponse.canDeal && getGameResponse.autodeal && this.state.gameDetails.host === this.Cookies.get('username')){
                     this.dealCards()
                 } else {
                     newHeaderControls = [
@@ -405,6 +405,7 @@ export default class Game extends React.Component{
                 break
                 case 'Exit':
                     this.confirmExit();
+                break
                 default:
 
             }
@@ -545,8 +546,6 @@ export default class Game extends React.Component{
 
 
     render() {
-
-        console.log(this.state)
         
         return (
             <div className={`game-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>

@@ -173,7 +173,7 @@
     transform: translate(0, -50%);
     text-align: left;
     color: white;
-    font-family: Mukta;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: bold;
     font-size: 20px;
 }

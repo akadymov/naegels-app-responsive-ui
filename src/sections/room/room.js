@@ -19,7 +19,7 @@ export default class Room extends React.Component{
         super(props);
         this.handleReadySwitchChange = this.handleReadySwitchChange.bind(this);
         this.state = {
-            playerHeaders: this.props.isMobile && this.props.isPortrait ? ['Player', 'Ready',''] : ['Player','Ready','','Overall rating'],
+            playerHeaders: this.props.isMobile && this.props.isPortrait ? ['Player', 'Ready',''] : ['Player','Ready','','Won'],
             players: [],
             modalOpen: false,
             modalControls: [
@@ -104,7 +104,7 @@ export default class Room extends React.Component{
     updatePlayersTable = () => {
         var newPlayers = []
         var dataArray = []
-        this.state.roomDetails.connectedUserList.map((player, index) => { // TODO consider replacing with forEach
+        this.state.roomDetails.connectedUserList.forEach((player, index) => { // TODO consider replacing with forEach
             dataArray = [
                 {
                     type: 'player',
@@ -132,7 +132,7 @@ export default class Room extends React.Component{
             if(!(this.props.isMobile && this.props.isPortrait)) {
                 dataArray.push({
                     type: 'text',
-                    value: player.rating
+                    value: 100 * player.winRatio + '%'
                 })
             }
             newPlayers.push({
@@ -429,6 +429,8 @@ export default class Room extends React.Component{
                     isDesktop={this.props.isDesktop}
                     isPortrait={this.props.isPortrait}
                     controls={this.state.headerControls}
+                    title={!this.props.isMobile ? this.state.roomDetails.roomName : ''}
+                    subtitle={!this.props.isMobile ? this.state.roomDetails.host : ''}
                 ></SectionHeader>
                 <div className={`room-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
                     <NaegelsTableContainer

@@ -10,15 +10,37 @@
     background-color: green;
 }
 
+.player-table-data-container{
+    position: relative;
+    height: 38px;
+    min-width: 100px;
+}
+
+.avatar-small{
+    position: absolute;
+    height: 38px;
+}
+
 .username-container{
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    position: absolute;
+    left: 38px;
     cursor: pointer;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .username-container:hover{
-    color: darkviolet
+    color: darkviolet;
+}
+
+.admin-icon-container{
+    position: absolute;
+    right: -24px;
+    height: 38px;
+    width: 24px;
+    top: 7px;
 }
 
 .suit-container:after{
@@ -49,4 +71,3 @@
     content: "\2298";
     color: black;
 }
-

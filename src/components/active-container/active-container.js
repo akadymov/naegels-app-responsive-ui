@@ -16,13 +16,14 @@ import Profile from '../../sections/profile';
 import ForgotPassword from '../../sections/forgot-password';
 import ResetPassword from '../../sections/reset-password';
 import Feedback from '../../sections/feedback';
-/*import LeaderBoard from '../../sections/leaderboard';*/
+import LeaderBoard from '../../sections/leaderboard';
 
 export default class ActiveContainer extends React.Component{
     
     render() {
 
         const RoomWithRouter = withRouter(Room)
+        const LeaderBoardWithRouter = withRouter(LeaderBoard)
         const LoginWithRouter = withRouter(Login)
         const AboutWithRouter = withRouter(About)
         const RegistrationSucceedWithRouter = withRouter(RegistrationSucceed)
@@ -85,6 +86,16 @@ export default class ActiveContainer extends React.Component{
                         path="/profile" 
                         component={
                             () => <ProfileWithRouter  
+                                isMobile = {this.props.isMobile}
+                                isDesktop = {this.props.isDesktop}
+                                isPortrait = {this.props.isPortrait}
+                            />
+                        }
+                    ></Route>
+                    <Route 
+                        path="/leaderboard" 
+                        component={
+                            () => <LeaderBoardWithRouter  
                                 isMobile = {this.props.isMobile}
                                 isDesktop = {this.props.isDesktop}
                                 isPortrait = {this.props.isPortrait}
