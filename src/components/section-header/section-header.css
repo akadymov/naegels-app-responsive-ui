@@ -72,7 +72,7 @@
     position: absolute;
     text-align: left;
     top: 0;
-    max-width: 14vw;
+    max-width: 18vw;
     overflow: hidden;
     white-space: nowrap;
     font-size: 24px;
@@ -110,7 +110,7 @@
     position: absolute;
     text-align: left;
     top: 32px;
-    max-width: 14vw;
+    max-width: 18vw;
     overflow: hidden;
     white-space: nowrap;
     font-size: 14px;
