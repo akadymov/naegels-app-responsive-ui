@@ -309,7 +309,6 @@ export default class Profile extends React.Component{
             if(body.errors) {
                 console.log(body)
             } else {
-                alert('Profile picture updated')
                 this.getUserProfile()
             }
         })
@@ -526,9 +525,9 @@ export default class Profile extends React.Component{
                                     key='go_to_room'
                                     onSubmit={()=>window.location.assign('/room/' + this.state.userData.connectedRoomId)}
                                     variant='outlined'
-                                    text={'Connected to room #' + this.state.userData.connectedRoomId}
+                                    text={'Connected to room#' + this.state.userData.connectedRoomId}
                                     size='small'
-                                    width='200px'
+                                    width='190px'
                                 ></FormButton>
                             </div>
                         :
