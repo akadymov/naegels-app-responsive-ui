@@ -101,22 +101,32 @@
 }
 
 .opponent-container.player2.outof5{
-    top: -2%;
+    top: -5%;
     right: 5vw;
 }
 
+.opponent-container.player2.outof5.mobile.portrait{
+    top: 3%;
+    right: -16vw;
+}
+
 .opponent-container.player3.outof5{
-    top: -2%;
+    top: -5%;
     left: 5vw;
 }
 
+.opponent-container.player3.outof5.mobile.portrait{
+    top: 3%;
+    left: -16vw;
+}
+
 .opponent-container.player2.outof5.mobile.landscape{
-    top: -15%;
+    top: 0%;
     right: 5vw;
 }
 
 .opponent-container.player3.outof5.mobile.landscape{
-    top: -15%;
+    top: 0%;
     left: 5vw;
 }
 
@@ -140,9 +150,23 @@
     right: -6vw;
 }
 
+.opponent-container.player1.outof6.mobile.portrait{
+    right: -16vw;
+    top: 55%;
+}
+
 .opponent-container.player2.outof6{
     top: 20%;
     right: -6vw;
+}
+
+.opponent-container.player2.outof6.mobile.portrait{
+    right: -16vw;
+    top: 15%;
+}
+
+.opponent-container.player2.outof6.mobile.landscape{
+    top: 0vw;
 }
 
 .opponent-container.player3.outof6{
@@ -162,9 +186,23 @@
     left: -6vw;
 }
 
+.opponent-container.player4.outof6.mobile.portrait{
+    left: -16vw;
+    top: 15%;
+}
+
+.opponent-container.player4.outof6.mobile.landscape{
+    top: 0vw;
+}
+
 .opponent-container.player5.outof6{
     top: 70%;
     left: -6vw;
+}
+
+.opponent-container.player5.outof6.mobile.portrait{
+    left: -16vw;
+    top: 55%;
 }
 
 .opponent-container.player6.outof6{

@@ -141,7 +141,7 @@ export default class ForgotPassword extends React.Component{
     
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          this.createNewRoom();
+          this.recoverPassword();
         }
     };
 

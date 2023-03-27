@@ -258,9 +258,20 @@ export default class Lobby extends React.Component{
             this.updateControls();
         })
     }
+
+    lobbyAutoUpdate = () => { // update lobby every 60 seconds
+        setTimeout(function(){
+            this.GetRoomsList()
+        }.bind(this), 60000)
+    }
     
     componentDidMount = () => {
+      
+        this.CheckIfLoggedIn();
+        
         this.GetRoomsList();
+
+        this.lobbyAutoUpdate();
 
         lobbySocket.on('update_lobby', (data) => {
             var newRooms = {}
@@ -311,8 +322,6 @@ export default class Lobby extends React.Component{
     };
 
     render() {
-      
-        this.CheckIfLoggedIn();
 
         return(
             <div className={`lobby-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>

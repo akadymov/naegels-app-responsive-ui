@@ -185,7 +185,7 @@ export default class Feedback extends React.Component{
     
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          this.createNewRoom();
+          this.sendFeedback();
         }
     };
 

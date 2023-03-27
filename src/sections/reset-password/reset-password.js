@@ -179,7 +179,7 @@ export default class ResetPassword extends React.Component{
     
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-          this.createNewRoom();
+          this.ResetPassword();
         }
     };
 
