@@ -350,7 +350,7 @@ export default class Lobby extends React.Component{
                     controls={this.state.modalControls}
                     onKeyPress={this.handleKeyPress}
                     closeModal={this.closeModal}
-                    modalCanClose
+                    modalCanClose={true}
                 ></NaegelsModal>
             </div>
         )

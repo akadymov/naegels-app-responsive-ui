@@ -449,6 +449,7 @@ export default class Room extends React.Component{
                     isPortrait={this.props.isPortrait}
                     controls={this.state.modalControls}
                     closeModal={this.closeModal}
+                    modalCanClose={true}
                 ></NaegelsModal>
             </div>
         )

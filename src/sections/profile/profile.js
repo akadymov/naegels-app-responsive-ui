@@ -5,6 +5,7 @@ import './profile.css'
 //Local services
 import NaegelsApi from '../../services/naegels-api-service';
 import Cookies from 'universal-cookie';
+import NaegelsModal from '../../components/naegels-modal';
 
 //Local components
 import FormButton from '../../components/form-button';
@@ -42,7 +43,17 @@ export default class Profile extends React.Component{
             repeatPassword: null,
             canUpdatePassword: false,
             passwordUpdated: false,
-            errors:{}
+            errors:{},
+            avatarFile: null,
+            modalControls: [
+                {
+                    id: "select_avatar_input",
+                    type: "input-file",
+                    accept: "image/png",
+                    onChange: this.handleFileChange
+                }
+            ],
+            modalOpen: false
         }
     }
 
@@ -220,16 +231,88 @@ export default class Profile extends React.Component{
         })
     }
 
-    uploadFile = async () => { // TODO upload avatar method is not working (problem may exist in FE, BE or both)
-        alert('Work in progress: upload tool is in development')
-        /*this.NaegelsApi.uploadProfilePic(this.Cookies.get('idToken'), this.props.match.params.username || this.Cookies.get('username'), e.target.files[0])
+    handleFileChange = (e) => {
+        var newModalControls = this.state.modalControls
+        if (!e.target.files[0]) {
+            newModalControls = [
+                {
+                    id: "select_avatar_input",
+                    type: "input-file",
+                    accept: "image/png",
+                    onChange: this.handleFileChange,
+                }
+            ];
+        } else {
+            if (e.target.files[0].type != 'image/png'){
+                newModalControls = [
+                    {
+                        id: "select_avatar_input",
+                        type: "input-file",
+                        accept: "image/png",
+                        onChange: this.handleFileChange,
+                    },
+                    {
+                        id: "file_type_error",
+                        type: "text",
+                        style: 'error',
+                        text: "Only PNG file types supported"
+                    }
+                ]
+            } else {
+                if (e.target.files[0].size > 200000){
+                    newModalControls = [
+                        {
+                            id: "select_avatar_input",
+                            type: "input-file",
+                            accept: "image/png",
+                            onChange: this.handleFileChange,
+                        },
+                        {
+                            id: "file_type_error",
+                            type: "text",
+                            style: 'error',
+                            text: "Max file size is 200 KB"
+                        }
+                    ]
+                } else {
+                    newModalControls = [
+                        {
+                            id: "select_avatar_input",
+                            type: "input-file",
+                            accept: "image/png",
+                            onChange: this.handleFileChange,
+                        },
+                        {
+                            id: "upload_avatar",
+                            type: "button",
+                            variant: "contained",
+                            text: "Upload",
+                            size: "small",
+                            width: '140px',
+                            onSubmit: this.uploadFile
+                        }
+                    ]
+                }
+            }
+        }
+        
+        this.setState({ 
+            avatarFile: e.target.files[0],
+            modalControls: newModalControls
+         });
+    }
+
+    uploadFile = async (e) => { // TODO upload avatar method is not working (problem may exist in FE, BE or both)
+        // alert('Work in progress: upload tool is in development')
+        this.NaegelsApi.uploadProfilePic(this.Cookies.get('idToken'), this.props.match.params.username || this.Cookies.get('username'), this.state.avatarFile)
         .then((body) => {
             if(body.errors) {
                 console.log(body)
             } else {
-                console.log('Success')
+                alert('Profile picture updated')
+                this.getUserProfile()
             }
-        })*/
+        })
     }
 
     componentDidMount = () => {
@@ -245,7 +328,7 @@ export default class Profile extends React.Component{
                         className={`profile-picture-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
                         onMouseEnter={this.activatePicControls}
                         onMouseLeave={this.deActivatePicControls}
-                        onClick={this.uploadFile} // FIXME
+                        onClick={() => {this.setState({modalOpen: true})}} // FIXME
                     >
                         <NaegelsAvatar
                             username={this.props.match.params.username || this.Cookies.get('username')}
@@ -260,7 +343,7 @@ export default class Profile extends React.Component{
                                 <FormButton
                                     id='avatar_update_button'
                                     key='avatar_update_button'
-                                    onClick={this.uploadFile} // FIXME
+                                    onClick={() => {this.setState({modalOpen: true})}} // FIXME
                                     variant='outlined'
                                     text='Upload new'
                                     size={this.props.isMobile ? 'small' : 'medium'}
@@ -455,6 +538,16 @@ export default class Profile extends React.Component{
                 : 
                     ''
                 }
+                <NaegelsModal
+                    open={this.state.modalOpen}
+                    text="Upload new profile picture"
+                    isMobile={this.props.isMobile}
+                    isDesktop={this.props.isDesktop}
+                    isPortrait={this.props.isPortrait}
+                    controls={this.state.modalControls}
+                    modalCanClose={true}
+                    closeModal={()=>this.setState({modalOpen: false})}
+                ></NaegelsModal>
             </div>
         )
     }

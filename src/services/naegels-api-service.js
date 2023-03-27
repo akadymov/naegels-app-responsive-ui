@@ -43,12 +43,12 @@ export default class NaegelsApi {
         return await res.json({});
     };
 
-    apiCallFormData = async(url, data) => {
+    apiCallFormData = async(url, token, data) => {
         const resourceLocation = `${this._apiHost}:${this._apiPort}${this._apiContext}${url}`
         var req = {
             method: 'POST',
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Token': token
             },
             body: data
         }
@@ -303,9 +303,8 @@ export default class NaegelsApi {
 
     uploadProfilePic = async (token, username, img) => {
         const formData = new FormData();
-        //formData.append('avatar', img)
-        formData.append('token', token)
-        const res = await this.apiCallFormData('/user/' + username + '/profilepic', formData)
+        formData.append('avatar', img);
+        const res = await this.apiCallFormData('/user/' + username + '/profilepic', token, formData)
         return res
     }
 

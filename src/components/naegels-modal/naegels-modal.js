@@ -51,6 +51,18 @@ export default class NaegelsModal extends React.Component{
                                                         ></TextField>
                                                 </div>
                                             )
+                                        case 'input-file':
+                                            return (
+                                                <div className="modal-control-container" key={control.id}>
+                                                    <input
+                                                        type="file"
+                                                        onChange={control.onChange}
+                                                        onClick={control.onClick}
+                                                        accept={control.accept}
+                                                        style={{ display: control.hidden ? 'none' : 'block' }}
+                                                    ></input>
+                                                </div>
+                                            )
                                         case 'button':
                                             return(
                                                 <div className="modal-control-container" key={control.id}>
@@ -64,6 +76,12 @@ export default class NaegelsModal extends React.Component{
                                                     width={control.width}
                                                     color={control.color}
                                                 ></FormButton>
+                                                </div>
+                                            )
+                                        case 'text':
+                                            return(
+                                                <div className={`modal-control-container ${control.style || ''}`} key={control.id}>
+                                                    {control.text}
                                                 </div>
                                             )
                                         default:

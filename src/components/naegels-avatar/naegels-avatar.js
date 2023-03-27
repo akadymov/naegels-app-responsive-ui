@@ -27,25 +27,17 @@ export default class NaegelsAvatar extends React.Component{
       
         return color;
     }
-      
-    stringAvatar(name) {
-        return {
-            sx: {
-            bgcolor: this.stringToColor(name),
-            },
-            children: `${name[0][0]}`,
-        };
-    }
 
     render () {
         return(
             <Avatar 
-                {...this.stringAvatar(this.props.username.toUpperCase())}
+                children = {this.props.username.toUpperCase()[0][0]}
                 src={`/img/profile-pics/${this.props.username}.png`}
                 sx={{ 
                     width: this.props.width, 
                     height: this.props.height , 
-                    outline: this.props.outline
+                    outline: this.props.outline,
+                    bgcolor: this.stringToColor(this.props.username)
                 }}
             ></Avatar>
         )
