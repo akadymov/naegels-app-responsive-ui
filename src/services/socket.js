@@ -1,7 +1,10 @@
 import { Manager } from 'socket.io-client';
+import configFile from './config.json'
 
-const socketHost = 'http://127.0.0.1'
-const socketPort = '5002'
+const env = configFile.ENVIRONMENT
+
+const socketHost = configFile.SOCKET.HOST[env]
+const socketPort = configFile.SOCKET.PORT[env]
 
 const manager = new Manager(socketHost + ':' + socketPort)
 

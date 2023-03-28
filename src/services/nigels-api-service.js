@@ -1,8 +1,12 @@
+import configFile from './config.json'
+
 export default class NigelsApi {
 
-    _apiHost = 'http://127.0.0.1'
-    _apiPort = '5002'
-    _apiContext = '/api/v1'
+    _env = configFile.ENVIRONMENT
+
+    _apiHost = configFile.API.HOST[this._env]
+    _apiPort = configFile.API.PORT[this._env]
+    _apiContext = configFile.API.CONTEXT[this._env]
 
     status(response) {  
         if (response.status >= 200 && response.status < 500) {  
@@ -23,6 +27,7 @@ export default class NigelsApi {
         }
         
         const resourceLocation = `${this._apiHost}:${this._apiPort}${this._apiContext}${url}`
+
         var req = {
             method: method,
             headers: {

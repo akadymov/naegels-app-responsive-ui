@@ -2,11 +2,11 @@ import React from 'react';
 
 import Avatar from '@mui/material/Avatar';
 
+import configFile from '../../services/config.json'
+
 
 
 export default class NigelsAvatar extends React.Component{
-
-
 
     stringToColor(string) {
         let hash = 0;
@@ -32,7 +32,7 @@ export default class NigelsAvatar extends React.Component{
         return(
             <Avatar 
                 children = {this.props.username.toUpperCase()[0][0]}
-                src={`/img/profile-pics/${this.props.username}.png`}
+                src={configFile.AVATAR_FOLDER + this.props.username + '.png'}
                 sx={{ 
                     width: this.props.width, 
                     height: this.props.height , 
