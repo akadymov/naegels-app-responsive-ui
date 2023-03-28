@@ -11,6 +11,7 @@
 
 .game-scores-modal-container.mobile.landscape{
     height: 90vh;
+    width: 80vw;
     top: 5%;
 }
 
@@ -22,6 +23,7 @@
 
 .game-scores-container{
     padding: 2vh 0vw 0 0vw;
+    margin-left: 1vw;
     height: 60vh;
     width: 50vw;
     overflow: scroll;
@@ -29,6 +31,7 @@
 
 .game-scores-container.mobile.landscape{
     height: 71vh;
+    width: 80vw;
 }
 
 .scores-controls-container{
@@ -40,6 +43,7 @@
 
 .scores-controls-container.mobile.landscape{
     height: 15vh;
+    width: 80vw;
 }
 
 .scores-controls-container.mobile.portrait{

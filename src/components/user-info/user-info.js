@@ -6,7 +6,7 @@ import Cookies from 'universal-cookie';
 //MUI components
 
 //Local components
-import NaegelsAvatar from '../naegels-avatar';
+import NigelsAvatar from '../nigels-avatar';
 
 
 export default class UserInfo extends React.Component{
@@ -73,11 +73,11 @@ export default class UserInfo extends React.Component{
                         ''
                     }
                     <div className={`user-image-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                        <NaegelsAvatar
+                        <NigelsAvatar
                             username={this.Cookies.get('username')}
                             width={50}
                             height={50}
-                        ></NaegelsAvatar>
+                        ></NigelsAvatar>
                     </div>
                 </div>
             :

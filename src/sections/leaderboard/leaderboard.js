@@ -3,11 +3,11 @@ import React from 'react';
 import './leaderboard.css'
 
 //Local services
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 
 //Local components
-import NaegelsTableContainer from '../../components/naegels-table-container';
+import NigelsTableContainer from '../../components/nigels-table-container';
 import SectionHeader from '../../components/section-header';
 
 
@@ -21,11 +21,11 @@ export default class LeaderBoard extends React.Component{
         }
     }
 
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
     Cookies = new Cookies();
 
     getRatings = () => {
-        this.NaegelsApi.getRatings()
+        this.NigelsApi.getRatings()
         .then((body)=>{
             var newRatings = []
             if(body){
@@ -81,13 +81,13 @@ export default class LeaderBoard extends React.Component{
                     title={!this.props.isMobile ? 'Rating' : ''}
                 ></SectionHeader>
                 <div className={`lobby-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                    <NaegelsTableContainer 
+                    <NigelsTableContainer 
                         height={this.props.isMobile ? (this.props.isPortrait ? '74vh' : '88vh') : '90vh'}
                         headers={this.state.gameRatingHeaders}
                         rows={this.state.gameRatings}
                         onClick={this.getRatings}
                         selected={''}
-                    ></NaegelsTableContainer>
+                    ></NigelsTableContainer>
                 </div>
             </div>
         )

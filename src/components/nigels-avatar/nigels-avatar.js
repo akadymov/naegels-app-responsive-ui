@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar';
 
 
 
-export default class NaegelsAvatar extends React.Component{
+export default class NigelsAvatar extends React.Component{
 
 
 

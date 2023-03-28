@@ -13,7 +13,7 @@ import LoginRoundedIcon from '@mui/icons-material/Login';
 import Cookies from 'universal-cookie';
 
 //Local components
-import NaegelsAvatar from '../naegels-avatar';
+import NigelsAvatar from '../nigels-avatar';
 
 
 export default class NavMenu extends React.Component{
@@ -111,12 +111,12 @@ export default class NavMenu extends React.Component{
                         onClick={() => {this.handleNavItemClick('/profile')}}
                     >
                         <div className={`menu-item-icon-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                            <NaegelsAvatar
+                            <NigelsAvatar
                                 username={this.Cookies.get('username')}
                                 width={35}
                                 height={35}
                                 outline={this.state.hoveredItem === 'profile' ? '1px solid darkViolet' : (window.location.pathname.startsWith('/profile') ? '1px solid #01aa00' : 'none')}
-                            ></NaegelsAvatar>
+                            ></NigelsAvatar>
                         </div>
                         {this.state.menuExpanded ? 
                         <div className="menu-item-title-container">

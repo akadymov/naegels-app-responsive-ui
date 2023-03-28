@@ -8,7 +8,7 @@ import './forgot-password.css'
 import FormContainer from '../../components/form-container';
 
 //Local services
-import NigelsApi from '../../services/nigels-api-service';
+import NaegelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 
 
@@ -30,7 +30,6 @@ export default class ForgotPassword extends React.Component{
                     label:"username", 
                     variant:"outlined", 
                     type: "text", 
-                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleUsernameChange, 
@@ -42,7 +41,6 @@ export default class ForgotPassword extends React.Component{
                     label:"email", 
                     variant:"outlined", 
                     type: "text", 
-                    required: true,
                     autoComplete: 'on',
                     width: "220px",
                     onChange: this.handleEmailChange, 
@@ -63,25 +61,15 @@ export default class ForgotPassword extends React.Component{
         }
     }
 
-    NigelsApi = new NigelsApi();
+    NaegelsApi = new NaegelsApi();
     Cookies = new Cookies();
 
-
-
-    CheckIfAlreadyLoggedIn = () => {
-        const idToken = this.Cookies.get('idToken')
-        if(idToken) {
-            window.location.assign('/lobby/');
-        }
-    }
-
     recoverPassword = () => {
-        this.NigelsApi.sendPasswordRecovery(this.state.username, this.state.email)
+        this.NaegelsApi.sendPasswordRecovery(this.state.username, this.state.email)
         .then((body)=>{
-            var newSubmitButtonList = []
             if(body.errors){
                 var newTextFieldsList = this.state.textFieldsList
-                newSubmitButtonList = this.state.submitButtonList
+                var newSubmitButtonList = this.state.submitButtonList
                 body.errors.forEach(error=>{
                     switch(error.field) {
                         case 'username':
@@ -101,7 +89,7 @@ export default class ForgotPassword extends React.Component{
                     submitButtonList: newSubmitButtonList
                 })
             } else {
-                newSubmitButtonList = this.state.submitButtonList
+                var newSubmitButtonList = this.state.submitButtonList
                 newSubmitButtonList[0].disabled = true
                 this.setState({
                     submitButtonList: newSubmitButtonList,
@@ -138,16 +126,6 @@ export default class ForgotPassword extends React.Component{
             recoverySent: false
         })
     }
-    
-    handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-          this.recoverPassword();
-        }
-    };
-
-    componentDidMount = () => {
-        this.CheckIfAlreadyLoggedIn()
-    }
 
 
     render() {
@@ -164,12 +142,7 @@ export default class ForgotPassword extends React.Component{
                     onSubmit={this.SendLoginRequest}
                 >
                 </FormContainer>
-                <div 
-                    className={`recovery-sent-confirmation-message ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}
-                    style={{ display: this.state.recoverySent ? 'block' : 'none' }}
-                >
-                    Password recovery letter sent: check your mail inbox
-                </div>
+                <div className="recovery-sent-confirmation-message" style={{ display: this.state.recoverySent ? 'block' : 'none' }}>Password recovery letter sent: check your mail inbox</div>
             </div>
         )
     }

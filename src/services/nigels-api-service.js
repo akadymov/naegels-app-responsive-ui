@@ -1,4 +1,4 @@
-export default class NaegelsApi {
+export default class NigelsApi {
 
     _apiHost = 'http://127.0.0.1'
     _apiPort = '5002'

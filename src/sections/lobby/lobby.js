@@ -3,14 +3,14 @@ import React from 'react';
 import './lobby.css';
 
 //Local services
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 import { roomSocket, lobbySocket } from '../../services/socket';
 
 //Local components
-import NaegelsTableContainer from '../../components/naegels-table-container';
+import NigelsTableContainer from '../../components/nigels-table-container';
 import SectionHeader from '../../components/section-header';
-import NaegelsModal from '../../components/naegels-modal';
+import NigelsModal from '../../components/nigels-modal';
 
 
 export default class Lobby extends React.Component{
@@ -64,13 +64,12 @@ export default class Lobby extends React.Component{
             ],
             newRoomName: '',
             newRoomError:'',
-            popupError:'',
             confirmActionMsg:'',
             confirmAction:''
         }
     }
 
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
     Cookies = new Cookies();
 
     CheckIfLoggedIn = () => {
@@ -81,7 +80,7 @@ export default class Lobby extends React.Component{
     };
 
     GetRoomsList = () => {
-        this.NaegelsApi.getRooms(this.Cookies.get('idToken'))
+        this.NigelsApi.getRooms(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
                 console.log('Something went wrong! Cannot get rooms list!')
@@ -180,7 +179,7 @@ export default class Lobby extends React.Component{
     }
 
     connectRoom = (roomId) => {
-        this.NaegelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
+        this.NigelsApi.connectRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(!body.errors){
                 roomSocket.emit('add_player_to_room', this.Cookies.get('username'), roomId, body.roomName, body.connectedUsers)
@@ -189,7 +188,7 @@ export default class Lobby extends React.Component{
                     window.location.assign('/room/' + roomId)
                 }, 1000)
             } else {
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             }
         });
     };
@@ -220,7 +219,7 @@ export default class Lobby extends React.Component{
 
     createNewRoom = () => {
         this.closeModal()
-        this.NaegelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
+        this.NigelsApi.createRoom(this.Cookies.get('idToken'), this.state.newRoomName)
         .then((body) => {
             if(body.errors) {
                 this.handleCreateRoomError(body)
@@ -333,15 +332,15 @@ export default class Lobby extends React.Component{
                     title= {!this.props.isMobile ? 'Games Lobby' : ''}
                 ></SectionHeader>
                 <div className={`lobby-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                    <NaegelsTableContainer 
+                    <NigelsTableContainer 
                         height={this.props.isMobile ? (this.props.isPortrait ? '74vh' : '88vh') : '90vh'}
                         headers={this.state.roomsHeaders}
                         rows={this.state.rooms}
                         onClick={this.selectRoom}
                         selected={this.state.selectedRoomId}
-                    ></NaegelsTableContainer>
+                    ></NigelsTableContainer>
                 </div>
-                <NaegelsModal
+                <NigelsModal
                     open={this.state.modalOpen}
                     header="New room"
                     isMobile={this.props.isMobile}
@@ -351,7 +350,7 @@ export default class Lobby extends React.Component{
                     onKeyPress={this.handleKeyPress}
                     closeModal={this.closeModal}
                     modalCanClose={true}
-                ></NaegelsModal>
+                ></NigelsModal>
             </div>
         )
     }

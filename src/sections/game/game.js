@@ -4,14 +4,14 @@ import './game.css'
 
 //Local services
 import Cookies from 'universal-cookie';
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import { lobbySocket, roomSocket, gameSocket } from '../../services/socket';
 
 //Local components
 import SectionHeader from '../../components/section-header';
 import PlayerContainer from '../../components/player-container';
 import OpponentContainer from '../../components/opponent-container';
-import NaegelsModal from '../../components/naegels-modal';
+import NigelsModal from '../../components/nigels-modal';
 import TableActionMessage from '../../components/table-action-message';
 import TablePutCards from '../../components/table-put-cards';
 import GameScores from '../../components/game-scores';
@@ -36,6 +36,8 @@ export default class Game extends React.Component{
                 nextActingPlayer: null,
                 players: [],
                 cardsOnTable: [],
+                lastTurnCards: [],
+                showLastTurn: [],
                 myInHandInfo: {
                     username: null,
                     betSize: null,
@@ -55,7 +57,7 @@ export default class Game extends React.Component{
     };
 
     Cookies = new Cookies();
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
 
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
@@ -81,7 +83,7 @@ export default class Game extends React.Component{
         // get game status
         var newHeaderControls = []
         var newModalControls = []
-        this.NaegelsApi.getGame(this.props.match.params.gameId, this.Cookies.get('idToken'))
+        this.NigelsApi.getGame(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((getGameResponse) => {
             if(getGameResponse.errors){
                 this.handleApiError(getGameResponse)
@@ -152,6 +154,19 @@ export default class Game extends React.Component{
                             getGameResponse.actionMessage = 'Press "DEAL" button in game controls to deal cards in hand'
                         }
                     }
+                    if(getGameResponse.lastTurnCards.length > 0) {
+                        newHeaderControls.push({
+                            id: 'last_turn',
+                            type: 'button',
+                            text: 'Last turn',
+                            variant: 'contained',
+                            disabled: getGameResponse.lastTurnCards === [],
+                            size: 'small',
+                            width: '130px',
+                            onMouseDown: (e) => this.handleLastTurnClick(),
+                            onMouseUp: (e) => this.handleLastTurnClick()
+                        })
+                    }
                     if(getGameResponse.nextActingPlayer === this.Cookies.get('username') && !getGameResponse.betsAreMade){
                         newModalControls = [
                             {
@@ -188,10 +203,26 @@ export default class Game extends React.Component{
                         modalCanClose: false,
                         modalContentType: 'Bet'
                     })
+                    /*if(getGameResponse.players.length === getGameResponse.cardsOnTable.length){
+                        setTimeout(this.utilizeCards(getGameResponse.currentHandId, getGameResponse.nextActingPlayer), 3000)
+                    }*/
                 }
             }
         })
     }
+
+    /*utilizeCards = (tookPlayerUsername, handId) => {
+        console.log(tookPlayerUsername)
+        console.log(this.state.gameDetails.nextActingPlayer)
+        console.log(handId)
+        console.log(this.state.gameDetails.currentHandId)
+        console.log(tookPlayerUsername === this.state.gameDetails.nextActingPlayer)
+        console.log(parseInt(handId) === parseInt(this.state.gameDetails.currentHandId))
+        if (tookPlayerUsername === this.state.gameDetails.nextActingPlayer && handId === this.state.gameDetails.currentHandId) {
+            console.log('tst')
+            this.state.gameDetails.cardsOnTable = []
+        }
+    }*/
 
     finishGame = () => {
         var newModalControls = [
@@ -238,22 +269,20 @@ export default class Game extends React.Component{
     confirmFinishGame = () => {
         const gameId = this.state.gameDetails.gameId
         const roomId = this.state.gameDetails.roomId
-        this.NaegelsApi.finishGame(this.Cookies.get('idToken'))
+        this.NigelsApi.finishGame(this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors){
                 this.handleInGameError(body)
             } else {
                 gameSocket.emit('finish_game_in_room', this.Cookies.get('username'), gameId, roomId);
-                this.setState({popupError: 'Game #' + gameId + ' was successfully finished!'})
-                setTimeout(function(){
-                    window.location.assign('/room/' + roomId)
-                }, 1000)
+                this.setState({actionMessage: 'Game #' + gameId + ' was successfully finished!'})
+                window.location.assign('/room/' + roomId)
             }
         });
     }
 
     dealCards = () => {
-        this.NaegelsApi.dealCards(this.props.match.params.gameId, this.Cookies.get('idToken'))
+        this.NigelsApi.dealCards(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
                 this.handleInGameError(body)
@@ -265,7 +294,7 @@ export default class Game extends React.Component{
     };
 
     makeBet = () => {
-        this.NaegelsApi.makeBet(this.Cookies.get('idToken'), this.state.gameDetails.gameId, this.state.gameDetails.currentHandId, parseInt(this.state.myBetSizeValue,10))
+        this.NigelsApi.makeBet(this.Cookies.get('idToken'), this.state.gameDetails.gameId, this.state.gameDetails.currentHandId, parseInt(this.state.myBetSizeValue,10))
         .then((body) => {
             if(body.errors) {
                 var newModalControls = this.state.modalControls
@@ -289,7 +318,7 @@ export default class Game extends React.Component{
     };
 
     definePositions = () => {
-        this.NaegelsApi.definePositions(this.props.match.params.gameId, this.Cookies.get('idToken'))
+        this.NigelsApi.definePositions(this.props.match.params.gameId, this.Cookies.get('idToken'))
         .then((body) => {
             if(body.errors) {
                 this.handleInGameError(body)
@@ -300,6 +329,18 @@ export default class Game extends React.Component{
         });
     };
 
+    handleLastTurnClick = (e) => {
+        if (e.type === "mousedown") {
+            this.setState({
+                showLastTurn: true
+            })
+        } else {
+            this.setState({
+                showLastTurn: false
+            })
+        }
+    }
+
     selectCard = (cardId) => {
         
         if( cardId !== this.state.selectedCard) {
@@ -307,7 +348,7 @@ export default class Game extends React.Component{
                 selectedCard: cardId
             })
         } else {
-            this.NaegelsApi.putCard(
+            this.NigelsApi.putCard(
                 this.Cookies.get('idToken'),
                 this.state.gameDetails.gameId,
                 this.state.gameDetails.currentHandId,
@@ -378,14 +419,14 @@ export default class Game extends React.Component{
         const roomId = this.state.gameDetails.roomId
         const roomName = this.state.gameDetails.roomName
         const username = this.Cookies.get('username')
-        this.NaegelsApi.disconnectRoom(this.Cookies.get('idToken'), roomId, username)
+        this.NigelsApi.disconnectRoom(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
                 roomSocket.emit('remove_player_from_room', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
                 lobbySocket.emit('decrease_room_players', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
                 window.location.assign('/lobby')
             } else {
-                this.setState({popupError: body.errors[0].message})
+                this.setState({actionMessage: body.errors[0].message})
             }
         });
     }
@@ -572,12 +613,24 @@ export default class Game extends React.Component{
                             ''
                     }
                     {
-                        this.state.gameDetails.cardsOnTable.length > 0 ?
+                        this.state.gameDetails.cardsOnTable.length > 0 && !this.state.showLastTurn ?
                             <TablePutCards
                                 isMobile={this.props.isMobile}
                                 isDesktop={this.props.isDesktop}
                                 isPortrait={this.props.isPortrait}
                                 cardsOnTable={this.state.gameDetails.cardsOnTable}
+                                playersCount={this.state.gameDetails.players.length}
+                            ></TablePutCards>
+                        :
+                            ''
+                    }
+                    {
+                        this.state.gameDetails.lastTurnCards.length > 0 && this.state.showLastTurn ?
+                            <TablePutCards
+                                isMobile={this.props.isMobile}
+                                isDesktop={this.props.isDesktop}
+                                isPortrait={this.props.isPortrait}
+                                cardsOnTable={this.state.gameDetails.lastTurnCards}
                                 playersCount={this.state.gameDetails.players.length}
                             ></TablePutCards>
                         :
@@ -631,7 +684,7 @@ export default class Game extends React.Component{
                     : '' }
                 </div>
                 
-                <NaegelsModal
+                <NigelsModal
                     open={this.state.modalOpen}
                     text={this.state.modalText}
                     isMobile={this.props.isMobile}
@@ -641,7 +694,7 @@ export default class Game extends React.Component{
                     onKeyPress={this.handleKeyPress}
                     closeModal={this.closeModal}
                     modalCanClose={this.modalCanClose}
-                ></NaegelsModal>
+                ></NigelsModal>
                 <GameScores
                     open={this.state.scoresModalOpen}
                     isMobile={this.props.isMobile}

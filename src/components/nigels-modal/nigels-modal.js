@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './naegels-modal.css';
+import './nigels-modal.css';
 
 //MUI components
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import FormButton from '../../components/form-button';
+import FormButton from '../form-button';
 import CloseIcon from '@mui/icons-material/Close';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -13,7 +13,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import defaultTheme from '../../themes/default';
 
 
-export default class NaegelsModal extends React.Component{
+export default class NigelsModal extends React.Component{
 
     render() {
         return(

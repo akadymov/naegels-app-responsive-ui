@@ -1,5 +1,5 @@
 import React from 'react';
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 import FormContainer from '../../components/form-container';
 
@@ -73,7 +73,7 @@ export default class Login extends React.Component{
         }
     };
     
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
     Cookies = new Cookies();
     CheckIfAlreadyLoggedIn = () => {
         const idToken = this.Cookies.get('idToken')
@@ -89,7 +89,7 @@ export default class Login extends React.Component{
     }
 
     SendLoginRequest = () => {
-        this.NaegelsApi.login(
+        this.NigelsApi.login(
             this.state.username, 
             this.state.password
         )

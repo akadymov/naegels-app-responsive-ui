@@ -8,7 +8,7 @@ import './reset-password.css'
 import FormContainer from '../../components/form-container';
 
 //Local services
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 
 
@@ -72,7 +72,7 @@ export default class ResetPassword extends React.Component{
         }
     }
 
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
     Cookies = new Cookies();
 
 
@@ -85,7 +85,7 @@ export default class ResetPassword extends React.Component{
     }
 
     resetPassword = () => {
-        this.NaegelsApi.resetPassword(this.props.match.params.resetPasswordToken, this.state.newPassword, this.state.repeatPassword)
+        this.NigelsApi.resetPassword(this.props.match.params.resetPasswordToken, this.state.newPassword, this.state.repeatPassword)
         .then((body)=>{
             var newSubmitButtonList = []
             if(body.errors){
@@ -125,7 +125,7 @@ export default class ResetPassword extends React.Component{
     }
 
     SendLoginRequest = () => {
-        this.NaegelsApi.login(
+        this.NigelsApi.login(
             this.state.username, 
             this.state.password
         )

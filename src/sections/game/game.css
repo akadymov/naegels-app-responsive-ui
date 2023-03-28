@@ -101,8 +101,14 @@
     text-align: center;
 }
 
-.hand-id-label.mobile{
+.hand-id-label.portrait{
     width: 56px;
+    height: 10px;
+    font-size: 10px;
+}
+
+.hand-id-label.mobile{
+    width: 60px;
     height: 10px;
     font-size: 10px;
 }
@@ -119,7 +125,7 @@
 }
 
 .hand-id-value.mobile{
-    width: 56px;
+    width: 60px;
     height: 20px;
     line-height: 0px;
     font-size: 14px;

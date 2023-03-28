@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './naegels-table-container.css';
+import './nigels-table-container.css';
 
 // MUI components
 import Table from '@mui/material/Table';
@@ -21,23 +21,30 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import defaultTheme from '../../themes/default';
 import FormButton from '../form-button';
 import Score from '../score';
-import NaegelsAvatar from '../naegels-avatar/naegels-avatar';
+import NigelsAvatar from '../nigels-avatar/nigels-avatar';
 
 
 
-export default class NaegelsTableContainer extends React.Component{
+export default class NigelsTableContainer extends React.Component{
 
     render() {
+
+        console.log(this.props.rows[0])
 
         const StyledTableCell = styled(TableCell)(() => ({
             [`&.${tableCellClasses.head}`]: {
                 backgroundColor: 'black',
                 color: 'white',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                borderRight: '1px dotted gray',
+                borderBottom: 'none'
             },
             [`&.${tableCellClasses.body}`]: {
                 fontSize: 14,
-                padding: this.props.padding || '16px'
+                color: 'darkGray',
+                padding: this.props.padding || '16px',
+                borderRight: '1px dotted gray',
+                borderBottom: 'none'
             },
         }));
 
@@ -47,10 +54,24 @@ export default class NaegelsTableContainer extends React.Component{
                     <TableHead>
                         <TableRow>
                             {this.props.headers.map(header => {
-                                return <StyledTableCell 
-                                    key={header} 
-                                    align={this.props.headers.indexOf(header) === 0 ? 'left' : 'right'}
-                                >{header}</StyledTableCell>
+                                return this.props.playerHeaders && header ? 
+                                    <StyledTableCell key={header} align='center'>
+                                        <div className='player-table-data-container'>
+                                            <div className="avatar-small">
+                                                <NigelsAvatar
+                                                    width = "38px"
+                                                    height = "38px"
+                                                    username = {header}
+                                                ></NigelsAvatar>
+                                            </div>
+                                            <div 
+                                                className="username-container" 
+                                                onClick={()=>window.location.assign('/profile/' + header)}
+                                            >{header}</div>
+                                        </div>
+                                    </StyledTableCell>
+                                    :
+                                    <StyledTableCell key={header} align='center'>{header}</StyledTableCell>
                             })}
                         </TableRow>
                     </TableHead>
@@ -60,30 +81,29 @@ export default class NaegelsTableContainer extends React.Component{
                             <ThemeProvider key={`theme-provider-${row.id}`} theme={defaultTheme}>
                                 <TableRow
                                     key={row.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    sx={{ bgcolor: row.id === 'total' ? '#e8e8e8' : 'none' }}
                                     onClick={this.props.onClick ? (event) => this.props.onClick(event, row.id) : ''}
                                     selected={row.id === this.props.selected}
-                                    hover
                                 >
                                     {
                                         row.dataArray.map(data => {
                                                 switch(data.type){
                                                     case 'text':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 {data.value}
                                                             </StyledTableCell>
                                                         )
                                                     case 'player':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 <div className='player-table-data-container'>
                                                                     <div className="avatar-small">
-                                                                        <NaegelsAvatar
+                                                                        <NigelsAvatar
                                                                             width = "38px"
                                                                             height = "38px"
                                                                             username = {data.username}
-                                                                        ></NaegelsAvatar>
+                                                                        ></NigelsAvatar>
                                                                     </div>
                                                                     <div 
                                                                         className="username-container" 
@@ -95,7 +115,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'switch':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 <Switch
                                                                     inputProps={{ 'aria-label': 'controlled' }}
                                                                     key={`ready-switch-${data.username}`}
@@ -110,7 +130,7 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'button':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 <FormButton 
                                                                     variant={data.variant}
                                                                     text={data.text}
@@ -124,13 +144,13 @@ export default class NaegelsTableContainer extends React.Component{
                                                         )
                                                     case 'hand id':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 <p key={`handspan ${data.cards}-${data.trump}-${row.dataArray.indexOf(data)}`} className={`${data.trump} suit-container`}>{data.cards}</p>
                                                             </StyledTableCell>
                                                         )
                                                     case 'score':
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 <Score
                                                                     total={data.total}
                                                                     betSize={data.betSize}
@@ -140,9 +160,18 @@ export default class NaegelsTableContainer extends React.Component{
                                                                 ></Score>
                                                             </StyledTableCell>
                                                         )
+                                                    case 'scores subtitle':
+                                                        return(
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
+                                                                <Score
+                                                                    betSize='bet'
+                                                                    score='score'
+                                                                ></Score>
+                                                            </StyledTableCell>
+                                                        )
                                                     default: // text
                                                         return(
-                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align={row.dataArray.indexOf(data) === 0 ? 'left' : 'right'}>
+                                                            <StyledTableCell key={`row ${row.id} column ${row.dataArray.indexOf(data)}`} align='center'>
                                                                 {data.value}
                                                             </StyledTableCell>
                                                         )

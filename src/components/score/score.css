@@ -9,22 +9,22 @@
     left: 0%;
     height: 30px;
     width: 50px;
+    margin-left: 30px;
 }
 
 .bet-size{
     position: absolute;
-    top:50%;
-    left: 60px;
+    top: 10px;
+    left: 0%;
     width: 15px;
+    line-height: 15px;
     height: 15px;
-    font-size: 12px;
-    transform: translate(-50%, -50%);
+    font-size: 14px;
 }
 
 .bet-size.bonus{
     border: 1px darkviolet solid;
     border-radius: 50%;
-    line-height: 15px;
     text-align: center;
     color: darkviolet
 }
@@ -32,13 +32,17 @@
 .score{
     position: absolute;
     width: 50px;
+    height: 30px;
     right: 0%;
-    top: 50%;
-    transform: translate(0, -50%);
-    font-size: 16px;
+    top: 25%;
+    font-size: 14px;
+    color: green;
+    font-weight: bold;
 }
 
 .total-score{
-    font-size: 20px;
+    font-size: 14px;
     text-decoration: underline;
+    color: green;
+    font-weight: bold;
 }

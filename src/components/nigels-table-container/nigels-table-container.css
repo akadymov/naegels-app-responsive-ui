@@ -37,37 +37,44 @@
 
 .admin-icon-container{
     position: absolute;
-    right: -24px;
+    right: -12px;
     height: 38px;
     width: 24px;
     top: 7px;
 }
 
-.suit-container:after{
-    font-size: 18px;
+.suit-container{
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-.d.suit-container:after{
+.suit-container:before{
+    font-size: 18px;
+    padding-right: 5px;
+}
+
+.d.suit-container:before{
     content: "\2666";
     color: red;
 }
 
-.h.suit-container:after{
+.h.suit-container:before{
     content: "\2665";
     color: red;
 }
 
-.c.suit-container:after{
+.c.suit-container:before{
     content: "\2663";
     color: black;
 }
 
-.s.suit-container:after{
+.s.suit-container:before{
     content: "\2660";
     color: black;
 }
 
-.x.suit-container:after{
+.x.suit-container:before{
     content: "\2298";
     color: black;
 }

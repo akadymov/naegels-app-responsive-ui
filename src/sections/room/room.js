@@ -3,14 +3,14 @@ import React from 'react';
 import './room.css'
 
 //Local services
-import NaegelsApi from '../../services/naegels-api-service';
+import NigelsApi from '../../services/nigels-api-service';
 import Cookies from 'universal-cookie';
 import { roomSocket, lobbySocket } from '../../services/socket';
 
 //Local components
-import NaegelsTableContainer from '../../components/naegels-table-container';
+import NigelsTableContainer from '../../components/nigels-table-container';
 import SectionHeader from '../../components/section-header';
-import NaegelsModal from '../../components/naegels-modal';
+import NigelsModal from '../../components/nigels-modal';
 
 
 export default class Room extends React.Component{
@@ -83,7 +83,6 @@ export default class Room extends React.Component{
             selectedPlayerUsername: '',
             selectedPlayerReady: -1,
             startGameError: '',
-            popupError: '',
             confirmActionMsg:'',
             confirmAction:'',
             youAreHost: false,
@@ -91,7 +90,7 @@ export default class Room extends React.Component{
         }
     }
 
-    NaegelsApi = new NaegelsApi();
+    NigelsApi = new NigelsApi();
     Cookies = new Cookies();
 
     CheckIfLoggedIn = () => {
@@ -197,7 +196,7 @@ export default class Room extends React.Component{
     
 
     GetRoomDetails = () => {
-        this.NaegelsApi.getRoom(this.props.match.params.roomId)
+        this.NigelsApi.getRoom(this.props.match.params.roomId)
         .then((body) => {
             if(body.errors) {
                 console.log('Something went wrong! Cannot get rooms list!')
@@ -232,7 +231,7 @@ export default class Room extends React.Component{
         //        confirmAction: this.confirmCloseRoom
         //    })
         //}
-        this.NaegelsApi.disconnectRoom(this.Cookies.get('idToken'), roomId, username)
+        this.NigelsApi.disconnectRoom(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
                 roomSocket.emit('remove_player_from_room', this.Cookies.get('username'), username, roomId, roomName, body.connectedUsers)
@@ -248,14 +247,14 @@ export default class Room extends React.Component{
                     }
                 }
             } else {
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             }
         });
     }
 
     confirmReady = (username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')) => {
         const roomId = this.state.roomDetails.roomId
-        this.NaegelsApi.confirmReady(this.Cookies.get('idToken'), roomId, username)
+        this.NigelsApi.confirmReady(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
                 var newRoomDetails = this.state.roomDetails
@@ -264,14 +263,14 @@ export default class Room extends React.Component{
                 this.setState({roomDetails: newRoomDetails})
                 roomSocket.emit('ready', this.Cookies.get('username'), username, roomId)
             } else {
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             }
         });
     }
 
     resetReady = (username = this.state.selectedPlayerUsername ? this.state.selectedPlayerUsername : this.Cookies.get('username')) => {
         const roomId = this.state.roomDetails.roomId
-        this.NaegelsApi.resetReady(this.Cookies.get('idToken'), roomId, username)
+        this.NigelsApi.resetReady(this.Cookies.get('idToken'), roomId, username)
         .then((body) => {
             if(!body.errors){
                 var newRoomDetails = this.state.roomDetails
@@ -280,7 +279,7 @@ export default class Room extends React.Component{
                 this.setState({roomDetails: newRoomDetails})
                 roomSocket.emit('not_ready', this.Cookies.get('username'), username, roomId)
             } else {
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             }
         });
     }
@@ -317,26 +316,23 @@ export default class Room extends React.Component{
     confirmCloseRoom = () => {
         const roomId = this.state.roomDetails.roomId
         const roomName = this.state.roomDetails.roomName
-        this.NaegelsApi.closeRoom(this.Cookies.get('idToken'), roomId)
+        this.NigelsApi.closeRoom(this.Cookies.get('idToken'), roomId)
         .then((body) => {
             if(body.errors){
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             } else {
                 roomSocket.emit('close_room', this.Cookies.get('username'), roomId);
                 lobbySocket.emit('remove_room_from_lobby', roomId);
-                this.setState({popupError: 'Room "' + roomName + '" was successfully closed!'})
-                setTimeout(function(){
-                    window.location.assign('/lobby' + roomId)
-                }, 1000)
+                window.location.assign('/lobby' + roomId)
             }
         });
     }
 
     startGame = () => {
-        this.NaegelsApi.startGame(this.Cookies.get('idToken'), 1) // TODO: introduce autodeal checkbox
+        this.NigelsApi.startGame(this.Cookies.get('idToken'), 1) // TODO: introduce autodeal checkbox
         .then((body) => {
             if(body.errors) {
-                this.setState({popupError: body.errors[0].message})
+                alert(body.errors[0].message)
             } else {
                 roomSocket.emit('start_game_in_room', this.Cookies.get('username'), body.gameId, this.props.match.params.roomId)
                 setTimeout(function(){
@@ -345,9 +341,16 @@ export default class Room extends React.Component{
             }
         })
     }
+
+    roomAutoUpdate = () => { // update lobby every 60 seconds
+        setTimeout(function(){
+            this.GetRoomDetails()
+        }.bind(this), 300000)
+    }
     
     componentDidMount = () => {
         this.GetRoomDetails();
+        this.roomAutoUpdate();
         roomSocket.on("update_room", (data) => {
             if(this.Cookies.get('username') !== data.actor){
                 if(data.roomId && data.username){
@@ -433,15 +436,15 @@ export default class Room extends React.Component{
                     subtitle={!this.props.isMobile ? this.state.roomDetails.host : ''}
                 ></SectionHeader>
                 <div className={`room-table-container ${ this.props.isMobile ? "mobile" : (this.props.isDesktop ? "desktop" : "tablet")} ${ this.props.isPortrait ? "portrait" : "landscape"}`}>
-                    <NaegelsTableContainer
+                    <NigelsTableContainer
                         height={this.props.isMobile ? (this.props.isPortrait ? '74vh' : '88vh') : '90vh'}
                         headers={this.state.playerHeaders}
                         rows={this.state.players}
                         onClick={this.selectPlayer}
                         selected={this.state.selectedPlayerId}
-                    ></NaegelsTableContainer>
+                    ></NigelsTableContainer>
                 </div>
-                <NaegelsModal
+                <NigelsModal
                     open={this.state.modalOpen}
                     text="Please, confirm action"
                     isMobile={this.props.isMobile}
@@ -450,7 +453,7 @@ export default class Room extends React.Component{
                     controls={this.state.modalControls}
                     closeModal={this.closeModal}
                     modalCanClose={true}
-                ></NaegelsModal>
+                ></NigelsModal>
             </div>
         )
     }

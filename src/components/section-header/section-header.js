@@ -38,6 +38,8 @@ export default class SectionHeader extends React.Component{
                                 text={control.text}
                                 disabled={control.disabled}
                                 onSubmit={control.onSubmit}
+                                onMouseDown={control.onMouseDown}
+                                onMouseUp={control.onMouseUp}
                                 width={control.width}
                                 size={control.size}
                                 color={control.color}
