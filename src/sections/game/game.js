@@ -212,14 +212,7 @@ export default class Game extends React.Component{
     }
 
     /*utilizeCards = (tookPlayerUsername, handId) => {
-        console.log(tookPlayerUsername)
-        console.log(this.state.gameDetails.nextActingPlayer)
-        console.log(handId)
-        console.log(this.state.gameDetails.currentHandId)
-        console.log(tookPlayerUsername === this.state.gameDetails.nextActingPlayer)
-        console.log(parseInt(handId) === parseInt(this.state.gameDetails.currentHandId))
         if (tookPlayerUsername === this.state.gameDetails.nextActingPlayer && handId === this.state.gameDetails.currentHandId) {
-            console.log('tst')
             this.state.gameDetails.cardsOnTable = []
         }
     }*/

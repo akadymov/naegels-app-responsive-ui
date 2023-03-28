@@ -29,8 +29,6 @@ export default class NigelsTableContainer extends React.Component{
 
     render() {
 
-        console.log(this.props.rows[0])
-
         const StyledTableCell = styled(TableCell)(() => ({
             [`&.${tableCellClasses.head}`]: {
                 backgroundColor: 'black',

@@ -307,7 +307,7 @@ export default class Profile extends React.Component{
         this.NigelsApi.uploadProfilePic(this.Cookies.get('idToken'), this.props.match.params.username || this.Cookies.get('username'), this.state.avatarFile)
         .then((body) => {
             if(body.errors) {
-                console.log(body)
+                console.log(body.errors)
             } else {
                 this.getUserProfile()
             }
