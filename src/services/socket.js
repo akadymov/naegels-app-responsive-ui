@@ -3,8 +3,8 @@ import configFile from './config.json'
 
 const env = configFile.ENVIRONMENT
 
-const socketHost = configFile.SOCKET.HOST[env]
-const socketPort = configFile.SOCKET.PORT[env]
+const socketHost = configFile.API.HOST[env]
+const socketPort = configFile.API.PORT[env]
 
 const manager = new Manager(socketHost + ':' + socketPort)
 
